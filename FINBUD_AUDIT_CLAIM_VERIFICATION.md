@@ -30,3 +30,4 @@
 3. **Market Pricing Data:** Disclosed that live spot prices are derived from COMEX international futures plus Interbank USD/INR forex with a statutory 1.09 import parity multiplier (6% customs + 3% GST), and clearly noted that jeweller making charges (8%–25%) are excluded.
 4. **RAG Pipeline:** Evaluated across an expanded 30-question dataset with 100% relevance and 100% faithfulness. Accurately documented that the local retrieval engine uses a TF-IDF n-gram vector space index rather than neural embeddings.
 5. **Brand Identity:** Restored FINBUD's clean minimal fintech theme (emerald green `#10B981`, pale mint background `#F7FAF8`, and crisp white cards).
+

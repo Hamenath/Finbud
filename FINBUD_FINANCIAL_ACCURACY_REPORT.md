@@ -52,3 +52,4 @@ $$\text{CAGR} = \left( \frac{\text{FV}}{\text{PV}} \right)^{1/t} - 1$$
 $$\text{INR Price/g} = \left( \frac{\text{COMEX Futures (USD/oz)} \times \text{USD/INR}}{31.1034768} \right) \times 1.09$$
 * **Assumption Disclosure:** $1.09$ factor accounts for the rationalized $6\%$ Basic Customs Duty + $3\%$ GST effective Union Budget 2024. Excludes retail making charges ($8\%$–$25\%$).
 * **Status:** **PASS**.
+

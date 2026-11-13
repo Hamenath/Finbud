@@ -28,3 +28,4 @@
    * **Status:** `google.generativeai` has been superseded by `google.genai`. While functional, the SDK should be migrated to `google-genai` in a future release.
 4. **Turbopack Deprecation Notice:**
    * **Status:** Next.js warning regarding `middleware.ts` naming convention ("The 'middleware' file convention is deprecated. Please use 'proxy' instead"). This is informational and does not affect runtime execution.
+

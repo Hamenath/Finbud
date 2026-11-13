@@ -63,3 +63,4 @@ CREATE POLICY "Users can manage own insurance policies" ON public.insurance_poli
 ### Two-User Isolation Status:
 * **Code & Schema Inspection:** **PASS**. PostgreSQL RLS rules strictly filter every query by the verified JWT session user id (`auth.uid()`).
 * **Live Automated Two-User Browser/REST Test:** **NOT VERIFIED**. The local test environment currently has only one registered test account (`hamestudy@gmail.com`). To prevent fabricating test logs, concurrent cross-tenant tampering remains designated as NOT VERIFIED until a second test account is registered on the live Supabase instance.
+

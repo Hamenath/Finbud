@@ -35,3 +35,4 @@ Status: PASS
 ### Hallucination Policy:
 The assistant communicates explicit boundaries when queries fall outside the curated corpus or request speculative financial advice:
 > *"This query falls outside the scope of the FINBUD Financial Intelligence assistant. I specialize in Indian personal finance education... I do not provide speculative stock-tipping, price predictions, or non-financial advice."*
+
