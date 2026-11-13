@@ -150,7 +150,7 @@ export default function ReportsPage() {
           .reduce((sum, p) => sum + Number(p.sum_insured), 0);
         setTermLifeCoverage(termCov);
       } else {
-        setTermLifeCoverage(25000000.0);
+        setTermLifeCoverage(0.0);
       }
 
       // 4. ML Projected Month-End Burn
@@ -164,36 +164,15 @@ export default function ReportsPage() {
 
   const loadDemoData = () => {
     setIsDemoMode(true);
-    let inc = 0;
-    let exp = 0;
-    const catMap: Record<string, { amount: number; count: number }> = {};
-
-    DEMO_TRANSACTIONS.forEach((t) => {
-      if (t.type === 'INCOME') inc += t.amount;
-      else {
-        exp += t.amount;
-        if (!catMap[t.category]) catMap[t.category] = { amount: 0, count: 0 };
-        catMap[t.category].amount += t.amount;
-        catMap[t.category].count += 1;
-      }
-    });
-
-    const breakdown: CategorySpending[] = Object.keys(catMap).map((cat) => ({
-      category: cat,
-      amount: catMap[cat].amount,
-      count: catMap[cat].count,
-      percentage: (catMap[cat].amount / exp) * 100,
-    }));
-
-    setTotalIncome(inc);
-    setTotalExpenses(exp);
-    setCategoryBreakdown(breakdown);
-    setGoldGrams(55.0);
-    setSilverGrams(1000.0);
-    setMetalsValuation(517000.0);
-    setTermLifeCoverage(25000000.0);
-    setMlProjectedBurn(Math.round(exp * 1.02));
-    setMlProjectedSavings(Math.round(inc - exp * 1.02));
+    setTotalIncome(0.0);
+    setTotalExpenses(0.0);
+    setCategoryBreakdown([]);
+    setGoldGrams(0.0);
+    setSilverGrams(0.0);
+    setMetalsValuation(0.0);
+    setTermLifeCoverage(0.0);
+    setMlProjectedBurn(0.0);
+    setMlProjectedSavings(0.0);
   };
 
   const netSavings = totalIncome - totalExpenses;

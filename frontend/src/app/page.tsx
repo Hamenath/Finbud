@@ -66,7 +66,7 @@ export default function DashboardPage() {
         monthlyIncome: DEMO_OVERVIEW_METRICS.monthlyIncome,
         monthlyExpense: DEMO_OVERVIEW_METRICS.monthlyExpense,
         savingsRate: DEMO_OVERVIEW_METRICS.savingsRate,
-        netSavings: '₹1,12,600',
+        netSavings: '₹0',
       };
     }
 
@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
     return {
       isDemo: false,
-      netWorth: `₹${(netSavings + 12000000).toLocaleString('en-IN')}`,
+      netWorth: `₹${netSavings.toLocaleString('en-IN')}`,
       monthlyIncome: `₹${income.toLocaleString('en-IN')}`,
       monthlyExpense: `₹${expense.toLocaleString('en-IN')}`,
       netSavings: `₹${netSavings.toLocaleString('en-IN')}`,
