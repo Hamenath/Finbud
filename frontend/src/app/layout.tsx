@@ -1,6 +1,21 @@
 ﻿import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { AppShell } from '@/components/layout/AppShell';
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'FINBUD • AI Personal Wealth & Predictive Market Analytics',
@@ -19,11 +34,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
-      <body className="bg-[#F8FAFC] text-[#111827] antialiased selection:bg-[#1E40AF]/20 selection:text-[#1E3A8A]">
+    <html lang="en" className={`light ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
+      <body className="bg-[#FFFDF5] text-[#182B46] antialiased selection:bg-[#FFD05B] selection:text-[#182B46]">
         <AppShell>{children}</AppShell>
       </body>
     </html>
   );
 }
-
