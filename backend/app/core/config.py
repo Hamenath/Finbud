@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     SUPABASE_SERVICE_ROLE_KEY: str = "demo-service-role-key"
     SUPABASE_JWT_SECRET: str = "demo-jwt-secret"
     
-    # LLM Settings
-    GEMINI_API_KEY: str = "demo-gemini-key"
+    # LLM Settings (Read dynamically from backend/.env or hosting environment variables)
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "demo-gemini-key")
     
     # Market Data Caching
     MARKET_CACHE_TTL_SECONDS: int = 3600

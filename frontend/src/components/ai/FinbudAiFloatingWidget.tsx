@@ -194,25 +194,6 @@ export const FinbudAiFloatingWidget: React.FC = () => {
                   }`}
                 >
                   <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
-
-                  {/* Citations Pill */}
-                  {m.citations && m.citations.length > 0 && (
-                    <div className="mt-2.5 pt-2 border-t border-black/10 space-y-1">
-                      <div className="flex items-center gap-1 text-[10px] font-medium opacity-80 uppercase tracking-wider">
-                        <BookOpen size={11} />
-                        <span>Curated Citations</span>
-                      </div>
-                      {m.citations.map((c, i) => (
-                        <div
-                          key={i}
-                          className="p-1.5 rounded-md bg-white/70 border border-black/5 text-[10px]"
-                        >
-                          <div className="font-semibold truncate text-[#111827]">{c.title}</div>
-                          <div className="opacity-75 font-mono truncate text-[#4B5563]">{c.section}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
                 <span className="text-[9px] font-mono text-[#6B7280] mt-1 px-1">
                   {m.timestamp}

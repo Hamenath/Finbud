@@ -225,33 +225,7 @@ export default function FinbudAiPage() {
                   }`}
                 >
                   <div className="whitespace-pre-line">{m.text}</div>
-
-                  {m.model && m.sender === 'assistant' && (
-                    <div className="mt-2 pt-2 border-t border-[#182B46] flex items-center justify-between text-[10px] text-[#4B5E76]">
-                      <span className="font-mono">Engine: {m.model}</span>
-                      <span className="flex items-center gap-1 text-[#182B46]">
-                        <ShieldCheck size={11} className="text-[#182B46]" /> Zero Hallucination Guard
-                      </span>
-                    </div>
-                  )}
                 </div>
-
-                {/* Grounded Citation Badges */}
-                {m.citations && m.citations.length > 0 && (
-                  <div className="flex flex-wrap gap-2 text-[10px] font-mono">
-                    {m.citations.map((c, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#182B46] text-[#4B5E76]"
-                      >
-                        <BookOpen size={11} className="text-[#182B46] shrink-0" />
-                        <span>
-                          <strong>{c.title}</strong> • {c.section}
-                        </span>
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           ))}
