@@ -60,20 +60,20 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         alert(`Database Error: ${error.message}`);
         return;
       }
-      setToastMessage('Saved directly to Supabase PostgreSQL Database!');
+      setToastMessage('Transaction saved to Supabase ledger.');
     } else {
-      setToastMessage('Record logged to live demo view (Sign in for permanent sync).');
+      setToastMessage('Transaction saved to session preview.');
     }
 
     setShowQuickModal(false);
     setSuccessToast(true);
     setTxTitle('');
     setTxAmount('');
-    setTimeout(() => setSuccessToast(false), 4000);
+    setTimeout(() => setSuccessToast(false), 3500);
   };
 
   return (
-    <div className="min-h-screen bg-[#F7FAF8] text-[#111827] flex flex-col font-sans selection:bg-[#10B981]/20 selection:text-[#087F5B]">
+    <div className="min-h-screen bg-[#F7FAF8] text-[#1F2937] flex flex-col font-sans selection:bg-[#10B981]/20 selection:text-[#087F5B]">
       {/* 1. Sidebar */}
       <Sidebar
         collapsed={collapsed}
@@ -82,7 +82,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         setMobileOpen={setMobileOpen}
       />
 
-      {/* 2. Main Layout Shell */}
+      {/* 2. Main Content Frame */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
           collapsed ? 'lg:pl-20' : 'lg:pl-64'
@@ -93,123 +93,116 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
           onOpenQuickAdd={() => setShowQuickModal(true)}
         />
 
-        {/* Global Academic & Regulatory Disclaimer Banner (Light theme) */}
-        <div className="bg-[#ECFDF5] border-b border-[#A7F3D0] px-4 py-2 text-center text-[11px] text-[#065F46]">
-          <span className="font-semibold text-[#087F5B]">EDUCATIONAL DECISION-SUPPORT PROTOTYPE:</span>{' '}
-          FINBUD is not a SEBI-registered investment adviser. Calculations are mathematical models.
-          Verify consequential decisions with certified professionals.
-        </div>
-
-        {/* Dynamic Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        {/* Spacious Centered Content (Max ~1200px, 32px vertical breathing space) */}
+        <main className="flex-1 px-6 sm:px-8 py-8 sm:py-10 max-w-[1200px] w-full mx-auto space-y-8">
           {children}
         </main>
       </div>
 
-      {/* Quick Add Modal (Light Theme) */}
+      {/* Quick Add Modal */}
       {showQuickModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-xs">
           <div className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-md p-6 shadow-xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-[#E5E7EB] mb-5">
               <div>
-                <h3 className="font-bold text-base text-[#111827]">Log Financial Activity</h3>
+                <h3 className="font-bold text-base text-[#1F2937]">Quick Transaction</h3>
                 <p className="text-xs text-[#6B7280]">
-                  {user ? 'Syncing to your isolated Supabase table' : 'Sign in to persist records across devices'}
+                  {user ? 'Logs directly to your verified account' : 'Preview entry in session'}
                 </p>
               </div>
               <button
                 onClick={() => setShowQuickModal(false)}
-                className="p-1 rounded-lg text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
+                className="p-1 rounded-lg text-[#6B7280] hover:text-[#1F2937] hover:bg-[#F9FAFB] cursor-pointer"
               >
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSaveTransaction} className="space-y-4">
-              <div className="grid grid-cols-2 gap-2 p-1 bg-[#F3F4F6] rounded-xl border border-[#E5E7EB]">
+              <div className="grid grid-cols-2 gap-2 p-1 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
                 <button
                   type="button"
                   onClick={() => setTxType('EXPENSE')}
-                  className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+                  className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                     txType === 'EXPENSE'
                       ? 'bg-white text-[#DC2626] shadow-xs'
-                      : 'text-[#6B7280] hover:text-[#111827]'
+                      : 'text-[#6B7280] hover:text-[#1F2937]'
                   }`}
                 >
-                  Expense / Outflow
+                  Expense Outflow
                 </button>
                 <button
                   type="button"
                   onClick={() => setTxType('INCOME')}
-                  className={`py-2 text-xs font-semibold rounded-lg transition-all ${
+                  className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                     txType === 'INCOME'
                       ? 'bg-white text-[#059669] shadow-xs'
-                      : 'text-[#6B7280] hover:text-[#111827]'
+                      : 'text-[#6B7280] hover:text-[#1F2937]'
                   }`}
                 >
-                  Income / Inflow
+                  Income Inflow
                 </button>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#374151] mb-1.5">
-                  Description / Payee
+                <label className="block text-xs font-medium text-[#374151] mb-1">
+                  Description
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Swiggy Instamart or Tech Salary"
+                  placeholder="e.g. Grocery basket or Salary"
                   value={txTitle}
                   onChange={(e) => setTxTitle(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#374151] mb-1.5">
+                <label className="block text-xs font-medium text-[#374151] mb-1">
                   Amount (₹ INR)
                 </label>
                 <input
                   type="number"
                   step="any"
                   required
-                  placeholder="e.g. 2400"
+                  placeholder="e.g. 2500"
                   value={txAmount}
                   onChange={(e) => setTxAmount(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] font-mono focus:outline-none focus:bg-white focus:border-[#10B981]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#374151] mb-1.5">
+                <label className="block text-xs font-medium text-[#374151] mb-1">
                   Category
                 </label>
                 <select
                   value={txCategory}
                   onChange={(e) => setTxCategory(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] focus:outline-none focus:bg-white focus:border-[#10B981]"
                 >
                   <option value="Food & Dining">Food & Dining</option>
                   <option value="Housing & Rent">Housing & Rent</option>
                   <option value="EMI & Loans">EMI & Loans</option>
                   <option value="Investment / SIP">Investment / SIP</option>
-                  <option value="Precious Metals">Precious Metals (Gold/Silver)</option>
+                  <option value="Precious Metals">Precious Metals</option>
                   <option value="Utilities & Bills">Utilities & Bills</option>
                   <option value="Salary & Bonus">Salary & Bonus</option>
                 </select>
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
+              <div className="pt-2 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowQuickModal(false)}
-                  className="px-4 py-2 text-xs font-medium text-[#6B7280] hover:text-[#111827]"
+                  className="px-4 py-2 text-xs font-medium text-[#6B7280] hover:text-[#1F2937] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
+                  className="px-5 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-medium text-xs shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Save Record
                 </button>
@@ -219,14 +212,11 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         </div>
       )}
 
-      {/* Global Success Feedback Toast */}
+      {/* Success Toast */}
       {successToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#A7F3D0] text-[#065F46] shadow-lg animate-in slide-in-from-bottom-5">
-          <Check size={18} className="text-[#10B981]" />
-          <div className="text-xs">
-            <p className="font-semibold text-[#111827]">Transaction Recorded</p>
-            <p className="text-[11px] text-[#6B7280]">{toastMessage}</p>
-          </div>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#A7F3D0] text-[#065F46] shadow-md animate-in slide-in-from-bottom-5">
+          <Check size={16} className="text-[#10B981]" />
+          <div className="text-xs font-medium">{toastMessage}</div>
         </div>
       )}
     </div>
