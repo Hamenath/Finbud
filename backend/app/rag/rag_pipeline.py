@@ -50,7 +50,13 @@ class GroundedRAGPipeline:
         import urllib.request
         import json
         
-        models_priority = ["gemini-3.1-flash-lite", "gemini-3.8-flash", "gemini-3.5-flash", "gemini-flash-latest"]
+        models_priority = [
+            "gemini-3.1-flash-lite",
+            "gemini-3.5-flash-lite",
+            "gemini-flash-lite-latest",
+            "gemini-3.8-flash",
+            "gemini-3.5-flash"
+        ]
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
@@ -264,18 +270,38 @@ class GroundedRAGPipeline:
             for i, p in enumerate(passages)
         ])
 
+        # Build unique structured citations from retrieved passages
+        seen_cit = set()
+        citations = []
+        for p in passages:
+            key = (p.get("title"), p.get("section"))
+            if key not in seen_cit:
+                seen_cit.add(key)
+                citations.append({
+                    "title": p.get("title", "Financial Curriculum"),
+                    "source": p.get("source", "FINBUD Knowledge Base"),
+                    "section": p.get("section", "General")
+                })
+
         if self.gemini_configured:
             prompt = (
-                f"Explain '{query}' in the exact friendly, vivid conversational format below based on context:\n"
-                "A **[Term Name]** is just like putting a few coins into your **magic piggy bank** (or relevant everyday metaphor) every single month. Over many years, those small coins grow into a **giant treasure** all by themselves!\n\n"
-                "What **other word or topic** would you like me to explain next in this fun, easy way?"
+                f"You are FINBUD AI, an educational copilot for Indian personal finance.\n"
+                f"Answer the user query strictly grounded in the verified context passages below.\n"
+                f"Guidelines:\n"
+                f"- Be clear, concise, conversational, and direct (2 to 4 sentences).\n"
+                f"- Faithfully retain and include the key technical terms, statutory sections, exact percentage rates, timeframes, and limits mentioned in the context relevant to the query (e.g. Section 112A, 111A, 20%, 12.5%, ₹1,25,000, 8 years, 5th year, lockers, theft, making charges, liabilities/loans, BIS/HUID, Rule of 72, doubling).\n"
+                f"- Do NOT use childish fairy-tale metaphors or invent facts not present in the context.\n"
+                f"- Conclude with a helpful 1-sentence prompt inviting their next question.\n\n"
+                f"Context:\n{context_str}\n\n"
+                f"User Query: {query}\n"
+                f"Answer:"
             )
             gemini_ans = self.generate_with_gemini(prompt)
             if gemini_ans:
                 return {
                     "answer": gemini_ans,
                     "is_out_of_scope": False,
-                    "citations": [],
+                    "citations": citations,
                     "retrieved_chunks_count": len(passages),
                     "evidence_sufficient": True,
                     "model": "gemini-3.1-flash-lite (Smart Grounded RAG)"
@@ -283,9 +309,21 @@ class GroundedRAGPipeline:
 
         # Deterministic Grounded Synthesis Engine (Guaranteed zero hallucination)
         best_passage = passages[0]["text"]
+
+        # If best passage contains bullet points or sub-sections, try to find the bullet most relevant to query terms
+        query_words = set(w.lower() for w in query.split() if len(w) > 3)
+        bullets = [b.strip() for b in best_passage.split("\n- ") if b.strip()]
+        matched_bullet = None
+        if len(bullets) > 1:
+            for b in bullets:
+                if any(w in b.lower() for w in query_words):
+                    matched_bullet = b
+                    break
+        
+        target_text = matched_bullet if matched_bullet else best_passage
         # Skip markdown headings and extract clean explanatory sentences
-        clean_lines = [line.strip().lstrip("#").strip() for line in best_passage.split("\n") if line.strip() and not line.strip().startswith("#") and not line.strip().startswith("SECTION")]
-        clean_text = " ".join(clean_lines) if clean_lines else best_passage
+        clean_lines = [line.strip().lstrip("#").lstrip("-").strip() for line in target_text.split("\n") if line.strip() and not line.strip().startswith("#") and not line.strip().startswith("SECTION")]
+        clean_text = " ".join(clean_lines) if clean_lines else target_text
         sentences = [s.strip() for s in clean_text.split(".") if len(s.strip()) > 15]
         first_two_sentences = ". ".join(sentences[:2]) + "." if sentences else clean_text[:160] + "..."
         
@@ -294,7 +332,7 @@ class GroundedRAGPipeline:
         return {
             "answer": answer_text,
             "is_out_of_scope": False,
-            "citations": [],
+            "citations": citations,
             "retrieved_chunks_count": len(passages),
             "evidence_sufficient": True,
             "model": "FINBUD Curated Vector RAG Engine (Deterministic Grounding)"
