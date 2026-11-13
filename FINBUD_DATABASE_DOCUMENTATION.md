@@ -66,3 +66,4 @@ CREATE POLICY "Users can manage own transactions" ON public.transactions
 ```
 
 This guarantees multi-tenant data isolation at the PostgreSQL storage engine level.
+

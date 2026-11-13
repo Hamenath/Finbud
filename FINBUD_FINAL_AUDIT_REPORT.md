@@ -175,3 +175,4 @@ All 15 routes compiled with 0 errors.
 * **Accuracy:** High. Formulas adhere to standard financial and stochastic models.
 * **UI & UX:** Playful Geometric Neo-Brutalist design system with buttery-smooth GSAP and Lenis momentum scroll.
 * **Demonstrability:** 100% operational for academic project defense and evaluation.
+

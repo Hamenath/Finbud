@@ -31,3 +31,4 @@ Protected endpoints require:
 
 ### 5. PDF Scorecard Report
 - `POST /reports/scorecard-pdf`: Generates an audit-ready downloadable financial health scorecard. Requires Supabase JWT token.
+

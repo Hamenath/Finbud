@@ -20,3 +20,4 @@ All test cases are implemented and automated in `backend/tests/test_end_to_end.p
 | TC-12 | RAG AI | Automated evaluation benchmark | 100% Relevance, Faithfulness & Coverage | **PASS** |
 | TC-13 | Security | Unauthenticated PDF generation request | Rejected with HTTP 401 Unauthorized | **PASS** |
 | TC-14 | Frontend | Next.js Turbopack production compilation | All 15 routes compiled with 0 errors | **PASS** |
+

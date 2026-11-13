@@ -58,3 +58,4 @@ flowchart TD
 ### Security
 - **Row-Level Security (RLS):** Every user can only access rows where `user_id == auth.uid()`.
 - **Server-Side Aggregation:** PDF endpoint computes all financial totals on the server from Supabase records.
+

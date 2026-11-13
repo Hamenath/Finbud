@@ -30,3 +30,4 @@ $$x > T_c \quad \text{and} \quad x > 2.5 \mu_c$$
 
 Flagged transactions produce human-readable diagnostic rationales:
 > *"Transaction of ₹15,000.00 is 5.2× the typical historical baseline of ₹2,880.00 in Food & Dining."*
+

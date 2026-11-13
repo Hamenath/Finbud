@@ -19,3 +19,4 @@ An automated evaluation script (`backend/app/rag/evaluator.py`) verifies the sys
 - **Answer Faithfulness:** 100.0%
 - **Citation Coverage:** 100.0%
 - **Out-of-Scope Detection:** Refuses non-financial or stock-tipping prompts without hallucinations.
+
