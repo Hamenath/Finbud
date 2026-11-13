@@ -36,3 +36,4 @@ def get_current_user(authorization: Optional[str] = Header(None)) -> Dict[str, A
         raise
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Authentication token verification failed: {str(e)}")
+

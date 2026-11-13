@@ -142,3 +142,4 @@ class FinancialAggregationService:
         }
 
 financial_aggregator = FinancialAggregationService()
+
