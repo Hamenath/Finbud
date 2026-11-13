@@ -129,11 +129,15 @@ class GroundedRAGPipeline:
         """
         q_lower = query.lower()
 
-        # 1. Out-of-scope detection
-        out_of_scope_keywords = ["recipe", "cricket", "bollywood", "weather forecast", "javascript bug", "python syntax", "lottery cheat"]
+        # 1. Out-of-scope & speculative tip detection
+        out_of_scope_keywords = [
+            "recipe", "cricket", "bollywood", "weather forecast", "javascript bug", 
+            "python syntax", "lottery cheat", "penny stock", "stock tip", "multibagger", 
+            "guaranteed profit", "which stock to buy", "buy today to make"
+        ]
         if any(w in q_lower for w in out_of_scope_keywords):
             return {
-                "answer": "This query falls outside the scope of the FINBUD Financial Intelligence assistant. I specialize in Indian personal finance education, including tax regimes, SIP compounding, precious metals (SGB/gold), insurance adequacy, and cash-flow budgeting.",
+                "answer": "This query falls outside the scope of the FINBUD Financial Intelligence assistant. I specialize in Indian personal finance education, including tax regimes, SIP compounding, precious metals (SGB/gold), insurance adequacy, and cash-flow budgeting. I do not provide speculative stock-tipping, price predictions, or non-financial advice.",
                 "is_out_of_scope": True,
                 "citations": [],
                 "retrieved_chunks_count": 0,

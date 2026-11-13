@@ -12,8 +12,6 @@ import {
   ShieldCheck,
   FileSpreadsheet,
   Settings,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import { FinbudLogo } from '@/components/common/FinbudLogo';
 
@@ -37,7 +35,6 @@ export const navigationItems = [
 
 export const Sidebar: React.FC<SidebarProps> = ({
   collapsed,
-  setCollapsed,
   mobileOpen,
   setMobileOpen,
 }) => {
@@ -48,19 +45,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#182B46]/30 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Main Neo-Brutalist Sidebar Shell */}
+      {/* Main Minimalist Sidebar Shell */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#FFFDF5] border-r-[1.5px] border-[#182B46] transition-all duration-200 ease-in-out ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-white border-r border-[#E5E7EB] transition-all duration-200 ease-in-out ${
           collapsed ? 'w-20' : 'w-64'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-16 px-4 border-b-[1.5px] border-[#182B46] bg-white">
+        <div className="flex items-center justify-between h-16 px-5 border-b border-[#E5E7EB]">
           <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
             {collapsed ? (
               <FinbudLogo showWordmark={false} size="sm" />
@@ -71,9 +68,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Navigation Link List */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5 no-scrollbar">
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 no-scrollbar">
           {!collapsed && (
-            <div className="px-3 pb-2 text-[10px] font-mono font-extrabold uppercase tracking-wider text-[#4B5E76]">
+            <div className="px-3 pb-2 text-[10px] font-mono font-medium uppercase tracking-wider text-[#6B7280]">
               Workspace
             </div>
           )}
@@ -90,25 +87,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`group flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-xs font-bold transition-all relative ${
+                className={`group flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-[#FFD05B] text-[#182B46] border-[1.5px] border-[#182B46] shadow-[3px_3px_0_#182B46] translate-y-[-1px]'
-                    : 'text-[#182B46] hover:bg-white hover:border-[1.5px] hover:border-[#182B46] hover:shadow-[2px_2px_0_#9DE8CB]'
+                    ? 'bg-[#ECFDF5] text-[#065F46] font-semibold border border-[#A7F3D0]'
+                    : 'text-[#4B5563] hover:bg-[#F9FAFB] hover:text-[#111827]'
                 }`}
                 title={collapsed ? item.name : undefined}
               >
                 <div
-                  className={`p-1.5 rounded-lg transition-transform ${
-                    isActive
-                      ? 'bg-white border-[1.5px] border-[#182B46]'
-                      : 'group-hover:scale-105'
+                  className={`p-1 rounded-lg transition-transform ${
+                    isActive ? 'text-[#10B981]' : 'text-[#6B7280] group-hover:text-[#111827]'
                   }`}
                 >
-                  <Icon
-                    className={`w-4 h-4 stroke-[2.2] ${
-                      isActive ? 'text-[#182B46]' : 'text-[#4B5E76] group-hover:text-[#182B46]'
-                    }`}
-                  />
+                  <Icon className="w-4 h-4" />
                 </div>
 
                 {!collapsed && (
@@ -119,17 +110,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           })}
         </div>
 
-        {/* Footer Info Pill */}
+        {/* Footer Security Badge */}
         {!collapsed && (
-          <div className="p-3 m-3 rounded-[12px] bg-[#E9FFF5] border-[1.5px] border-[#182B46] shadow-[2px_2px_0_#182B46]">
+          <div className="p-3 m-3 rounded-xl bg-[#F8FAF9] border border-[#E5E7EB]">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 rounded-full bg-[#182B46]" />
-              <span className="text-[11px] font-extrabold text-[#182B46]">
-                Security Active
+              <span className="w-2 h-2 rounded-full bg-[#10B981]" />
+              <span className="text-[11px] font-semibold text-[#111827]">
+                Protected Ledger
               </span>
             </div>
-            <p className="text-[10px] font-medium text-[#4B5E76] leading-tight">
-              Supabase RLS & AES-256 Protected
+            <p className="text-[10px] text-[#6B7280] leading-tight">
+              Supabase RLS & AES-256 Storage
             </p>
           </div>
         )}

@@ -32,6 +32,9 @@ A Systematic Investment Plan (SIP) is a disciplined vehicle allowing retail inve
   The future value of an ordinary monthly compounding SIP is given by:
   $$FV = PMT \times \frac{(1 + i)^n - 1}{i} \times (1 + i)$$
   where $PMT$ is the monthly contribution, $i = \frac{r}{12}$ is the monthly interest rate, and $n = t \times 12$ is the total number of monthly intervals.
+- **Compound Annual Growth Rate (CAGR)**:
+  Measures the annualized geometric growth rate of an investment over multiple periods:
+  $$\text{CAGR} = \left(\frac{\text{Ending Value}}{\text{Beginning Value}}\right)^{\frac{1}{t}} - 1$$
 - **Rule of 72**: A mathematical rule of thumb to estimate how long an investment takes to double at a given annual interest rate $r$:
   $$\text{Years to Double} \approx \frac{72}{r}$$
   For example, an investment compounding at 12% annual return doubles in approximately $72 / 12 = 6$ years.
@@ -45,8 +48,8 @@ A Systematic Investment Plan (SIP) is a disciplined vehicle allowing retail inve
 In Indian personal portfolios, gold and silver serve as strategic hedges against currency debasement and geopolitical volatility:
 1. **Sovereign Gold Bonds (SGB)**: Issued by the RBI on behalf of the Government of India.
    - Denominated in multiples of grams of 24 Karat gold (minimum 1 gram).
-   - Pays an annual semi-annual coupon of 2.50% on nominal value.
-   - **Tax Benefit**: Capital gains arising on redemption at maturity (8 years) are 100% exempt from income tax for individual resident investors under Section 47(viic).
+   - Pays an annual semi-annual coupon of 2.50% on nominal initial value. The annual interest payout is fully taxable according to the individual investor's applicable income tax slab rates.
+   - **Tax Benefit on Capital Gains**: Capital gains arising on redemption at maturity (8 years) are 100% exempt from income tax for individual resident investors under Section 47(viic).
 2. **Physical Gold & Hallmarking**:
    - Hallmarked by BIS with mandatory 6-digit HUID (Hallmark Unique Identification).
    - Standard purities: 24K (99.9% fine), 22K (91.6% standard jewelry), 18K (75.0% diamond studded jewelry).
@@ -64,9 +67,10 @@ Insurance serves strictly as risk transfer, distinct from investment vehicles (a
    - Provides pure financial protection paying the sum insured to nominees only upon the death of the insured.
    - **10x Income Heuristic**: A rule-of-thumb baseline recommending that the primary earner secure term life insurance coverage equal to at least 10 times their annual gross income. Outstanding debts (e.g., home loan, vehicle loans) must be added to this baseline.
    - *Limitation*: The 10x rule is an educational starting heuristic, not universal individual advice. Individual factors including dependents' life stages, medical history, and liquid net worth must be considered.
-2. **Health Insurance (Family Floater)**:
+2. **Health Insurance (Individual & Family Floater)**:
    - Protects against hospitalization and critical illness costs.
    - Comprehensive policies include restoration benefits, no-claim bonuses (NCB), and cashless network hospital coverage.
+   - **Pre-Existing Disease (PED) Waiting Period**: Medical conditions diagnosed prior to policy issuance typically require a statutory waiting period of 24 to 36 months before full claims coverage activates.
    - Separate super top-up policies offer cost-effective catastrophic protection above a threshold deductible.
 
 ---
@@ -97,4 +101,3 @@ Disciplined budgeting ensures positive savings rate and prevents debt spirals:
    - Salaried individuals should maintain **3 to 6 months** of essential household expenses.
    - Freelancers, entrepreneurs, or single-income households should target **6 to 12 months** of expenses.
    - **Storage Vehicles**: Liquid mutual funds, sweep-in bank deposits, or high-yield savings accounts ensuring 24-hour accessibility.
-

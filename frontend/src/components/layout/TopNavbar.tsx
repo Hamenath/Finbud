@@ -5,15 +5,12 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Menu,
-  Bell,
   PlusCircle,
   LogIn,
   LogOut,
-  Sparkles,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
-import { FinbudLogo } from '../common/FinbudLogo';
 
 interface TopNavbarProps {
   onMenuClick: () => void;
@@ -27,7 +24,6 @@ const ROUTE_TITLES: Record<string, string> = {
   '/wealth-lab': 'Wealth Multiplier Lab',
   '/gold-silver': 'Gold & Silver Vault',
   '/insurance-shield': 'Smart Insurance Shield',
-  '/finbud-ai': 'FINBUD AI Assistant',
   '/reports': 'Financial Reports',
   '/settings': 'Platform Settings',
 };
@@ -61,24 +57,24 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   const currentTitle = ROUTE_TITLES[pathname] || 'Dashboard';
 
   return (
-    <header className="sticky top-0 z-30 bg-[#FFFDF5] border-b-[1.5px] border-[#182B46]">
-      {/* 1. Playful Geometric Market Watch Bar */}
-      <div className="bg-[#E9FFF5] border-b-[1.5px] border-[#182B46] px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB]">
+      {/* 1. Subtle Market Ticker Bar */}
+      <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-1.5 font-bold text-[#182B46]">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FFD05B] border-[1.5px] border-[#182B46] animate-pulse" />
-            <span className="text-[10px] uppercase tracking-wider font-mono">
-              Live Rates
+          <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+            <span className="text-[10px] uppercase tracking-wider text-[#4B5563] font-mono">
+              Market Watch
             </span>
           </div>
 
           {DEMO_MARKET_TICKERS.map((ticker) => (
-            <div key={ticker.symbol} className="flex items-center gap-1.5 font-mono text-[11px] font-bold">
-              <span className="text-[#4B5E76]">{ticker.symbol}</span>
-              <span className="text-[#182B46]">{ticker.price}</span>
+            <div key={ticker.symbol} className="flex items-center gap-1.5 font-mono text-[11px]">
+              <span className="text-[#6B7280]">{ticker.symbol}</span>
+              <span className="text-[#1F2937] font-semibold">{ticker.price}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.5 rounded border border-[#182B46] ${
-                  ticker.isPositive ? 'bg-[#FFD05B] text-[#182B46]' : 'bg-[#EF4444]/20 text-[#DC2626]'
+                className={`text-[10px] font-semibold ${
+                  ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
                 }`}
               >
                 {ticker.change}
@@ -87,65 +83,63 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           ))}
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-[#182B46] ml-4 font-mono">
-          <span className="w-2 h-2 rounded-full bg-[#182B46]" />
-          <span>NSE / RBI Benchmark</span>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-[#6B7280] ml-4 font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+          <span>NSE / RBI Interbank Delayed Reference</span>
         </div>
       </div>
 
       {/* 2. Main Horizontal Navigation Bar */}
-      <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto w-full">
-        {/* Left Side: Mobile Menu Button & Breadcrumb */}
+      <div className="px-4 sm:px-6 py-3.5 flex items-center justify-between max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-3">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFD05B] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#E5B842] transition-colors cursor-pointer"
+            className="lg:hidden p-1.5 rounded-lg border border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB] transition-colors cursor-pointer"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2.5">
-            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider hidden sm:inline">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-[#6B7280] uppercase tracking-wider hidden sm:inline">
               FINBUD
             </span>
-            <span className="text-[#182B46] font-bold hidden sm:inline">/</span>
-            <h1 className="text-base sm:text-lg font-extrabold text-[#182B46] tracking-tight">
+            <span className="text-[#D1D5DB] hidden sm:inline">/</span>
+            <h1 className="text-base sm:text-lg font-bold text-[#111827] tracking-tight">
               {currentTitle}
             </h1>
           </div>
         </div>
 
-        {/* Right Side: Quick Action & Profile */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
-            className="neo-btn-yellow flex items-center gap-1.5 px-3.5 py-1.5 text-xs cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#10B981] text-white hover:bg-[#059669] shadow-xs transition-colors cursor-pointer"
           >
-            <PlusCircle className="w-4 h-4 stroke-[2.5]" />
+            <PlusCircle className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">New Entry</span>
           </button>
 
           {user ? (
-            <div className="flex items-center gap-2 pl-2 border-l-[1.5px] border-[#182B46]">
+            <div className="flex items-center gap-2 pl-2 border-l border-[#E5E7EB]">
               <div className="hidden sm:flex flex-col text-right">
-                <span className="text-xs font-bold text-[#182B46] leading-tight">
+                <span className="text-xs font-semibold text-[#111827] leading-tight">
                   {user.email?.split('@')[0]}
                 </span>
-                <span className="text-[10px] font-bold text-[#4B5E76]">Verified Account</span>
+                <span className="text-[10px] text-[#6B7280]">Verified Account</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="p-1.5 rounded-lg border-[1.5px] border-[#182B46] bg-white shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#FFFDF5] transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:text-[#111827] hover:bg-[#F9FAFB] transition-colors cursor-pointer"
                 title="Sign out"
               >
-                <LogOut className="w-4 h-4 stroke-[2.2]" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
             <Link
               href="/auth/login"
-              className="neo-btn-primary flex items-center gap-1.5 px-3 py-1.5 text-xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#111827] text-white hover:bg-black transition-colors"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>

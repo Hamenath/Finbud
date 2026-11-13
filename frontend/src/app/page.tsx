@@ -8,8 +8,6 @@ import {
   ArrowDownRight,
   ChevronRight,
   Database,
-  Sparkles,
-  Zap,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -111,115 +109,103 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* 1. Playful Neo-Brutalist Welcome Header */}
-      <div className="neo-card-yellow p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* 1. Minimal Statement Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[#E5E7EB]">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border-[1.5px] border-[#182B46] bg-[#FFD05B] text-xs font-mono font-extrabold text-[#182B46] mb-2.5">
-            <Zap className="w-3.5 h-3.5 fill-[#182B46]" />
-            FINBUD 2.0 • Playful Geometric Intelligence
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#111827] tracking-tight">
             Welcome back{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name.split(' ')[0]}` : ''}
           </h1>
-          <p className="text-xs sm:text-sm font-semibold text-[#4B5E76] mt-1">
-            Financial Statement Period: <span className="text-[#182B46] font-bold">November 2026</span>
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-1">
+            Financial Statement Period: <span className="text-[#111827] font-medium">November 2026</span>
           </p>
         </div>
 
         <div>
           {metrics.isDemo ? (
-            <span className="neo-badge">
-              <span className="w-2 h-2 rounded-full bg-[#182B46]" />
-              Demo Preview
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-[#92400E] bg-[#FEF3C7] border border-[#FDE68A]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
+              Demo Preview Mode
             </span>
           ) : (
-            <span className="neo-badge-mint">
-              <Database size={13} className="text-[#182B46]" />
-              Supabase Live
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-[#065F46] bg-[#ECFDF5] border border-[#A7F3D0]">
+              <Database size={12} />
+              Supabase Verified Live
             </span>
           )}
         </div>
       </div>
 
-      {/* 2. Hero: Total Net Worth Neo Paper Block */}
-      <div className="neo-card p-6 sm:p-8">
-        <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#4B5E76]">
+      {/* 2. Hero: Total Net Worth Card */}
+      <div className="p-8 sm:p-10 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+        <span className="text-xs uppercase font-mono tracking-wider text-[#6B7280]">
           Total Net Worth
         </span>
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mt-2">
-          <div className="text-3xl sm:text-5xl font-extrabold text-[#182B46] tracking-tight">
+          <div className="text-3xl sm:text-5xl font-extrabold text-[#111827] tracking-tight">
             {metrics.netWorth}
           </div>
           <div className="flex items-center gap-2">
-            <span className="neo-badge-mint text-xs">
-              <ArrowUpRight size={14} className="stroke-[2.5]" />
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium text-[#065F46] bg-[#ECFDF5] border border-[#A7F3D0]">
+              <ArrowUpRight size={13} />
               +1.5% MoM
             </span>
-            <span className="text-xs font-bold text-[#4B5E76]">YTD Outperformance: +14.2%</span>
+            <span className="text-xs text-[#6B7280]">YTD Outperformance: +14.2%</span>
           </div>
         </div>
       </div>
 
-      {/* 3. Three Geometric Financial Summary Cards */}
+      {/* 3. Three Clean Financial Summaries */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Income (Mint Card) */}
-        <div className="neo-card-mint p-6 space-y-2">
-          <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
-            Monthly Income
-          </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-[#182B46]">
+        {/* Income */}
+        <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-2">
+          <span className="text-xs font-medium text-[#6B7280]">Monthly Income</span>
+          <div className="text-2xl sm:text-3xl font-bold text-[#10B981]">
             {metrics.monthlyIncome}
           </div>
-          <p className="text-xs font-medium text-[#4B5E76]">Primary salary & portfolio inflows</p>
+          <p className="text-xs text-[#6B7280]">Primary salary & portfolio inflows</p>
         </div>
 
-        {/* Expenses (White Card with Bold Outline) */}
-        <div className="neo-card p-6 space-y-2">
-          <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
-            Monthly Expenses (Burn)
-          </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-[#EF4444]">
+        {/* Expenses */}
+        <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-2">
+          <span className="text-xs font-medium text-[#6B7280]">Monthly Expenses (Burn)</span>
+          <div className="text-2xl sm:text-3xl font-bold text-[#DC2626]">
             {metrics.monthlyExpense}
           </div>
-          <p className="text-xs font-medium text-[#4B5E76]">Non-discretionary & lifestyle burn</p>
+          <p className="text-xs text-[#6B7280]">Non-discretionary & lifestyle burn</p>
         </div>
 
-        {/* Savings (Yellow Accent Card) */}
-        <div className="neo-card-yellow p-6 space-y-2">
+        {/* Savings */}
+        <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
-              Net Monthly Savings
-            </span>
-            <span className="px-2 py-0.5 rounded-full border border-[#182B46] bg-white text-[11px] font-mono font-extrabold text-[#182B46]">
-              {metrics.savingsRate}
-            </span>
+            <span className="text-xs font-medium text-[#6B7280]">Net Monthly Savings</span>
+            <span className="text-xs font-mono font-semibold text-[#065F46]">{metrics.savingsRate}</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-[#182B46]">
+          <div className="text-2xl sm:text-3xl font-bold text-[#10B981]">
             {metrics.netSavings}
           </div>
-          <p className="text-xs font-medium text-[#4B5E76]">Target guideline: ≥ 30% of income</p>
+          <p className="text-xs text-[#6B7280]">Target guideline: ≥ 30% of income</p>
         </div>
       </div>
 
       {/* 4. Monthly Cash Flow Chart */}
-      <div className="neo-card p-6 sm:p-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b-[1.5px] border-[#182B46]">
+      <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Monthly Cash Flow</h2>
-            <p className="text-xs font-semibold text-[#4B5E76] mt-0.5">Historical trajectory and baseline expense forecast</p>
+            <h2 className="text-lg font-bold text-[#111827] tracking-tight">Monthly Cash Flow</h2>
+            <p className="text-xs text-[#6B7280] mt-0.5">Historical trajectory and baseline expense forecast</p>
           </div>
-          <div className="flex items-center gap-4 text-xs font-mono font-bold">
+          <div className="flex items-center gap-4 text-xs font-mono">
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded bg-[#182B46] border border-[#182B46]" />
-              <span className="text-[#182B46]">Income</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+              <span className="text-[#4B5563]">Income</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded bg-[#EF4444] border border-[#182B46]" />
-              <span className="text-[#182B46]">Expenses</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#DC2626]" />
+              <span className="text-[#4B5563]">Expenses</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-1 bg-[#FFD05B] border border-[#182B46]" />
-              <span className="text-[#182B46]">Forecast</span>
+              <span className="w-3 h-0.5 bg-[#D97706] border-t border-dashed border-[#D97706]" />
+              <span className="text-[#D97706]">Forecast</span>
             </div>
           </div>
         </div>
@@ -229,31 +215,29 @@ export default function DashboardPage() {
             <AreaChart data={DEMO_CASH_FLOW} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="incFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#182B46" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#182B46" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="expFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#EF4444" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#EF4444" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#DC2626" stopOpacity={0.12} />
+                  <stop offset="95%" stopColor="#DC2626" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
-              <XAxis dataKey="month" stroke="#182B46" tick={{ fontSize: 11, fontWeight: 700 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+              <XAxis dataKey="month" stroke="#9CA3AF" tick={{ fontSize: 11 }} />
               <YAxis
-                stroke="#182B46"
-                tick={{ fontSize: 11, fontWeight: 700 }}
+                stroke="#9CA3AF"
+                tick={{ fontSize: 11 }}
                 tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#FFFDF5',
-                  borderColor: '#182B46',
-                  borderWidth: '1.5px',
+                  backgroundColor: '#FFFFFF',
+                  borderColor: '#E5E7EB',
                   borderRadius: '12px',
-                  boxShadow: '3px 3px 0 #182B46',
-                  color: '#182B46',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                  color: '#111827',
                   fontSize: '12px',
-                  fontWeight: 700,
                 }}
                 formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, '']}
               />
@@ -261,25 +245,25 @@ export default function DashboardPage() {
                 type="monotone"
                 dataKey="actualIncome"
                 name="Income"
-                stroke="#182B46"
-                strokeWidth={2.5}
+                stroke="#10B981"
+                strokeWidth={2}
                 fill="url(#incFill)"
               />
               <Area
                 type="monotone"
                 dataKey="actualExpense"
                 name="Expenses"
-                stroke="#EF4444"
-                strokeWidth={2.5}
+                stroke="#DC2626"
+                strokeWidth={2}
                 fill="url(#expFill)"
               />
               <Area
                 type="monotone"
                 dataKey="forecastExpense"
                 name="Forecast"
-                stroke="#FFD05B"
+                stroke="#D97706"
                 strokeDasharray="4 4"
-                strokeWidth={2.5}
+                strokeWidth={1.5}
                 fill="none"
               />
             </AreaChart>
@@ -290,17 +274,17 @@ export default function DashboardPage() {
       {/* 5. Asset Allocation & 6. Predictive Savings Forecast */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Asset Allocation */}
-        <div className="neo-card p-6 sm:p-8 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Asset Allocation</h2>
-              <p className="text-xs font-semibold text-[#4B5E76]">Multi-asset portfolio distribution</p>
+              <h2 className="text-lg font-bold text-[#111827] tracking-tight">Asset Allocation</h2>
+              <p className="text-xs text-[#6B7280]">Multi-asset portfolio distribution</p>
             </div>
             <Link
               href="/wealth-lab"
-              className="neo-btn-secondary px-3 py-1 text-xs flex items-center gap-1"
+              className="text-xs font-semibold text-[#10B981] hover:underline flex items-center gap-0.5"
             >
-              Analyze <ChevronRight size={13} className="stroke-[2.5]" />
+              Analyze <ChevronRight size={13} />
             </Link>
           </div>
 
@@ -312,43 +296,40 @@ export default function DashboardPage() {
                     data={DEMO_ASSET_ALLOCATION}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
+                    innerRadius={52}
                     outerRadius={70}
                     paddingAngle={3}
                     dataKey="amount"
                   >
                     {DEMO_ASSET_ALLOCATION.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} stroke="#182B46" strokeWidth={1.5} />
+                      <Cell key={`cell-${index}`} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#FFFDF5',
-                      borderColor: '#182B46',
-                      borderWidth: '1.5px',
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#E5E7EB',
                       borderRadius: '10px',
-                      boxShadow: '3px 3px 0 #182B46',
                       fontSize: '11px',
-                      fontWeight: 700,
                     }}
                     formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, '']}
                   />
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-xs font-extrabold text-[#182B46]">₹1.25 Cr</span>
-                <span className="text-[9px] font-bold text-[#4B5E76] uppercase tracking-wider">Total</span>
+                <span className="text-xs font-bold text-[#111827]">₹1.25 Cr</span>
+                <span className="text-[9px] text-[#6B7280] uppercase tracking-wider">Total</span>
               </div>
             </div>
 
             <div className="flex-1 space-y-2.5 w-full">
               {DEMO_ASSET_ALLOCATION.map((item) => (
-                <div key={item.category} className="flex items-center justify-between text-xs font-bold">
+                <div key={item.category} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-sm border border-[#182B46]" style={{ backgroundColor: item.color }} />
-                    <span className="text-[#182B46] truncate">{item.category}</span>
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-[#4B5563] truncate">{item.category}</span>
                   </div>
-                  <span className="font-mono text-[#182B46]">{item.percentage}%</span>
+                  <span className="font-mono font-medium text-[#111827]">{item.percentage}%</span>
                 </div>
               ))}
             </div>
@@ -356,93 +337,93 @@ export default function DashboardPage() {
         </div>
 
         {/* Predictive Savings Forecast */}
-        <div className="neo-card-yellow p-6 sm:p-8 space-y-6 flex flex-col justify-between">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-6 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+            <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Predictive Forecast</h2>
-                <p className="text-xs font-semibold text-[#4B5E76]">Machine learning month-end estimate</p>
+                <h2 className="text-lg font-bold text-[#111827] tracking-tight">Predictive Forecast</h2>
+                <p className="text-xs text-[#6B7280]">Machine learning month-end estimate</p>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full border border-[#182B46] bg-white text-[10px] font-mono font-extrabold text-[#182B46]">
-                Ridge ML Model
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#065F46] bg-[#ECFDF5] border border-[#A7F3D0]">
+                Ridge Regression
               </span>
             </div>
 
-            <div className="p-5 rounded-xl bg-white border-[1.5px] border-[#182B46] shadow-[2px_2px_0_#182B46] space-y-3">
+            <div className="p-5 rounded-xl bg-[#F8FAF9] border border-[#E5E7EB] space-y-3">
               <div className="flex justify-between items-baseline">
-                <span className="text-xs font-bold text-[#4B5E76]">Projected Month-End Outflow</span>
-                <span className="text-base font-extrabold text-[#EF4444] font-mono">
+                <span className="text-xs text-[#6B7280]">Projected Month-End Outflow</span>
+                <span className="text-base font-bold text-[#DC2626] font-mono">
                   {metrics.isDemo ? '₹1,32,400' : metrics.monthlyExpense}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-xs font-bold text-[#4B5E76]">Estimated Month-End Surplus</span>
-                <span className="text-base font-extrabold text-[#182B46] font-mono">
+                <span className="text-xs text-[#6B7280]">Estimated Month-End Surplus</span>
+                <span className="text-base font-bold text-[#10B981] font-mono">
                   {metrics.isDemo ? '₹1,12,600' : metrics.netSavings}
                 </span>
               </div>
-              <div className="w-full bg-[#FFFDF5] border border-[#182B46] h-2 rounded-full overflow-hidden p-0.5">
-                <div className="bg-[#182B46] h-full rounded-full" style={{ width: '46%' }} />
+              <div className="w-full bg-[#E5E7EB] h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[#10B981] h-full rounded-full" style={{ width: '46%' }} />
               </div>
             </div>
 
-            <p className="text-xs font-medium text-[#4B5E76] leading-relaxed">
-              Based on historical daily spending velocity and category-level recurrence patterns. Model uses time-based holdout validation to prevent lookahead leakage.
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              Calculated using historical daily spending velocity and category-level recurrence patterns. Model uses time-based holdout validation to prevent lookahead leakage.
             </p>
           </div>
 
           <Link
             href="/analytics"
-            className="w-full neo-btn-primary py-2.5 text-xs font-extrabold text-center block"
+            className="w-full py-2.5 rounded-xl bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-xs font-semibold text-center text-[#111827] transition-all block"
           >
             Explore Detailed Analytics
           </Link>
         </div>
       </div>
 
-      {/* 7. Recent Transactions (Neo-Brutalist Paper Table) */}
-      <div className="neo-card p-6 sm:p-8 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+      {/* 7. Recent Transactions */}
+      <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
+        <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Recent Transactions</h2>
-            <p className="text-xs font-semibold text-[#4B5E76]">
+            <h2 className="text-lg font-bold text-[#111827] tracking-tight">Recent Transactions</h2>
+            <p className="text-xs text-[#6B7280]">
               {isLiveConnected ? 'Real records from your Supabase PostgreSQL ledger' : 'Sample transaction records'}
             </p>
           </div>
           <Link
             href="/transactions"
-            className="neo-btn-secondary px-3 py-1 text-xs flex items-center gap-1"
+            className="text-xs font-semibold text-[#10B981] hover:underline flex items-center gap-0.5"
           >
-            View All <ChevronRight size={13} className="stroke-[2.5]" />
+            View All <ChevronRight size={13} />
           </Link>
         </div>
 
-        <div className="divide-y-[1.5px] divide-[#182B46]/10">
+        <div className="divide-y divide-[#E5E7EB]">
           {recentList.map((tx) => (
             <div key={tx.id} className="py-3.5 flex items-center justify-between text-xs">
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-9 h-9 rounded-lg border-[1.5px] border-[#182B46] flex items-center justify-center shrink-0 shadow-[1.5px_1.5px_0_#182B46] ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                     tx.type === 'INCOME'
-                      ? 'bg-[#E9FFF5] text-[#182B46]'
-                      : 'bg-white text-[#182B46]'
+                      ? 'bg-[#ECFDF5] text-[#10B981]'
+                      : 'bg-[#F9FAFB] text-[#6B7280]'
                   }`}
                 >
                   {tx.type === 'INCOME' ? (
-                    <ArrowUpRight size={16} className="stroke-[2.5]" />
+                    <ArrowUpRight size={15} />
                   ) : (
-                    <ArrowDownRight size={16} className="stroke-[2.5]" />
+                    <ArrowDownRight size={15} />
                   )}
                 </div>
                 <div>
-                  <div className="font-extrabold text-[#182B46] text-sm">{tx.title}</div>
-                  <div className="text-[11px] font-bold text-[#4B5E76]">{tx.category} • {tx.date}</div>
+                  <div className="font-semibold text-[#111827]">{tx.title}</div>
+                  <div className="text-[11px] text-[#6B7280]">{tx.category} • {tx.date}</div>
                 </div>
               </div>
 
               <div
-                className={`font-mono font-extrabold text-sm px-2.5 py-1 rounded-md border-[1.5px] border-[#182B46] shadow-[1.5px_1.5px_0_#182B46] ${
-                  tx.type === 'INCOME' ? 'bg-[#E9FFF5] text-[#182B46]' : 'bg-white text-[#EF4444]'
+                className={`font-mono font-semibold text-sm ${
+                  tx.type === 'INCOME' ? 'text-[#10B981]' : 'text-[#111827]'
                 }`}
               >
                 {tx.type === 'INCOME' ? '+' : '-'}₹{tx.amount.toLocaleString('en-IN')}

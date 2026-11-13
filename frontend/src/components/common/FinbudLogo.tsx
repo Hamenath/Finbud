@@ -16,14 +16,14 @@ export const FinbudLogo: React.FC<LogoProps> = ({
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* Playful Neo-Brutalist Geometric Square Icon */}
+      {/* Official FINBUD Emerald Brand Mark */}
       <div
-        className={`${iconSize} bg-[#FFD05B] border-[1.5px] border-[#182B46] rounded-[8px] shadow-[2px_2px_0_#182B46] flex items-center justify-center font-extrabold text-[#182B46] tracking-tighter shrink-0 select-none`}
+        className={`${iconSize} bg-[#10B981] rounded-lg flex items-center justify-center font-bold text-white tracking-tight shrink-0 select-none shadow-xs`}
       >
         FB
       </div>
       {showWordmark && (
-        <span className={`font-extrabold tracking-tight text-[#182B46] ${textSize}`}>
+        <span className={`font-bold tracking-tight text-[#111827] ${textSize}`}>
           FINBUD
         </span>
       )}

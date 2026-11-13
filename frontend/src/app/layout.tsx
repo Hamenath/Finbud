@@ -36,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`light ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-[#FFFDF5] text-[#182B46] antialiased selection:bg-[#FFD05B] selection:text-[#182B46]">
+      <body className="bg-[#F7FAF8] text-[#111827] antialiased selection:bg-[#10B981]/20 selection:text-[#087F5B]">
         <SmoothScrollProvider>
           <AppShell>{children}</AppShell>
         </SmoothScrollProvider>
