@@ -72,6 +72,16 @@ def health_check():
 def get_market_tickers():
     return market_service.get_market_overview()
 
+@app.get(f"{settings.API_V1_STR}/market/metals/spot", tags=["Precious Metals"])
+def get_metal_spot_rates():
+    """Returns verified reference spot rates for Gold (24K, 22K, 18K) and Silver in INR per gram."""
+    return market_service.get_metal_spot_rates()
+
+@app.get(f"{settings.API_V1_STR}/market/metals/history", tags=["Precious Metals"])
+def get_metal_history(metal: str = Query("GOLD", regex="^(GOLD|SILVER)$"), period: str = "3mo"):
+    """Returns historical daily close prices with educational 20-day SMA and EMA indicators."""
+    return market_service.get_metal_historical_chart(metal=metal, period=period)
+
 @app.post(f"{settings.API_V1_STR}/wealth/compound", tags=["Wealth Multiplier Lab"])
 def calculate_compound(req: CompoundCalcRequest):
     """Calculates Lump Sum + SIP growth, Rule of 72, and real inflation-adjusted values."""
