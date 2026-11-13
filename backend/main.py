@@ -113,7 +113,12 @@ def health_check():
 
 @app.get(f"{settings.API_V1_STR}/market/tickers", tags=["Market Data"])
 def get_market_tickers():
-    return market_service.get_market_overview()
+    """
+    Returns the latest verified market ticks across all 10 instruments.
+    Shared implementation with the WebSocket stream to guarantee identical
+    pricing, orthogonal status attributes, and reliable REST fallback polling.
+    """
+    return market_data_engine.build_tick_payload()
 
 @app.websocket("/ws/market-ticks")
 async def websocket_market_ticks(websocket: WebSocket):
