@@ -1,0 +1,32 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+backend/__pycache__/
+backend/app/**/__pycache__/
+venv/
+.venv/
+env/
+*.env
+!.env.example
+*.sqlite3
+
+# Logs & OS
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Antigravity Brain & Temp Artifacts
+.gemini/
+
