@@ -190,3 +190,4 @@ In previous audit summaries, references to both 500 and 1,000 simulations were o
 1. Create a second test user in Supabase to complete live multi-user tenant separation testing.
 2. Deploy backend Docker container to Render/Railway and confirm `/health` returns `environment: "production"`.
 3. Set `NEXT_PUBLIC_API_BASE_URL` in Vercel to point to the production backend domain.
+
