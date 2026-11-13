@@ -2,7 +2,7 @@ import os
 import json
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
-from typing import List, Union
+from typing import List, Union, Optional
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "FINBUD Financial Intelligence"
@@ -29,9 +29,10 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
     
-    # Supabase Credentials
+    # Supabase Credentials (Supports both SUPABASE_KEY and SUPABASE_ANON_KEY aliases)
     SUPABASE_URL: str = "https://demo-finbud.supabase.co"
-    SUPABASE_KEY: str = "demo-anon-key"
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_ANON_KEY") or "demo-anon-key"
+    SUPABASE_ANON_KEY: Optional[str] = None
     SUPABASE_SERVICE_ROLE_KEY: str = "demo-service-role-key"
     SUPABASE_JWT_SECRET: str = "demo-jwt-secret"
     
