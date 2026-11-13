@@ -222,17 +222,43 @@ class MarketDataEngine:
 
         return window_start <= current_minute < window_end
 
-    def get_status_for_instrument(self, inst: Dict[str, Any]) -> str:
-        """Evaluates honest status: LIVE, OFFLINE, DAILY_NAV, or DELAY_UNVERIFIED."""
+    def get_market_status_for_instrument(self, inst: Dict[str, Any]) -> str:
+        """
+        Determines exchange trading status:
+        - MARKET_OPEN / MARKET_CLOSED for traded equities, ETFs, and benchmarks.
+        - DAILY_NAV for mutual funds publishing one end-of-day NAV.
+        """
         category = inst["category"]
         if category == "MUTUAL_FUND_DIRECT":
             return "DAILY_NAV"
             
-        is_open = self.is_market_open(category)
-        if not is_open:
-            return "OFFLINE"
-            
-        return "LIVE"
+        return "MARKET_OPEN" if self.is_market_open(category) else "MARKET_CLOSED"
+
+    def get_freshness_for_instrument(self, inst: Dict[str, Any]) -> str:
+        """
+        Evaluates data freshness:
+        - FRESH: Upstream quote updated recently or received successfully.
+        - STALE: Received timestamp older than threshold or market closed.
+        - UNAVAILABLE: Provider failed or returned null quote.
+        """
+        if inst.get("last_price") is None or inst.get("last_price") <= 0:
+            return "UNAVAILABLE"
+        if not inst.get("received_timestamp"):
+            return "UNAVAILABLE"
+        
+        # When exchange is closed, current quotes are held as STALE/EOD rather than FRESH live ticks
+        category = inst["category"]
+        if category != "MUTUAL_FUND_DIRECT" and not self.is_market_open(category):
+            return "STALE"
+
+        return "FRESH"
+
+    def get_status_for_instrument(self, inst: Dict[str, Any]) -> str:
+        """Legacy compatibility helper."""
+        category = inst["category"]
+        if category == "MUTUAL_FUND_DIRECT":
+            return "DAILY_NAV"
+        return "LIVE" if self.is_market_open(category) else "MARKET_CLOSED"
 
     def refresh_upstream_quotes(self):
         """Fetches upstream quotes safely without fabricated synthetic changes."""
@@ -281,7 +307,7 @@ class MarketDataEngine:
             logger.warning(f"Error in upstream market quote fetcher: {e}")
 
     def build_tick_payload(self) -> List[Dict[str, Any]]:
-        """Constructs honest tick records with 3-tier timestamps."""
+        """Constructs honest tick records with 3-tier timestamps and orthogonal status axes."""
         ticks = []
         now_broadcast = datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S IST")
 
@@ -290,6 +316,8 @@ class MarketDataEngine:
             pc = inst["prev_close"]
             change = lp - pc
             pct_change = (change / pc) * 100 if pc > 0 else 0.0
+            market_status = self.get_market_status_for_instrument(inst)
+            freshness = self.get_freshness_for_instrument(inst)
             status = self.get_status_for_instrument(inst)
             prec = inst["precision"]
             
@@ -304,16 +332,20 @@ class MarketDataEngine:
                 "change": f"{'+' if pct_change >= 0 else ''}{pct_change:.2f}%",
                 "change_percent": round(pct_change, 2),
                 "isPositive": change >= 0,
-                "status": status,
-                "provider": inst["provider"],
+                # Orthogonal Status Dimensions
+                "status": status,                             # Legacy: LIVE / MARKET_CLOSED / DAILY_NAV
+                "market_status": market_status,               # Exchange status: MARKET_OPEN / MARKET_CLOSED / DAILY_NAV
+                "freshness": freshness,                       # Freshness: FRESH / STALE / UNAVAILABLE
+                "delay_verification": "DELAY_UNVERIFIED" if inst.get("delay_status") == "DELAY_UNVERIFIED" else "VERIFIED",
                 "delay_status": inst.get("delay_status", "DELAY_UNVERIFIED"),
+                "provider": inst["provider"],
                 "currency": inst["currency"],
                 "unit": inst["unit"],
                 "provider_timestamp": inst["provider_timestamp"],
                 "received_timestamp": inst["received_timestamp"],
                 "broadcast_timestamp": now_broadcast,
                 "market_hours": inst["market_hours"],
-                "tick_direction": "FLAT" if status == "OFFLINE" else ("UP" if change > 0 else ("DOWN" if change < 0 else "FLAT")),
+                "tick_direction": "FLAT" if market_status == "MARKET_CLOSED" else ("UP" if change > 0 else ("DOWN" if change < 0 else "FLAT")),
                 "pricing_mode": inst.get("pricing_mode", "MARKET_PRICE"),
                 "official_amfi_nav": inst.get("official_amfi_nav"),
                 "statutory_assumptions": inst.get("statutory_assumptions")

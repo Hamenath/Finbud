@@ -105,13 +105,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
             )}
             <span
               className={`text-[10px] uppercase tracking-wider font-mono font-bold flex items-center gap-1 ${
-                isMarketWindowOpen && connectionState === 'CONNECTED'
-                  ? 'text-red-600'
+                connectionState === 'CONNECTED'
+                  ? isMarketWindowOpen
+                    ? 'text-red-600'
+                    : 'text-[#059669]'
+                  : connectionState === 'RECONNECTING' || connectionState === 'CONNECTING'
+                  ? 'text-[#F59E0B]'
                   : 'text-[#6B7280]'
               }`}
             >
-              {isMarketWindowOpen && connectionState === 'CONNECTED'
-                ? 'LIVE'
+              {connectionState === 'CONNECTED'
+                ? isMarketWindowOpen
+                  ? 'LIVE'
+                  : 'MARKET CLOSED'
                 : connectionState === 'RECONNECTING'
                 ? 'RECONNECTING...'
                 : 'OFFLINE'}
@@ -121,15 +127,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           {activeTickers.map((ticker: any) => {
             const isUp = ticker.tick_direction === 'UP';
             const isDown = ticker.tick_direction === 'DOWN';
-            const status = ticker.status || (isMarketWindowOpen ? 'LIVE' : 'OFFLINE');
-            const isOffline = status === 'OFFLINE' || !isMarketWindowOpen;
-            const isNav = status === 'DAILY_NAV';
+            const marketStatus = ticker.market_status || (isMarketWindowOpen ? 'MARKET_OPEN' : 'MARKET_CLOSED');
+            const isMarketClosed = marketStatus === 'MARKET_CLOSED';
+            const isNav = ticker.market_status === 'DAILY_NAV' || ticker.status === 'DAILY_NAV';
+            const isStale = ticker.freshness === 'STALE';
 
             return (
               <div
                 key={ticker.symbol}
                 className={`flex items-center gap-1.5 font-mono text-[11px] px-2 py-0.5 rounded transition-colors duration-300 border ${
-                  isOffline
+                  isMarketClosed
                     ? 'border-[#E5E7EB]/60 bg-white/70'
                     : isUp
                     ? 'border-[#A7F3D0]/60 bg-[#ECFDF5]/80'
@@ -137,12 +144,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                     ? 'border-[#FECACA]/60 bg-[#FEF2F2]/80'
                     : 'border-transparent'
                 }`}
-                title={`${ticker.name} | Upstream: ${ticker.provider || 'Yahoo Finance'} | Delay: ${ticker.delay_status || 'DELAY_UNVERIFIED'} | Upstream Time: ${ticker.provider_timestamp || 'N/A'} | Status: ${isOffline ? 'OFFLINE (Market Closed)' : status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}${ticker.statutory_assumptions ? ` | ${ticker.statutory_assumptions}` : ''}`}
+                title={`${ticker.name} | Upstream: ${ticker.provider || 'Yahoo Finance'} | Delay: ${ticker.delay_verification || ticker.delay_status || 'DELAY_UNVERIFIED'} | Upstream Time: ${ticker.provider_timestamp || 'N/A'} | Market: ${marketStatus} | Freshness: ${ticker.freshness || (isMarketClosed ? 'STALE' : 'FRESH')}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}${ticker.statutory_assumptions ? ` | ${ticker.statutory_assumptions}` : ''}`}
               >
                 <span className="text-[#6B7280] font-medium">{ticker.symbol}</span>
                 <span
                   className={`font-semibold transition-colors duration-200 ${
-                    isOffline
+                    isMarketClosed
                       ? 'text-[#4B5563]'
                       : isUp
                       ? 'text-[#059669]'
@@ -157,14 +164,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                 {/* Status Badge */}
                 <span
                   className={`text-[9px] px-1 py-0.2 rounded font-sans uppercase font-bold tracking-tight ${
-                    isOffline
-                      ? 'bg-[#F3F4F6] text-[#6B7280]'
-                      : isNav
+                    isNav
                       ? 'bg-[#EFF6FF] text-[#2563EB]'
+                      : isMarketClosed
+                      ? 'bg-[#F3F4F6] text-[#6B7280]'
                       : 'bg-[#ECFDF5] text-[#059669]'
                   }`}
                 >
-                  {isOffline ? 'OFFLINE' : isNav ? 'DAILY NAV' : 'LIVE'}
+                  {isNav ? 'DAILY NAV' : isMarketClosed ? (isStale ? 'CLOSED • STALE' : 'CLOSED') : 'LIVE'}
                 </span>
 
                 <span
@@ -172,8 +179,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                     ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
                   }`}
                 >
-                  {isUp && !isOffline && <TrendingUp className="w-2.5 h-2.5 inline" />}
-                  {isDown && !isOffline && <TrendingDown className="w-2.5 h-2.5 inline" />}
+                  {isUp && !isMarketClosed && <TrendingUp className="w-2.5 h-2.5 inline" />}
+                  {isDown && !isMarketClosed && <TrendingDown className="w-2.5 h-2.5 inline" />}
                   {ticker.change}
                 </span>
               </div>
