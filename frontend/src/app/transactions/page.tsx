@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import {
@@ -332,7 +332,7 @@ export default function TransactionsPage() {
 
         <div className="flex items-center gap-3">
           {user ? (
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs font-mono font-semibold">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E3A8A] text-xs font-mono font-semibold">
               <Database size={13} /> SUPABASE POSTGRESQL LIVE
             </span>
           ) : (
@@ -351,7 +351,7 @@ export default function TransactionsPage() {
 
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
           >
             <Plus size={15} className="stroke-[2.5]" />
             <span>Add Entry</span>
@@ -364,11 +364,11 @@ export default function TransactionsPage() {
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between text-xs text-[#6B7280] mb-1">
             <span>Total Recorded Inflow</span>
-            <span className="w-7 h-7 rounded-lg bg-[#ECFDF5] text-[#059669] flex items-center justify-center">
+            <span className="w-7 h-7 rounded-lg bg-[#EFF6FF] text-[#1E40AF] flex items-center justify-center">
               <TrendingUp size={15} />
             </span>
           </div>
-          <div className="text-2xl font-black text-[#059669] tracking-tight">
+          <div className="text-2xl font-black text-[#1E40AF] tracking-tight">
             ₹{metrics.totalIncome.toLocaleString('en-IN')}
           </div>
           <div className="mt-1 text-[11px] text-[#6B7280] font-mono">
@@ -394,7 +394,7 @@ export default function TransactionsPage() {
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between text-xs text-[#6B7280] mb-1">
             <span>Net Monthly Surplus</span>
-            <span className="w-7 h-7 rounded-lg bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
+            <span className="w-7 h-7 rounded-lg bg-[#EFF6FF] text-[#1E40AF] flex items-center justify-center">
               <Wallet size={15} />
             </span>
           </div>
@@ -413,11 +413,11 @@ export default function TransactionsPage() {
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between text-xs text-[#6B7280] mb-1">
             <span>Savings Efficiency Rate</span>
-            <span className="w-7 h-7 rounded-lg bg-[#ECFDF5] text-[#059669] flex items-center justify-center">
+            <span className="w-7 h-7 rounded-lg bg-[#EFF6FF] text-[#1E40AF] flex items-center justify-center">
               <PiggyBank size={15} />
             </span>
           </div>
-          <div className="text-2xl font-black text-[#10B981] tracking-tight">
+          <div className="text-2xl font-black text-[#1E40AF] tracking-tight">
             {metrics.savingsRate}%
           </div>
           <div className="mt-1 text-[11px] text-[#6B7280] font-mono">
@@ -436,7 +436,7 @@ export default function TransactionsPage() {
               placeholder="Search by description, payee, category or payment mode..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-9 pr-4 py-2 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-9 pr-4 py-2 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
             />
           </div>
 
@@ -444,7 +444,7 @@ export default function TransactionsPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
             >
               {CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
@@ -458,7 +458,7 @@ export default function TransactionsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
             >
               <option value="DATE_DESC">Date: Newest First</option>
               <option value="DATE_ASC">Date: Oldest First</option>
@@ -476,7 +476,7 @@ export default function TransactionsPage() {
               onClick={() => setFilterType(type)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 filterType === type
-                  ? 'bg-[#10B981] text-white shadow-xs'
+                  ? 'bg-[#1E40AF] text-white shadow-xs'
                   : 'bg-[#F9FAFB] text-[#4B5563] hover:text-[#111827] border border-[#E5E7EB]'
               }`}
             >
@@ -493,7 +493,7 @@ export default function TransactionsPage() {
       <div className="rounded-2xl bg-white border border-[#E5E7EB] shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-[#6B7280] text-xs">
-            <div className="w-8 h-8 rounded-full border-2 border-[#10B981] border-t-transparent animate-spin mx-auto mb-3" />
+            <div className="w-8 h-8 rounded-full border-2 border-[#1E40AF] border-t-transparent animate-spin mx-auto mb-3" />
             Loading verified ledger records from Supabase...
           </div>
         ) : filteredTransactions.length === 0 ? (
@@ -530,7 +530,7 @@ export default function TransactionsPage() {
                         <div
                           className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                             tx.type === 'INCOME'
-                              ? 'bg-[#ECFDF5] text-[#059669]'
+                              ? 'bg-[#EFF6FF] text-[#1E40AF]'
                               : 'bg-[#FEF2F2] text-[#DC2626]'
                           }`}
                         >
@@ -552,7 +552,7 @@ export default function TransactionsPage() {
                     </td>
                     <td
                       className={`px-5 py-4 text-right font-mono font-bold ${
-                        tx.type === 'INCOME' ? 'text-[#059669]' : 'text-[#111827]'
+                        tx.type === 'INCOME' ? 'text-[#1E40AF]' : 'text-[#111827]'
                       }`}
                     >
                       {tx.type === 'INCOME' ? '+' : '-'}₹{tx.amount.toLocaleString('en-IN')}
@@ -563,7 +563,7 @@ export default function TransactionsPage() {
                           <AlertTriangle size={11} /> Spike
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] bg-[#ECFDF5] text-[#059669] px-2 py-0.5 rounded-full font-mono">
+                        <span className="inline-flex items-center gap-1 text-[10px] bg-[#EFF6FF] text-[#1E40AF] px-2 py-0.5 rounded-full font-mono">
                           <CheckCircle size={11} /> Verified
                         </span>
                       )}
@@ -635,7 +635,7 @@ export default function TransactionsPage() {
                   onClick={() => setFormType('INCOME')}
                   className={`py-2 text-xs font-semibold rounded-lg transition-all ${
                     formType === 'INCOME'
-                      ? 'bg-white text-[#059669] shadow-xs'
+                      ? 'bg-white text-[#1E40AF] shadow-xs'
                       : 'text-[#6B7280] hover:text-[#111827]'
                   }`}
                 >
@@ -653,7 +653,7 @@ export default function TransactionsPage() {
                   placeholder="e.g. Swiggy, HDFC Home Loan EMI, Tech Salary"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                 />
               </div>
 
@@ -670,7 +670,7 @@ export default function TransactionsPage() {
                     placeholder="e.g. 2500"
                     value={formAmount}
                     onChange={(e) => setFormAmount(e.target.value)}
-                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                   />
                 </div>
 
@@ -683,7 +683,7 @@ export default function TransactionsPage() {
                     required
                     value={formDate}
                     onChange={(e) => setFormDate(e.target.value)}
-                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -696,7 +696,7 @@ export default function TransactionsPage() {
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
-                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                   >
                     {CATEGORIES.filter((c) => c !== 'All Categories').map((c) => (
                       <option key={c} value={c}>
@@ -713,7 +713,7 @@ export default function TransactionsPage() {
                   <select
                     value={formPaymentMethod}
                     onChange={(e) => setFormPaymentMethod(e.target.value)}
-                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                   >
                     {PAYMENT_METHODS.map((m) => (
                       <option key={m} value={m}>
@@ -735,7 +735,7 @@ export default function TransactionsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all disabled:opacity-50"
                 >
                   {submitting ? 'Saving...' : editingTx ? 'Update Entry' : 'Save Entry'}
                 </button>
@@ -747,8 +747,8 @@ export default function TransactionsPage() {
 
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#A7F3D0] text-[#065F46] shadow-lg animate-in slide-in-from-bottom-5">
-          <CheckCircle size={18} className="text-[#10B981]" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#BFDBFE] text-[#1E3A8A] shadow-lg animate-in slide-in-from-bottom-5">
+          <CheckCircle size={18} className="text-[#1E40AF]" />
           <div className="text-xs">
             <p className="font-semibold text-[#111827]">Action Completed</p>
             <p className="text-[11px] text-[#6B7280]">{toastMsg}</p>
@@ -758,3 +758,4 @@ export default function TransactionsPage() {
     </div>
   );
 }
+

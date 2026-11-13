@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -124,7 +124,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs font-mono font-semibold">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E3A8A] text-xs font-mono font-semibold">
             <Database size={13} />
             {forecastData?.status === 'REGRESSION_ACTIVE'
               ? 'RIDGE REGRESSION ACTIVE'
@@ -140,7 +140,7 @@ export default function AnalyticsPage() {
           <div className="text-2xl font-black text-[#111827] mt-1 font-mono">
             ₹{forecastData?.daily_burn_velocity ? forecastData.daily_burn_velocity.toLocaleString('en-IN') : '3,230'} / day
           </div>
-          <div className="text-[11px] text-[#059669] mt-1 flex items-center gap-1 font-mono">
+          <div className="text-[11px] text-[#1E40AF] mt-1 flex items-center gap-1 font-mono">
             <ArrowUpRight size={12} /> {forecastData?.days_observed || 13} days observed in month
           </div>
         </div>
@@ -157,10 +157,10 @@ export default function AnalyticsPage() {
 
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
           <div className="text-xs text-[#6B7280]">Estimated Month-End Savings</div>
-          <div className="text-2xl font-black text-[#10B981] mt-1 font-mono">
+          <div className="text-2xl font-black text-[#1E40AF] mt-1 font-mono">
             ₹{forecastData?.estimated_month_end_savings ? forecastData.estimated_month_end_savings.toLocaleString('en-IN') : '33,000'}
           </div>
-          <div className="text-[11px] text-[#059669] mt-1 font-mono">
+          <div className="text-[11px] text-[#1E40AF] mt-1 font-mono">
             Savings Rate: {forecastData?.predicted_savings_rate || 44.0}%
           </div>
         </div>
@@ -189,13 +189,13 @@ export default function AnalyticsPage() {
 
         <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#E5E7EB] relative">
           <div
-            className="h-full bg-linear-to-r from-[#10B981] via-[#D97706] to-[#DC2626] rounded-full"
+            className="h-full bg-linear-to-r from-[#1E40AF] via-[#D97706] to-[#DC2626] rounded-full"
             style={{ width: '100%' }}
           />
         </div>
 
         <div className="flex items-center gap-2 text-[11px] text-[#6B7280]">
-          <Info size={13} className="text-[#10B981]" />
+          <Info size={13} className="text-[#1E40AF]" />
           <span>
             {forecastData?.message ||
               'Personalized Ridge time-series regression calibrated on authenticated records.'}
@@ -240,7 +240,7 @@ export default function AnalyticsPage() {
                 }}
                 formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, 'Amount']}
               />
-              <Bar dataKey="amount" name="Current Spend" fill="#10B981" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="amount" name="Current Spend" fill="#1E40AF" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -257,7 +257,7 @@ export default function AnalyticsPage() {
               Time-based holdout validation comparing Ridge Regression against Historical Average baseline
             </p>
           </div>
-          <span className="text-[10px] font-mono uppercase bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] px-2.5 py-1 rounded-md font-bold">
+          <span className="text-[10px] font-mono uppercase bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-2.5 py-1 rounded-md font-bold">
             ZERO DATA LEAKAGE
           </span>
         </div>
@@ -289,7 +289,7 @@ export default function AnalyticsPage() {
 
           <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
             <span className="text-[#6B7280]">Synthetic Test Cycles</span>
-            <p className="text-base font-bold text-[#059669] mt-1 font-mono">
+            <p className="text-base font-bold text-[#1E40AF] mt-1 font-mono">
               {evalData?.training_cycles_count || 6} Months
             </p>
             <span className="text-[10px] text-[#6B7280]">Holdout: {evalData?.validation_holdout_month || '2026-11'}</span>
@@ -306,3 +306,4 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+

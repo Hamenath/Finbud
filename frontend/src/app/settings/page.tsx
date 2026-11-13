@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import {
@@ -37,7 +37,7 @@ export default function SettingsPage() {
         {/* User Profile Section */}
         <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-[#E5E7EB]">
-            <User size={18} className="text-[#10B981]" />
+            <User size={18} className="text-[#1E40AF]" />
             <h2 className="text-base font-bold text-[#111827]">Client Information</h2>
           </div>
 
@@ -48,7 +48,7 @@ export default function SettingsPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
 
@@ -58,7 +58,7 @@ export default function SettingsPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
 
@@ -68,7 +68,7 @@ export default function SettingsPage() {
                 type="number"
                 value={targetIncome}
                 onChange={(e) => setTargetIncome(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
 
@@ -77,7 +77,7 @@ export default function SettingsPage() {
               <select
                 value={riskProfile}
                 onChange={(e) => setRiskProfile(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               >
                 <option value="CONSERVATIVE">Conservative (Capital Preservation)</option>
                 <option value="MODERATE">Moderate (Balanced Multi-Asset)</option>
@@ -90,7 +90,7 @@ export default function SettingsPage() {
         {/* Database & Security Section */}
         <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-[#E5E7EB]">
-            <Database size={18} className="text-[#10B981]" />
+            <Database size={18} className="text-[#1E40AF]" />
             <h2 className="text-base font-bold text-[#111827]">Database & Academic Data Isolation</h2>
           </div>
 
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                 <p className="font-semibold text-[#111827]">PostgreSQL Row-Level Security (RLS)</p>
                 <p className="text-[11px] text-[#6B7280]">Enforced per-user isolation: auth.uid() = user_id</p>
               </div>
-              <span className="text-[10px] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] px-2 py-0.5 rounded font-mono font-bold">
+              <span className="text-[10px] bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-2 py-0.5 rounded font-mono font-bold">
                 ENFORCED
               </span>
             </div>
@@ -113,7 +113,7 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={() => alert('Demo dataset reset to initial state for evaluation.')}
-                className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-xs font-semibold text-[#059669]"
+                className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-xs font-semibold text-[#1E40AF]"
               >
                 Reset Demo Data
               </button>
@@ -124,13 +124,13 @@ export default function SettingsPage() {
         {/* Save Bar */}
         <div className="flex items-center justify-end gap-3 pt-2">
           {saved && (
-            <span className="text-xs text-[#059669] flex items-center gap-1 font-mono">
+            <span className="text-xs text-[#1E40AF] flex items-center gap-1 font-mono">
               <Check size={14} /> Preferences updated successfully
             </span>
           )}
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
+            className="px-6 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
           >
             Save Settings
           </button>
@@ -139,3 +139,4 @@ export default function SettingsPage() {
     </div>
   );
 }
+

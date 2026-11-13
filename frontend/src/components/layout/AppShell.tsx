@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
@@ -73,7 +73,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7FAF8] text-[#1F2937] flex flex-col font-sans selection:bg-[#10B981]/20 selection:text-[#087F5B]">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#1F2937] flex flex-col font-sans selection:bg-[#1E40AF]/20 selection:text-[#1E3A8A]">
       {/* 1. Sidebar */}
       <Sidebar
         collapsed={collapsed}
@@ -136,7 +136,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   onClick={() => setTxType('INCOME')}
                   className={`py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                     txType === 'INCOME'
-                      ? 'bg-white text-[#059669] shadow-xs'
+                      ? 'bg-white text-[#1E40AF] shadow-xs'
                       : 'text-[#6B7280] hover:text-[#1F2937]'
                   }`}
                 >
@@ -154,7 +154,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   placeholder="e.g. Grocery basket or Salary"
                   value={txTitle}
                   onChange={(e) => setTxTitle(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                 />
               </div>
 
@@ -169,7 +169,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   placeholder="e.g. 2500"
                   value={txAmount}
                   onChange={(e) => setTxAmount(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] font-mono focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] placeholder-[#9CA3AF] font-mono focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                 />
               </div>
 
@@ -180,7 +180,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 <select
                   value={txCategory}
                   onChange={(e) => setTxCategory(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#1F2937] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
                 >
                   <option value="Food & Dining">Food & Dining</option>
                   <option value="Housing & Rent">Housing & Rent</option>
@@ -202,7 +202,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-medium text-xs shadow-xs active:scale-95 transition-all cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-medium text-xs shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Save Record
                 </button>
@@ -214,11 +214,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
       {/* Success Toast */}
       {successToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#A7F3D0] text-[#065F46] shadow-md animate-in slide-in-from-bottom-5">
-          <Check size={16} className="text-[#10B981]" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#BFDBFE] text-[#1E3A8A] shadow-md animate-in slide-in-from-bottom-5">
+          <Check size={16} className="text-[#1E40AF]" />
           <div className="text-xs font-medium">{toastMessage}</div>
         </div>
       )}
     </div>
   );
 };
+

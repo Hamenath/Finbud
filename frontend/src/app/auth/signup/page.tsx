@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -50,7 +50,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7FAF8] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm relative">
         <div className="flex justify-center mb-6">
           <FinbudLogo showWordmark={true} size="lg" />
@@ -69,7 +69,7 @@ export default function SignupPage() {
         )}
 
         {successMsg && (
-          <div className="mb-5 p-3.5 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs flex items-center gap-2">
+          <div className="mb-5 p-3.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E3A8A] text-xs flex items-center gap-2">
             <CheckCircle size={16} className="shrink-0" />
             <span>{successMsg}</span>
           </div>
@@ -86,7 +86,7 @@ export default function SignupPage() {
                 placeholder="e.g. Hamenath B"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function SignupPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function SignupPage() {
                 placeholder="Minimum 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
           </div>
@@ -131,14 +131,14 @@ export default function SignupPage() {
               placeholder="e.g. 50000"
               value={monthlyIncome}
               onChange={(e) => setMonthlyIncome(e.target.value)}
-              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full mt-2 py-3 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? 'Creating Account...' : 'Register Account'}
             <ArrowRight size={15} />
@@ -147,7 +147,7 @@ export default function SignupPage() {
 
         <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center text-xs text-[#6B7280]">
           Already registered?{' '}
-          <Link href="/auth/login" className="text-[#059669] font-semibold hover:underline">
+          <Link href="/auth/login" className="text-[#1E40AF] font-semibold hover:underline">
             Sign In here
           </Link>
         </div>
@@ -155,3 +155,4 @@ export default function SignupPage() {
     </div>
   );
 }
+

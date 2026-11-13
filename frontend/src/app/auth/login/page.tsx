@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7FAF8] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm relative">
         <div className="flex justify-center mb-6">
           <FinbudLogo showWordmark={true} size="lg" />
@@ -66,7 +66,7 @@ export default function LoginPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function LoginPage() {
               <label className="text-xs font-medium text-[#374151]">Password</label>
               <Link
                 href="/auth/reset-password"
-                className="text-[11px] text-[#059669] hover:underline"
+                className="text-[11px] text-[#1E40AF] hover:underline"
               >
                 Forgot?
               </Link>
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF]"
               />
             </div>
           </div>
@@ -97,7 +97,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full mt-2 py-3 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
             <ArrowRight size={15} />
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
         <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center text-xs text-[#6B7280]">
           Do not have an account?{' '}
-          <Link href="/auth/signup" className="text-[#059669] font-semibold hover:underline">
+          <Link href="/auth/signup" className="text-[#1E40AF] font-semibold hover:underline">
             Create Free Account
           </Link>
         </div>
@@ -114,3 +114,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

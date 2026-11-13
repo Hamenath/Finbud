@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -128,7 +128,7 @@ export default function DashboardPage() {
               Demo Preview
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-[#065F46] bg-[#ECFDF5] border border-[#A7F3D0]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-[#1E3A8A] bg-[#EFF6FF] border border-[#BFDBFE]">
               <Database size={12} />
               Supabase Verified Live
             </span>
@@ -146,7 +146,7 @@ export default function DashboardPage() {
             {metrics.netWorth}
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium text-[#059669] bg-[#ECFDF5]">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium text-[#1E40AF] bg-[#EFF6FF]">
               <ArrowUpRight size={13} />
               +1.5% MoM
             </span>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
         {/* Income */}
         <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-2">
           <span className="text-xs font-medium text-[#6B7280]">Monthly Income</span>
-          <div className="text-2xl sm:text-3xl font-bold text-[#059669]">
+          <div className="text-2xl sm:text-3xl font-bold text-[#1E40AF]">
             {metrics.monthlyIncome}
           </div>
           <p className="text-xs text-[#6B7280]">Primary salary & portfolio inflows</p>
@@ -179,9 +179,9 @@ export default function DashboardPage() {
         <div className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-[#6B7280]">Net Monthly Savings</span>
-            <span className="text-xs font-mono font-semibold text-[#10B981]">{metrics.savingsRate}</span>
+            <span className="text-xs font-mono font-semibold text-[#1E40AF]">{metrics.savingsRate}</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-[#10B981]">
+          <div className="text-2xl sm:text-3xl font-bold text-[#1E40AF]">
             {metrics.netSavings}
           </div>
           <p className="text-xs text-[#6B7280]">Target guideline: ≥ 30% of income</p>
@@ -197,7 +197,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-4 text-xs font-mono">
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1E40AF]" />
               <span className="text-[#4B5563]">Income</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -216,8 +216,8 @@ export default function DashboardPage() {
             <AreaChart data={DEMO_CASH_FLOW} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="incFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#1E40AF" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#1E40AF" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="expFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#DC2626" stopOpacity={0.12} />
@@ -246,7 +246,7 @@ export default function DashboardPage() {
                 type="monotone"
                 dataKey="actualIncome"
                 name="Income"
-                stroke="#10B981"
+                stroke="#1E40AF"
                 strokeWidth={2}
                 fill="url(#incFill)"
               />
@@ -283,7 +283,7 @@ export default function DashboardPage() {
             </div>
             <Link
               href="/wealth-lab"
-              className="text-xs font-medium text-[#10B981] hover:underline flex items-center gap-0.5"
+              className="text-xs font-medium text-[#1E40AF] hover:underline flex items-center gap-0.5"
             >
               Analyze <ChevronRight size={13} />
             </Link>
@@ -345,7 +345,7 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-bold text-[#1F2937] tracking-tight">Predictive Forecast</h2>
                 <p className="text-xs text-[#6B7280]">Machine learning month-end estimate</p>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#065F46] bg-[#ECFDF5] border border-[#A7F3D0]">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#1E3A8A] bg-[#EFF6FF] border border-[#BFDBFE]">
                 Ridge ML Model
               </span>
             </div>
@@ -359,12 +359,12 @@ export default function DashboardPage() {
               </div>
               <div className="flex justify-between items-baseline">
                 <span className="text-xs text-[#6B7280]">Estimated Month-End Surplus</span>
-                <span className="text-base font-bold text-[#059669] font-mono">
+                <span className="text-base font-bold text-[#1E40AF] font-mono">
                   {metrics.isDemo ? '₹1,12,600' : metrics.netSavings}
                 </span>
               </div>
               <div className="w-full bg-[#E5E7EB] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#10B981] h-full rounded-full" style={{ width: '46%' }} />
+                <div className="bg-[#1E40AF] h-full rounded-full" style={{ width: '46%' }} />
               </div>
             </div>
 
@@ -393,7 +393,7 @@ export default function DashboardPage() {
           </div>
           <Link
             href="/transactions"
-            className="text-xs font-medium text-[#10B981] hover:underline flex items-center gap-0.5"
+            className="text-xs font-medium text-[#1E40AF] hover:underline flex items-center gap-0.5"
           >
             View All <ChevronRight size={13} />
           </Link>
@@ -406,7 +406,7 @@ export default function DashboardPage() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                     tx.type === 'INCOME'
-                      ? 'bg-[#ECFDF5] text-[#059669]'
+                      ? 'bg-[#EFF6FF] text-[#1E40AF]'
                       : 'bg-[#F9FAFB] text-[#6B7280]'
                   }`}
                 >
@@ -424,7 +424,7 @@ export default function DashboardPage() {
 
               <div
                 className={`font-mono font-semibold text-sm ${
-                  tx.type === 'INCOME' ? 'text-[#059669]' : 'text-[#1F2937]'
+                  tx.type === 'INCOME' ? 'text-[#1E40AF]' : 'text-[#1F2937]'
                 }`}
               >
                 {tx.type === 'INCOME' ? '+' : '-'}₹{tx.amount.toLocaleString('en-IN')}
@@ -436,3 +436,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import './globals.css';
 import { AppShell } from '@/components/layout/AppShell';
 
@@ -20,9 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="light">
-      <body className="bg-[#F7FAF8] text-[#111827] antialiased selection:bg-[#10B981]/20 selection:text-[#087F5B]">
+      <body className="bg-[#F8FAFC] text-[#111827] antialiased selection:bg-[#1E40AF]/20 selection:text-[#1E3A8A]">
         <AppShell>{children}</AppShell>
       </body>
     </html>
   );
 }
+

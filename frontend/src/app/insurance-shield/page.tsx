@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import {
@@ -177,7 +177,7 @@ export default function InsuranceShieldPage() {
     if (diffDays <= 45) {
       return { status: 'UPCOMING', label: `Renew in ${diffDays}d`, badgeClass: 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]', days: diffDays };
     }
-    return { status: 'ACTIVE', label: 'Healthy Cover', badgeClass: 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]', days: diffDays };
+    return { status: 'ACTIVE', label: 'Healthy Cover', badgeClass: 'bg-[#EFF6FF] text-[#1E3A8A] border-[#BFDBFE]', days: diffDays };
   };
 
   // Handle Save / Edit Policy
@@ -328,7 +328,7 @@ export default function InsuranceShieldPage() {
       {/* Toast Notification */}
       {toastMsg && (
         <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-[#111827] text-white text-xs font-semibold shadow-lg flex items-center gap-2 animate-bounce">
-          <CheckCircle2 size={16} className="text-[#10B981]" />
+          <CheckCircle2 size={16} className="text-[#1E40AF]" />
           {toastMsg}
         </div>
       )}
@@ -357,7 +357,7 @@ export default function InsuranceShieldPage() {
               resetForm();
               setModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#10B981] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#059669] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#1E40AF] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1E40AF] transition-all cursor-pointer"
           >
             <Plus size={16} /> Record Policy
           </button>
@@ -370,12 +370,12 @@ export default function InsuranceShieldPage() {
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
           <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Active Term Life Cover</span>
-            <ShieldCheck size={16} className="text-[#10B981]" />
+            <ShieldCheck size={16} className="text-[#1E40AF]" />
           </div>
           <div className="text-2xl font-black text-[#111827] font-mono">
             {formatLakhCr(currentTermCoverage)}
           </div>
-          <p className="text-[11px] text-[#065F46] font-semibold">
+          <p className="text-[11px] text-[#1E3A8A] font-semibold">
             {termAdequacyRatio.toFixed(1)}% of Indicative 10× Target
           </p>
         </div>
@@ -429,7 +429,7 @@ export default function InsuranceShieldPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+              <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE]">
                 INDICATIVE STARTING HEURISTIC
               </span>
               <span className="text-[10px] text-[#6B7280] font-mono">
@@ -456,7 +456,7 @@ export default function InsuranceShieldPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-[#374151]">
             <span className="font-semibold">
-              Adequacy Ratio: <strong className="text-[#10B981]">{termAdequacyRatio.toFixed(1)}%</strong> Covered
+              Adequacy Ratio: <strong className="text-[#1E40AF]">{termAdequacyRatio.toFixed(1)}%</strong> Covered
             </span>
             {termCoverageGap > 0 ? (
               <span className="text-[#D97706] font-mono font-semibold flex items-center gap-1">
@@ -464,7 +464,7 @@ export default function InsuranceShieldPage() {
                 Indicative Protection Gap: ~{formatLakhCr(termCoverageGap)}
               </span>
             ) : (
-              <span className="text-[#059669] font-mono font-semibold flex items-center gap-1">
+              <span className="text-[#1E40AF] font-mono font-semibold flex items-center gap-1">
                 <CheckCircle2 size={13} /> Full Coverage Reached
               </span>
             )}
@@ -473,7 +473,7 @@ export default function InsuranceShieldPage() {
           <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#E5E7EB]">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                termAdequacyRatio >= 100 ? 'bg-[#10B981]' : termAdequacyRatio >= 60 ? 'bg-[#D97706]' : 'bg-[#DC2626]'
+                termAdequacyRatio >= 100 ? 'bg-[#1E40AF]' : termAdequacyRatio >= 60 ? 'bg-[#D97706]' : 'bg-[#DC2626]'
               }`}
               style={{ width: `${termAdequacyRatio}%` }}
             />
@@ -492,7 +492,7 @@ export default function InsuranceShieldPage() {
                 onClick={() => setHeuristicMultiplier(m)}
                 className={`px-2.5 py-1 rounded-lg font-mono font-bold text-xs transition-all ${
                   heuristicMultiplier === m
-                    ? 'bg-[#10B981] text-white shadow-xs'
+                    ? 'bg-[#1E40AF] text-white shadow-xs'
                     : 'bg-white border border-[#E5E7EB] text-[#4B5563] hover:bg-[#F3F4F6]'
                 }`}
               >
@@ -504,7 +504,7 @@ export default function InsuranceShieldPage() {
 
         {/* Plain Language Regulatory Disclaimer */}
         <div className="text-[11px] text-[#6B7280] flex items-center gap-1.5 pt-1">
-          <HelpCircle size={14} className="text-[#10B981] shrink-0" />
+          <HelpCircle size={14} className="text-[#1E40AF] shrink-0" />
           <span>
             <strong>Disclaimer:</strong> The income multiplier heuristic is an educational starting point, not universal or individualized insurance advisory. Actual adequacy depends on outstanding debts (e.g. home loans), children's education timelines, and existing liquid assets.
           </span>
@@ -516,7 +516,7 @@ export default function InsuranceShieldPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
-              <ShieldCheck size={18} className="text-[#10B981]" />
+              <ShieldCheck size={18} className="text-[#1E40AF]" />
               Policy Cards & Renewal Schedule
             </h2>
             <span className="text-xs text-[#6B7280]">({filteredPolicies.length} policies)</span>
@@ -526,7 +526,7 @@ export default function InsuranceShieldPage() {
             <button
               onClick={() => setFilterType('ALL')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'ALL' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                filterType === 'ALL' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               All Policies
@@ -534,7 +534,7 @@ export default function InsuranceShieldPage() {
             <button
               onClick={() => setFilterType('TERM')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'TERM' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                filterType === 'TERM' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               Term Life
@@ -542,7 +542,7 @@ export default function InsuranceShieldPage() {
             <button
               onClick={() => setFilterType('HEALTH')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'HEALTH' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                filterType === 'HEALTH' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               Health & Critical Care
@@ -570,7 +570,7 @@ export default function InsuranceShieldPage() {
                     <div className="flex items-center justify-between">
                       <span className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${
                         isTerm
-                          ? 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]'
+                          ? 'bg-[#EFF6FF] text-[#1E3A8A] border-[#BFDBFE]'
                           : 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]'
                       }`}>
                         {p.policy_type.replace(/_/g, ' ')}
@@ -582,7 +582,7 @@ export default function InsuranceShieldPage() {
                         </span>
                         <button
                           onClick={() => openEditModal(p)}
-                          className="p-1 text-[#9CA3AF] hover:text-[#10B981] transition-colors"
+                          className="p-1 text-[#9CA3AF] hover:text-[#1E40AF] transition-colors"
                           title="Edit Policy"
                         >
                           <Edit2 size={13} />
@@ -658,7 +658,7 @@ export default function InsuranceShieldPage() {
           <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xl w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
               <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
-                <ShieldCheck size={18} className="text-[#10B981]" />
+                <ShieldCheck size={18} className="text-[#1E40AF]" />
                 {editingId ? 'Edit Insurance Policy' : 'Record Insurance Policy'}
               </h3>
               <button
@@ -677,7 +677,7 @@ export default function InsuranceShieldPage() {
                   <select
                     value={formPolicyType}
                     onChange={(e) => setFormPolicyType(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="TERM_LIFE">Pure Term Life</option>
                     <option value="HEALTH_FAMILY_FLOATER">Health (Family Floater)</option>
@@ -695,7 +695,7 @@ export default function InsuranceShieldPage() {
                     value={formProvider}
                     onChange={(e) => setFormProvider(e.target.value)}
                     placeholder="e.g. HDFC Life, Care Health"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                   >
                   </input>
                 </div>
@@ -710,7 +710,7 @@ export default function InsuranceShieldPage() {
                     value={formPolicyNo}
                     onChange={(e) => setFormPolicyNo(e.target.value)}
                     placeholder="e.g. POL-89214XXX"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
@@ -724,7 +724,7 @@ export default function InsuranceShieldPage() {
                     value={formSumInsured}
                     onChange={(e) => setFormSumInsured(e.target.value)}
                     placeholder="e.g. 20000000 (2 Cr)"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -740,7 +740,7 @@ export default function InsuranceShieldPage() {
                     value={formPremium}
                     onChange={(e) => setFormPremium(e.target.value)}
                     placeholder="e.g. 18500"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
@@ -750,7 +750,7 @@ export default function InsuranceShieldPage() {
                   <select
                     value={formPaymentFrequency}
                     onChange={(e) => setFormPaymentFrequency(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="ANNUAL">Annual (Lump Sum)</option>
                     <option value="MONTHLY">Monthly</option>
@@ -768,7 +768,7 @@ export default function InsuranceShieldPage() {
                     required
                     value={formRenewalDate}
                     onChange={(e) => setFormRenewalDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
@@ -780,7 +780,7 @@ export default function InsuranceShieldPage() {
                     value={formCoveredMembers}
                     onChange={(e) => setFormCoveredMembers(e.target.value)}
                     placeholder="e.g. Self, Spouse, 1 Child"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -793,7 +793,7 @@ export default function InsuranceShieldPage() {
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
                   placeholder="e.g. Restoration benefit included, Apollo network"
-                  className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#10B981]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                 />
               </div>
 
@@ -809,7 +809,7 @@ export default function InsuranceShieldPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-[#10B981] text-white font-bold hover:bg-[#059669] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#1E40AF] text-white font-bold hover:bg-[#1E40AF] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
@@ -827,3 +827,4 @@ export default function InsuranceShieldPage() {
     </div>
   );
 }
+

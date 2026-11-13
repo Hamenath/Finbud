@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import {
@@ -407,7 +407,7 @@ export default function GoldSilverPage() {
       {/* Toast Notification */}
       {toastMsg && (
         <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-[#111827] text-white text-xs font-semibold shadow-lg flex items-center gap-2 animate-bounce">
-          <ShieldCheck size={16} className="text-[#10B981]" />
+          <ShieldCheck size={16} className="text-[#1E40AF]" />
           {toastMsg}
         </div>
       )}
@@ -436,7 +436,7 @@ export default function GoldSilverPage() {
               resetForm();
               setModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#10B981] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#059669] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#1E40AF] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1E40AF] transition-all cursor-pointer"
           >
             <Plus size={16} /> Record Metal Holding
           </button>
@@ -444,26 +444,26 @@ export default function GoldSilverPage() {
       </div>
 
       {/* Verified Reference Benchmark Strip */}
-      <div className="p-3.5 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3 text-xs text-[#065F46]">
+      <div className="p-3.5 rounded-2xl bg-[#EFF6FF] border border-[#BFDBFE] flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-[#1E3A8A]">
           <div className="flex items-center gap-1 font-bold">
-            <Coins size={15} className="text-[#10B981]" />
+            <Coins size={15} className="text-[#1E40AF]" />
             <span>Benchmark Reference:</span>
           </div>
-          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#A7F3D0]">
+          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#BFDBFE]">
             24K Gold: <strong>{formatINR(spotRates.gold_24k_per_gram)}</strong> / g
           </span>
-          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#A7F3D0]">
+          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#BFDBFE]">
             22K Gold: <strong>{formatINR(spotRates.gold_22k_per_gram)}</strong> / g
           </span>
-          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#A7F3D0]">
+          <span className="bg-white/80 px-2 py-0.5 rounded-md font-mono border border-[#BFDBFE]">
             Silver: <strong>{formatINR(spotRates.silver_per_gram)}</strong> / g
           </span>
         </div>
         <div className="text-[11px] text-[#047857] font-mono flex items-center gap-1.5">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+          <span className="inline-block w-2 h-2 rounded-full bg-[#1E40AF] animate-pulse"></span>
           <span>{spotRates.status} ({spotRates.provider})</span>
-          <span className="text-[#065F46]">| {spotRates.timestamp}</span>
+          <span className="text-[#1E3A8A]">| {spotRates.timestamp}</span>
         </div>
       </div>
 
@@ -473,13 +473,13 @@ export default function GoldSilverPage() {
         <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
           <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Portfolio Current Value</span>
-            <Coins size={16} className="text-[#10B981]" />
+            <Coins size={16} className="text-[#1E40AF]" />
           </div>
           <div className="text-2xl font-black text-[#111827] font-mono">
             {formatINR(portfolioSummary.totalCurrentValue)}
           </div>
           <div className={`text-[11px] font-mono font-semibold flex items-center gap-1 ${
-            portfolioSummary.netPnL >= 0 ? 'text-[#059669]' : 'text-[#DC2626]'
+            portfolioSummary.netPnL >= 0 ? 'text-[#1E40AF]' : 'text-[#DC2626]'
           }`}>
             {portfolioSummary.netPnL >= 0 ? <ArrowUpRight size={13} /> : <ArrowDownRight size={13} />}
             {portfolioSummary.netPnL >= 0 ? '+' : ''}{formatINR(portfolioSummary.netPnL)} ({portfolioSummary.pnlPercent.toFixed(2)}%)
@@ -537,7 +537,7 @@ export default function GoldSilverPage() {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-[#111827] flex items-center gap-1.5">
-                <BarChart3 size={18} className="text-[#10B981]" />
+                <BarChart3 size={18} className="text-[#1E40AF]" />
                 Precious Metal Market Trend & Indicators
               </h2>
               <span className="text-[10px] font-mono bg-[#F3F4F6] text-[#4B5563] px-2 py-0.5 rounded-md font-semibold">
@@ -558,7 +558,7 @@ export default function GoldSilverPage() {
                   fetchHistoricalChart('GOLD', chartPeriod);
                 }}
                 className={`px-3 py-1 rounded-lg transition-all ${
-                  chartMetal === 'GOLD' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                  chartMetal === 'GOLD' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
                 }`}
               >
                 Gold (COMEX/INR)
@@ -569,7 +569,7 @@ export default function GoldSilverPage() {
                   fetchHistoricalChart('SILVER', chartPeriod);
                 }}
                 className={`px-3 py-1 rounded-lg transition-all ${
-                  chartMetal === 'SILVER' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                  chartMetal === 'SILVER' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
                 }`}
               >
                 Silver
@@ -596,7 +596,7 @@ export default function GoldSilverPage() {
               onClick={() => setShowIndicators(!showIndicators)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                 showIndicators
-                  ? 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]'
+                  ? 'bg-[#EFF6FF] text-[#1E3A8A] border-[#BFDBFE]'
                   : 'bg-white text-[#6B7280] border-[#E5E7EB]'
               }`}
             >
@@ -609,7 +609,7 @@ export default function GoldSilverPage() {
         <div className="h-72 w-full">
           {chartLoading ? (
             <div className="h-full flex items-center justify-center text-xs text-[#6B7280] gap-2">
-              <RefreshCw size={16} className="animate-spin text-[#10B981]" />
+              <RefreshCw size={16} className="animate-spin text-[#1E40AF]" />
               Fetching verified historical market series...
             </div>
           ) : (
@@ -639,7 +639,7 @@ export default function GoldSilverPage() {
                   type="monotone"
                   dataKey="price"
                   name={`${chartMetal} Price (₹/g)`}
-                  stroke="#10B981"
+                  stroke="#1E40AF"
                   strokeWidth={2.5}
                   dot={false}
                 />
@@ -671,7 +671,7 @@ export default function GoldSilverPage() {
 
         <div className="pt-3 border-t border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between text-xs text-[#6B7280] gap-2">
           <div className="flex items-center gap-1.5">
-            <Info size={14} className="text-[#10B981]" />
+            <Info size={14} className="text-[#1E40AF]" />
             <span>SMA 20 shows medium-term average. EMA 20 reacts faster to price momentum.</span>
           </div>
           <span className="font-mono text-[11px]">Provider: {chartProvider}</span>
@@ -683,7 +683,7 @@ export default function GoldSilverPage() {
         <div className="p-5 border-b border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
-              <Coins size={18} className="text-[#10B981]" />
+              <Coins size={18} className="text-[#1E40AF]" />
               Physical & Digital Holdings Ledger
             </h2>
             <span className="text-xs text-[#6B7280]">({filteredHoldings.length} records)</span>
@@ -694,7 +694,7 @@ export default function GoldSilverPage() {
               <button
                 onClick={() => setFilterMetal('ALL')}
                 className={`px-3 py-1 rounded-lg transition-all ${
-                  filterMetal === 'ALL' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                  filterMetal === 'ALL' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
                 }`}
               >
                 All
@@ -702,7 +702,7 @@ export default function GoldSilverPage() {
               <button
                 onClick={() => setFilterMetal('GOLD')}
                 className={`px-3 py-1 rounded-lg transition-all ${
-                  filterMetal === 'GOLD' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                  filterMetal === 'GOLD' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
                 }`}
               >
                 Gold
@@ -710,7 +710,7 @@ export default function GoldSilverPage() {
               <button
                 onClick={() => setFilterMetal('SILVER')}
                 className={`px-3 py-1 rounded-lg transition-all ${
-                  filterMetal === 'SILVER' ? 'bg-[#10B981] text-white shadow-xs' : 'text-[#6B7280]'
+                  filterMetal === 'SILVER' ? 'bg-[#1E40AF] text-white shadow-xs' : 'text-[#6B7280]'
                 }`}
               >
                 Silver
@@ -784,7 +784,7 @@ export default function GoldSilverPage() {
                         <span
                           className={`inline-flex items-center gap-1 text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border ${
                             pnl >= 0
-                              ? 'text-[#059669] bg-[#ECFDF5] border-[#A7F3D0]'
+                              ? 'text-[#1E40AF] bg-[#EFF6FF] border-[#BFDBFE]'
                               : 'text-[#DC2626] bg-[#FEF2F2] border-[#FECACA]'
                           }`}
                         >
@@ -796,7 +796,7 @@ export default function GoldSilverPage() {
                         <div className="flex items-center justify-center gap-1">
                           <button
                             onClick={() => openEditModal(h)}
-                            className="p-1 text-[#6B7280] hover:text-[#10B981] transition-colors"
+                            className="p-1 text-[#6B7280] hover:text-[#1E40AF] transition-colors"
                             title="Edit Holding"
                           >
                             <Edit2 size={14} />
@@ -825,7 +825,7 @@ export default function GoldSilverPage() {
           <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xl w-full max-w-lg p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
               <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
-                <Coins size={18} className="text-[#10B981]" />
+                <Coins size={18} className="text-[#1E40AF]" />
                 {editingId ? 'Edit Metal Holding' : 'Record Precious Metal Holding'}
               </h3>
               <button
@@ -848,7 +848,7 @@ export default function GoldSilverPage() {
                       setFormMetalType(m);
                       setFormPurity(m === 'GOLD' ? '24' : '99.9');
                     }}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="GOLD">Gold (Au)</option>
                     <option value="SILVER">Silver (Ag)</option>
@@ -861,7 +861,7 @@ export default function GoldSilverPage() {
                   <select
                     value={formHoldingType}
                     onChange={(e) => setFormHoldingType(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="PHYSICAL_COIN_BAR">Physical Coin / Bullion Bar</option>
                     <option value="PHYSICAL_JEWELRY">Physical Jewelry</option>
@@ -881,7 +881,7 @@ export default function GoldSilverPage() {
                     <select
                       value={formPurity}
                       onChange={(e) => setFormPurity(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#10B981]"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                     >
                       <option value="24">24 Karat (99.9% Fine Gold)</option>
                       <option value="22">22 Karat (91.6% Hallmarked)</option>
@@ -895,7 +895,7 @@ export default function GoldSilverPage() {
                       value={formPurity}
                       onChange={(e) => setFormPurity(e.target.value)}
                       placeholder="99.9"
-                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                     />
                   )}
                 </div>
@@ -910,7 +910,7 @@ export default function GoldSilverPage() {
                     value={formWeight}
                     onChange={(e) => setFormWeight(e.target.value)}
                     placeholder="e.g. 10.50"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -926,7 +926,7 @@ export default function GoldSilverPage() {
                     value={formPricePerGram}
                     onChange={(e) => setFormPricePerGram(e.target.value)}
                     placeholder="e.g. 6200"
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
@@ -938,7 +938,7 @@ export default function GoldSilverPage() {
                     required
                     value={formDate}
                     onChange={(e) => setFormDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#10B981]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -951,7 +951,7 @@ export default function GoldSilverPage() {
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
                   placeholder="e.g. HDFC Locker #402, MMTC-PAMP invoice"
-                  className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#10B981]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                 />
               </div>
 
@@ -967,7 +967,7 @@ export default function GoldSilverPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-[#10B981] text-white font-bold hover:bg-[#059669] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#1E40AF] text-white font-bold hover:bg-[#1E40AF] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
@@ -985,3 +985,4 @@ export default function GoldSilverPage() {
     </div>
   );
 }
+

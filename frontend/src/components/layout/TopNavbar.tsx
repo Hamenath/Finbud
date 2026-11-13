@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -65,7 +65,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
       <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1E40AF] animate-pulse" />
             <span className="text-[10px] uppercase tracking-wider text-[#4B5563] font-mono">
               Market Watch
             </span>
@@ -77,7 +77,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
               <span className="text-[#1F2937] font-semibold">{ticker.price}</span>
               <span
                 className={`text-[10px] font-semibold ${
-                  ticker.isPositive ? 'text-[#059669]' : 'text-[#DC2626]'
+                  ticker.isPositive ? 'text-[#1E40AF]' : 'text-[#DC2626]'
                 }`}
               >
                 {ticker.change}
@@ -114,7 +114,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-medium text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-medium text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
           >
             <PlusCircle size={14} className="stroke-[2.5]" />
             <span className="hidden sm:inline">Add Entry</span>
@@ -123,7 +123,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           {/* User Profile Capsule */}
           {user ? (
             <div className="flex items-center gap-2.5 pl-3 border-l border-[#E5E7EB]">
-              <div className="w-8 h-8 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center text-xs font-bold text-[#087F5B]">
+              <div className="w-8 h-8 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xs font-bold text-[#1E3A8A]">
                 {user.user_metadata?.full_name
                   ? user.user_metadata.full_name.charAt(0).toUpperCase()
                   : user.email?.charAt(0).toUpperCase()}
@@ -146,7 +146,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                 href="/auth/login"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-xs font-semibold text-[#1F2937] transition-all"
               >
-                <LogIn size={13} className="text-[#10B981]" />
+                <LogIn size={13} className="text-[#1E40AF]" />
                 <span>Sign In</span>
               </Link>
             </div>
@@ -156,3 +156,4 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
     </header>
   );
 };
+

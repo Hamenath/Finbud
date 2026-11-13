@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => setMobileOpen(false)}
                 className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-[13px] transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#10B981] text-white font-semibold shadow-xs'
+                    ? 'bg-[#1E40AF] text-white font-semibold shadow-xs'
                     : 'text-[#4B5563] hover:text-[#1F2937] hover:bg-[#F9FAFB]'
                 }`}
                 title={collapsed ? item.name : undefined}
@@ -107,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     isActive
                       ? 'text-white'
                       : item.isAi
-                      ? 'text-[#10B981]'
+                      ? 'text-[#1E40AF]'
                       : 'text-[#6B7280] group-hover:text-[#1F2937]'
                   }`}
                 />
@@ -115,7 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span className="flex-1 flex items-center justify-between truncate tracking-tight">
                     {item.name}
                     {item.isAi && !isActive && (
-                      <span className="text-[10px] bg-[#ECFDF5] text-[#087F5B] border border-[#A7F3D0] px-1.5 py-0.5 rounded font-mono font-medium">
+                      <span className="text-[10px] bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-1.5 py-0.5 rounded font-mono font-medium">
                         RAG
                       </span>
                     )}
@@ -131,14 +131,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!collapsed ? (
             <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
               <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1E40AF]" />
                 <span>v2.4 Light</span>
               </span>
-              <span className="font-mono text-[#087F5B]">Academic CSD</span>
+              <span className="font-mono text-[#1E3A8A]">Academic CSD</span>
             </div>
           ) : (
             <div className="flex justify-center">
-              <span className="w-2 h-2 rounded-full bg-[#10B981]" title="Active" />
+              <span className="w-2 h-2 rounded-full bg-[#1E40AF]" title="Active" />
             </div>
           )}
         </div>
@@ -146,3 +146,4 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </>
   );
 };
+

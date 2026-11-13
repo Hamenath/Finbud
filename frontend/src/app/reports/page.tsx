@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import {
@@ -282,7 +282,7 @@ export default function ReportsPage() {
           <button
             onClick={handleDownloadPDF}
             disabled={downloading}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold text-xs shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
           >
             {downloading ? <RefreshCw size={15} className="animate-spin" /> : <Download size={15} />}
             <span>{downloading ? 'Compiling PDF...' : 'Download PDF Scorecard'}</span>
@@ -295,24 +295,24 @@ export default function ReportsPage() {
         {/* Scorecard Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-[#E5E7EB] gap-4">
           <div>
-            <div className="text-[11px] font-mono text-[#065F46] font-bold tracking-widest uppercase bg-[#ECFDF5] px-2.5 py-1 rounded-md inline-block border border-[#A7F3D0]">
+            <div className="text-[11px] font-mono text-[#1E3A8A] font-bold tracking-widest uppercase bg-[#EFF6FF] px-2.5 py-1 rounded-md inline-block border border-[#BFDBFE]">
               {isDemoMode ? 'ACADEMIC DEMO FINANCIAL AUDIT' : 'AUTHENTICATED USER FINANCIAL AUDIT'}
             </div>
             <h2 className="text-xl font-bold text-[#111827] mt-2">
               Monthly Financial Health Scorecard
             </h2>
             <p className="text-xs text-[#6B7280] flex items-center gap-1.5 mt-0.5">
-              <Calendar size={13} className="text-[#10B981]" />
+              <Calendar size={13} className="text-[#1E40AF]" />
               Statement Period: {reportingPeriod} • Investor: {user?.email || 'Demo Investor'}
             </p>
           </div>
 
           <div className="text-right">
             <span className="text-xs text-[#6B7280]">FINBUD Health Index</span>
-            <div className="text-3xl font-black text-[#10B981] font-mono">
+            <div className="text-3xl font-black text-[#1E40AF] font-mono">
               {healthScore} / 100
             </div>
-            <span className="text-[10px] text-[#065F46] uppercase font-mono font-bold">
+            <span className="text-[10px] text-[#1E3A8A] uppercase font-mono font-bold">
               Rating: {healthScore >= 80 ? 'Strong Financial Resilience' : 'Moderate Resilience'}
             </span>
           </div>
@@ -323,9 +323,9 @@ export default function ReportsPage() {
           <div className="p-4 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
             <div className="text-xs text-[#6B7280] flex items-center justify-between">
               <span>Monthly Inflow</span>
-              <TrendingUp size={15} className="text-[#10B981]" />
+              <TrendingUp size={15} className="text-[#1E40AF]" />
             </div>
-            <div className="text-xl font-bold text-[#065F46] font-mono mt-1">
+            <div className="text-xl font-bold text-[#1E3A8A] font-mono mt-1">
               {formatINR(totalIncome)}
             </div>
             <div className="text-[11px] text-[#6B7280] mt-1 font-mono">
@@ -349,12 +349,12 @@ export default function ReportsPage() {
           <div className="p-4 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
             <div className="text-xs text-[#6B7280] flex items-center justify-between">
               <span>Savings Efficiency</span>
-              <Award size={15} className="text-[#10B981]" />
+              <Award size={15} className="text-[#1E40AF]" />
             </div>
             <div className="text-xl font-bold text-[#111827] font-mono mt-1">
               {savingsRate.toFixed(1)}%
             </div>
-            <div className="text-[11px] text-[#059669] mt-1 font-semibold">
+            <div className="text-[11px] text-[#1E40AF] mt-1 font-semibold">
               {savingsRate >= 30 ? 'Exceeds 30% guideline' : 'Target: ≥ 30% Inflow'}
             </div>
           </div>
@@ -376,7 +376,7 @@ export default function ReportsPage() {
         {/* Category Spending Breakdown Table */}
         <div className="space-y-3">
           <h3 className="text-sm font-bold text-[#111827] flex items-center gap-1.5">
-            <PieIcon size={16} className="text-[#10B981]" />
+            <PieIcon size={16} className="text-[#1E40AF]" />
             Category-Wise Outflow Breakdown
           </h3>
 
@@ -417,9 +417,9 @@ export default function ReportsPage() {
         </div>
 
         {/* Machine Learning Forecast Callout */}
-        <div className="p-4 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-1 text-xs text-[#065F46]">
+        <div className="p-4 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] space-y-1 text-xs text-[#1E3A8A]">
           <div className="font-bold flex items-center gap-1.5">
-            <Sparkles size={14} className="text-[#10B981]" />
+            <Sparkles size={14} className="text-[#1E40AF]" />
             Machine Learning Predictive Projection Summary
           </div>
           <p className="leading-relaxed">
@@ -437,3 +437,4 @@ export default function ReportsPage() {
     </div>
   );
 }
+
