@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { API_ENDPOINTS } from '@/config/api';
 import {
   Bot,
   Send,
@@ -85,7 +86,7 @@ export const FinbudAiFloatingWidget: React.FC = () => {
     try {
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
-      const response = await fetch('http://127.0.0.1:8000/api/v1/rag/ask', {
+      const response = await fetch(API_ENDPOINTS.ragAsk, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

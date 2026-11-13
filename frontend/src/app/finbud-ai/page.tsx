@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { API_ENDPOINTS } from '@/config/api';
 import {
   Bot,
   Send,
@@ -103,7 +104,7 @@ export default function FinbudAiPage() {
     try {
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch('http://127.0.0.1:8000/api/v1/rag/ask', {
+      const res = await fetch(API_ENDPOINTS.ragAsk, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -153,7 +154,7 @@ export default function FinbudAiPage() {
     setEvalModalOpen(true);
     setEvalLoading(true);
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/rag/evaluate');
+      const res = await fetch(API_ENDPOINTS.ragEvaluate);
       if (res.ok) {
         const data = await res.json();
         setEvalReport(data);

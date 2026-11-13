@@ -23,6 +23,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
+import { API_ENDPOINTS } from '@/config/api';
 
 interface AnnualTrajectoryPoint {
   year: string;
@@ -88,7 +89,7 @@ export default function WealthLabPage() {
       setLoading(true);
       try {
         const [compRes, mcRes] = await Promise.all([
-          fetch('http://127.0.0.1:8000/api/v1/wealth/compound', {
+          fetch(API_ENDPOINTS.wealthCompound, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -99,7 +100,7 @@ export default function WealthLabPage() {
               inflation_rate_pct: inflationRate,
             }),
           }),
-          fetch('http://127.0.0.1:8000/api/v1/wealth/monte-carlo', {
+          fetch(API_ENDPOINTS.wealthMonteCarlo, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

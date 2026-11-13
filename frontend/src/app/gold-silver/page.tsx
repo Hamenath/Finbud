@@ -34,6 +34,7 @@ import {
   Legend,
 } from 'recharts';
 import { createClient } from '@/utils/supabase/client';
+import { API_ENDPOINTS } from '@/config/api';
 import { DEMO_METALS } from '@/data/demoData';
 
 interface MetalHolding {
@@ -139,7 +140,7 @@ export default function GoldSilverPage() {
   // Fetch spot rates from FastAPI backend
   const fetchSpotRates = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/market/metals/spot');
+      const res = await fetch(API_ENDPOINTS.marketSpot);
       if (res.ok) {
         const data = await res.json();
         setSpotRates(data);
@@ -153,7 +154,7 @@ export default function GoldSilverPage() {
   const fetchHistoricalChart = async (metal: 'GOLD' | 'SILVER', period: string) => {
     setChartLoading(true);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/market/metals/history?metal=${metal}&period=${period}`);
+      const res = await fetch(API_ENDPOINTS.marketHistory(metal, period));
       if (res.ok) {
         const data = await res.json();
         setChartData(data.data_points || []);

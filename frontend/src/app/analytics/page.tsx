@@ -27,6 +27,7 @@ import {
   Database,
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
+import { API_ENDPOINTS } from '@/config/api';
 
 export default function AnalyticsPage() {
   const supabase = createClient();
@@ -47,7 +48,7 @@ export default function AnalyticsPage() {
 
       try {
         // 1. Fetch academic holdout evaluation
-        const evalRes = await fetch('http://127.0.0.1:8000/api/v1/ml/evaluate-model?months=6');
+        const evalRes = await fetch(API_ENDPOINTS.evaluateModel(6));
         if (evalRes.ok) {
           const json = await evalRes.json();
           setEvalData(json);
@@ -65,7 +66,7 @@ export default function AnalyticsPage() {
         }
 
         // 3. Fetch user-specific ML cash flow prediction
-        const forecastRes = await fetch('http://127.0.0.1:8000/api/v1/ml/predict-cashflow', {
+        const forecastRes = await fetch(API_ENDPOINTS.predictCashflow, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -80,7 +81,7 @@ export default function AnalyticsPage() {
         }
 
         // 4. Fetch category anomalies
-        const anomalyRes = await fetch('http://127.0.0.1:8000/api/v1/ml/category-anomalies', {
+        const anomalyRes = await fetch(API_ENDPOINTS.categoryAnomalies, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

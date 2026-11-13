@@ -17,6 +17,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
+import { API_ENDPOINTS } from '@/config/api';
 import { DEMO_TRANSACTIONS, DEMO_METALS, DEMO_INSURANCE_POLICIES } from '@/data/demoData';
 
 interface CategorySpending {
@@ -215,7 +216,7 @@ export default function ReportsPage() {
 
       // Backend independently calculates all totals from authorized DB records
       const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/reports/scorecard-pdf?period=${encodeURIComponent(reportingPeriod)}`,
+        API_ENDPOINTS.scorecardPdf(reportingPeriod),
         {
           method: 'POST',
           headers: {
