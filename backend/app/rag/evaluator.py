@@ -79,3 +79,4 @@ def run_rag_evaluation() -> Dict[str, Any]:
         "status": "PASS",
         "benchmark_comment": "All test queries achieved 100% grounded source attribution and key term retention without hallucination."
     }
+

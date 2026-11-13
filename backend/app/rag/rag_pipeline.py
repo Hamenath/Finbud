@@ -221,3 +221,4 @@ class GroundedRAGPipeline:
         }
 
 rag_pipeline = GroundedRAGPipeline()
+

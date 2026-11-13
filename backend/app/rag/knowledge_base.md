@@ -97,3 +97,4 @@ Disciplined budgeting ensures positive savings rate and prevents debt spirals:
    - Salaried individuals should maintain **3 to 6 months** of essential household expenses.
    - Freelancers, entrepreneurs, or single-income households should target **6 to 12 months** of expenses.
    - **Storage Vehicles**: Liquid mutual funds, sweep-in bank deposits, or high-yield savings accounts ensuring 24-hour accessibility.
+
