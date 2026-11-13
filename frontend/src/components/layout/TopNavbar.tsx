@@ -137,7 +137,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                     ? 'border-[#FECACA]/60 bg-[#FEF2F2]/80'
                     : 'border-transparent'
                 }`}
-                title={`${ticker.name} | Upstream: ${ticker.provider || 'NSE'} | Freq: ${ticker.upstream_frequency || 'Delayed'} | Status: ${isOffline ? 'OFFLINE (Closed)' : status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}`}
+                title={`${ticker.name} | Upstream: ${ticker.provider || 'Yahoo Finance'} | Delay: ${ticker.delay_status || 'DELAY_UNVERIFIED'} | Upstream Time: ${ticker.provider_timestamp || 'N/A'} | Status: ${isOffline ? 'OFFLINE (Market Closed)' : status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}${ticker.statutory_assumptions ? ` | ${ticker.statutory_assumptions}` : ''}`}
               >
                 <span className="text-[#6B7280] font-medium">{ticker.symbol}</span>
                 <span
@@ -183,7 +183,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
 
         <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#6B7280] ml-4 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-          <span>NSE / BSE / MCX (09:00 - 19:00 IST) | AMFI EOD NAV</span>
+          <span>Yahoo Finance Aggregator (Delayed/Unverified) | AMFI Official Daily NAV</span>
         </div>
       </div>
 
