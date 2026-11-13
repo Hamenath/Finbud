@@ -1,0 +1,57 @@
+FINBUD — GLOBAL LIGHT THEME & BRAND IDENTITY UPDATE
+
+Use the uploaded FINBUD brand identity ZIP as the source of truth for the logo and visual theme. First inspect the existing codebase and identify the global theme tokens, app shell, navigation, dashboard, forms, charts, tables, modals, auth pages and responsive breakpoints.
+
+GOAL
+Apply the FINBUD brand consistently across the entire application. The application must use a LIGHT THEME ONLY. Do not add a dark-mode toggle and do not leave any dark-theme pages or components.
+
+BRAND ASSETS
+- Use `svg/finbud-logo.svg` as the primary scalable logo.
+- Use `svg/finbud-icon.svg` for favicon / compact app icon where appropriate.
+- Keep logo aspect ratio intact. Do not recreate, distort, add 3D effects, glow or gradients beyond the supplied brand asset.
+- Put assets in the project's public brand/assets directory and update favicon/metadata if supported.
+
+GLOBAL DESIGN TOKENS
+- Brand green: #10B981
+- Deep green: #087F5B
+- Dark ink: #1F2937
+- Primary text: #111827
+- Secondary text: #64748B
+- App background: #F7FAF8
+- Surface: #FFFFFF
+- Border: #E5E7EB
+- Soft green: #ECFDF5
+- Warning: #D97706
+- Danger: #DC2626
+
+GLOBAL UI CHANGES
+1. Replace the current dark/obsidian theme everywhere with the light FINBUD theme.
+2. Use a soft off-white or very light green-tinted background, white cards, dark readable typography and subtle borders.
+3. Use FINBUD green for primary buttons, active navigation, links, positive metrics and chart highlights.
+4. Use red only for negative financial movement, errors and risk indicators. Use amber sparingly for warnings.
+5. Standardize card radius, button height, input styling, spacing, typography, shadows and hover/focus states.
+6. Update sidebar, topbar, mobile navigation, login, signup, password reset, dashboard, transactions, analytics, Wealth Multiplier Lab, Gold & Silver, Insurance Shield, FINBUD AI, Reports and Settings.
+7. Update all chart themes: white/transparent plotting surfaces, readable axis labels, subtle gridlines, consistent green accent and clear positive/negative series.
+8. Ensure tables, dropdowns, date pickers, tooltips, skeletons, empty states, alerts, dialogs and toast messages match the light theme.
+9. Ensure sufficient WCAG-friendly contrast. Do not use pale green text on white for important information.
+10. Keep the existing layout and working functionality. This is a visual-system migration, not a rewrite.
+
+IMPLEMENTATION RULES
+- Create or update centralized theme tokens/CSS variables and shared components rather than adding one-off styles to every page.
+- Remove conflicting hard-coded dark backgrounds, dark text-on-dark styles and obsolete dark-theme classes.
+- Preserve Supabase authentication, RLS, API integration, ML endpoints, market-data logic and all existing business logic.
+- Do not alter database schema or financial calculations for this visual task.
+- Do not introduce fake market values or demo data without clear labels.
+- Do not change routes or remove existing features.
+- Check logo readability on the light background; use the included dark-wordmark SVG rather than the original white-wordmark image if needed.
+
+VALIDATION
+Run the application and inspect every route at desktop and mobile widths. Verify:
+- no dark/black page backgrounds remain;
+- no white text becomes invisible on white cards;
+- no green text or icons lose contrast;
+- all charts, tables, forms and dialogs remain readable;
+- logo and favicon load correctly;
+- navigation, authentication, API calls and existing interactions still work.
+
+At the end, report all files changed, routes checked, visual issues fixed, tests run and any routes not verified. Include screenshots of the updated dashboard and at least one inner page. Do not claim completion for pages you did not open and inspect.

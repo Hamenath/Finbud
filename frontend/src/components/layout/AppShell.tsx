@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
-import { X, Check, AlertCircle } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 
 interface AppShellProps {
@@ -46,7 +46,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     const numericAmount = parseFloat(txAmount);
 
     if (user) {
-      // Direct PostgreSQL insert through Supabase RLS
       const { error } = await supabase.from('transactions').insert({
         user_id: user.id,
         amount: numericAmount,
@@ -74,7 +73,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] text-[#F8FAFC] flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
+    <div className="min-h-screen bg-[#F7FAF8] text-[#111827] flex flex-col font-sans selection:bg-[#10B981]/20 selection:text-[#087F5B]">
       {/* 1. Sidebar */}
       <Sidebar
         collapsed={collapsed}
@@ -83,7 +82,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         setMobileOpen={setMobileOpen}
       />
 
-      {/* 2. Main Layout */}
+      {/* 2. Main Layout Shell */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
           collapsed ? 'lg:pl-20' : 'lg:pl-64'
@@ -94,9 +93,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
           onOpenQuickAdd={() => setShowQuickModal(true)}
         />
 
-        {/* Global Academic & Regulatory Disclaimer Banner */}
-        <div className="bg-[#121216] border-b border-[#1E1E26] px-4 py-2 text-center text-[11px] text-neutral-400">
-          <span className="font-semibold text-[#F59E0B]">EDUCATIONAL DECISION-SUPPORT PROTOTYPE:</span>{' '}
+        {/* Global Academic & Regulatory Disclaimer Banner (Light theme) */}
+        <div className="bg-[#ECFDF5] border-b border-[#A7F3D0] px-4 py-2 text-center text-[11px] text-[#065F46]">
+          <span className="font-semibold text-[#087F5B]">EDUCATIONAL DECISION-SUPPORT PROTOTYPE:</span>{' '}
           FINBUD is not a SEBI-registered investment adviser. Calculations are mathematical models.
           Verify consequential decisions with certified professionals.
         </div>
@@ -107,34 +106,34 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         </main>
       </div>
 
-      {/* Quick Add Modal */}
+      {/* Quick Add Modal (Light Theme) */}
       {showQuickModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#141418] border border-[#2A2A38] rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
-            <div className="flex items-center justify-between pb-4 border-b border-[#22222B] mb-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-md p-6 shadow-xl relative">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E5E7EB] mb-5">
               <div>
-                <h3 className="font-bold text-base text-white">Log Financial Activity</h3>
-                <p className="text-xs text-neutral-400">
+                <h3 className="font-bold text-base text-[#111827]">Log Financial Activity</h3>
+                <p className="text-xs text-[#6B7280]">
                   {user ? 'Syncing to your isolated Supabase table' : 'Sign in to persist records across devices'}
                 </p>
               </div>
               <button
                 onClick={() => setShowQuickModal(false)}
-                className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-[#1E1E28]"
+                className="p-1 rounded-lg text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6]"
               >
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSaveTransaction} className="space-y-4">
-              <div className="grid grid-cols-2 gap-2 p-1 bg-[#0A0A0C] rounded-xl border border-[#22222B]">
+              <div className="grid grid-cols-2 gap-2 p-1 bg-[#F3F4F6] rounded-xl border border-[#E5E7EB]">
                 <button
                   type="button"
                   onClick={() => setTxType('EXPENSE')}
                   className={`py-2 text-xs font-semibold rounded-lg transition-all ${
                     txType === 'EXPENSE'
-                      ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                      : 'text-neutral-400 hover:text-white'
+                      ? 'bg-white text-[#DC2626] shadow-xs'
+                      : 'text-[#6B7280] hover:text-[#111827]'
                   }`}
                 >
                   Expense / Outflow
@@ -144,8 +143,8 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   onClick={() => setTxType('INCOME')}
                   className={`py-2 text-xs font-semibold rounded-lg transition-all ${
                     txType === 'INCOME'
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'text-neutral-400 hover:text-white'
+                      ? 'bg-white text-[#059669] shadow-xs'
+                      : 'text-[#6B7280] hover:text-[#111827]'
                   }`}
                 >
                   Income / Inflow
@@ -153,7 +152,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#374151] mb-1.5">
                   Description / Payee
                 </label>
                 <input
@@ -162,12 +161,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   placeholder="e.g. Swiggy Instamart or Tech Salary"
                   value={txTitle}
                   onChange={(e) => setTxTitle(e.target.value)}
-                  className="w-full bg-[#0A0A0C] border border-[#262632] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#374151] mb-1.5">
                   Amount (₹ INR)
                 </label>
                 <input
@@ -177,18 +176,18 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   placeholder="e.g. 2400"
                   value={txAmount}
                   onChange={(e) => setTxAmount(e.target.value)}
-                  className="w-full bg-[#0A0A0C] border border-[#262632] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+                <label className="block text-xs font-medium text-[#374151] mb-1.5">
                   Category
                 </label>
                 <select
                   value={txCategory}
                   onChange={(e) => setTxCategory(e.target.value)}
-                  className="w-full bg-[#0A0A0C] border border-[#262632] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#111827] focus:outline-none focus:bg-white focus:border-[#10B981]"
                 >
                   <option value="Food & Dining">Food & Dining</option>
                   <option value="Housing & Rent">Housing & Rent</option>
@@ -204,13 +203,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 <button
                   type="button"
                   onClick={() => setShowQuickModal(false)}
-                  className="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white"
+                  className="px-4 py-2 text-xs font-medium text-[#6B7280] hover:text-[#111827]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
                 >
                   Save Record
                 </button>
@@ -222,11 +221,11 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
       {/* Global Success Feedback Toast */}
       {successToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-[#141418] border border-emerald-500/40 text-emerald-400 shadow-2xl animate-in slide-in-from-bottom-5">
-          <Check size={18} className="text-emerald-400" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-[#A7F3D0] text-[#065F46] shadow-lg animate-in slide-in-from-bottom-5">
+          <Check size={18} className="text-[#10B981]" />
           <div className="text-xs">
-            <p className="font-semibold text-white">Transaction Recorded</p>
-            <p className="text-[11px] text-neutral-400">{toastMessage}</p>
+            <p className="font-semibold text-[#111827]">Transaction Recorded</p>
+            <p className="text-[11px] text-[#6B7280]">{toastMessage}</p>
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Coins, ArrowUpRight, ArrowDownRight, ShieldCheck, Sparkles, Scale, History } from 'lucide-react';
+import { Coins, ArrowUpRight, Scale, ShieldCheck } from 'lucide-react';
 import { DEMO_METALS } from '@/data/demoData';
 
 export default function GoldSilverPage() {
@@ -16,16 +16,16 @@ export default function GoldSilverPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
             Gold & Silver Portfolio Vault
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
             Physical jewelry, hallmarked coins, and RBI Sovereign Gold Bonds (SGB) with reference benchmark rates
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-neutral-400 font-mono bg-[#141418] border border-[#22222D] px-3 py-1.5 rounded-xl">
+          <span className="text-xs text-[#065F46] font-mono bg-[#ECFDF5] border border-[#A7F3D0] px-3 py-1.5 rounded-xl font-semibold">
             Live Reference: ₹7,742 / g (24K Gold)
           </span>
         </div>
@@ -33,44 +33,44 @@ export default function GoldSilverPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-[#141418] border border-[#22222D]">
-          <div className="text-xs text-neutral-400">Total Precious Metals Valuation</div>
-          <div className="text-2xl font-black text-white mt-1">₹{totalValue.toLocaleString('en-IN')}</div>
-          <div className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1 font-mono">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+          <div className="text-xs text-[#6B7280]">Total Precious Metals Valuation</div>
+          <div className="text-2xl font-black text-[#111827] mt-1">₹{totalValue.toLocaleString('en-IN')}</div>
+          <div className="text-[11px] text-[#059669] mt-1 flex items-center gap-1 font-mono font-semibold">
             <ArrowUpRight size={13} /> +36.8% Overall Realized & Unrealized PnL
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#141418] border border-[#22222D]">
-          <div className="text-xs text-neutral-400">Total Gold Holdings (Fine Weight)</div>
-          <div className="text-2xl font-black text-[#F59E0B] mt-1">{totalGoldGrams.toFixed(1)} Grams</div>
-          <div className="text-[11px] text-neutral-400 mt-1 font-mono">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+          <div className="text-xs text-[#6B7280]">Total Gold Holdings (Fine Weight)</div>
+          <div className="text-2xl font-black text-[#10B981] mt-1">{totalGoldGrams.toFixed(1)} Grams</div>
+          <div className="text-[11px] text-[#6B7280] mt-1 font-mono">
             35g SGB (Tax-Free at Maturity) + 20g Physical
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#141418] border border-[#22222D]">
-          <div className="text-xs text-neutral-400">Silver Bullion Holdings</div>
-          <div className="text-2xl font-black text-slate-300 mt-1">1.000 Kilogram</div>
-          <div className="text-[11px] text-emerald-400 mt-1 font-mono">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+          <div className="text-xs text-[#6B7280]">Silver Bullion Holdings</div>
+          <div className="text-2xl font-black text-[#374151] mt-1">1.000 Kilogram</div>
+          <div className="text-[11px] text-[#059669] mt-1 font-mono font-semibold">
             Current Rate: ₹91,200 / kg
           </div>
         </div>
       </div>
 
-      {/* Holdings Breakdown Table */}
-      <div className="rounded-2xl bg-[#141418] border border-[#22222D] overflow-hidden">
-        <div className="p-5 border-b border-[#22222D] flex items-center justify-between">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
-            <Coins size={18} className="text-[#F59E0B]" />
+      {/* Holdings Table */}
+      <div className="rounded-2xl bg-white border border-[#E5E7EB] shadow-xs overflow-hidden">
+        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+          <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+            <Coins size={18} className="text-[#10B981]" />
             Verified Metal Holdings Ledger
           </h2>
-          <span className="text-[11px] text-neutral-400 font-mono">DELAYS: 15-MIN IBJA REF</span>
+          <span className="text-[11px] text-[#6B7280] font-mono">DELAYS: 15-MIN IBJA REF</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#0A0A0C] text-neutral-400 font-mono uppercase text-[10px] border-b border-[#22222D]">
+            <thead className="bg-[#F9FAFB] text-[#6B7280] font-mono uppercase text-[10px] border-b border-[#E5E7EB]">
               <tr>
                 <th className="px-5 py-3.5">Holding Asset</th>
                 <th className="px-5 py-3.5">Purity Grade</th>
@@ -80,25 +80,25 @@ export default function GoldSilverPage() {
                 <th className="px-5 py-3.5 text-right">Unrealized PnL</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1F1F2A]">
+            <tbody className="divide-y divide-[#E5E7EB]">
               {DEMO_METALS.map((m) => (
-                <tr key={m.id} className="hover:bg-[#191922] transition-colors">
+                <tr key={m.id} className="hover:bg-[#F9FAFB] transition-colors">
                   <td className="px-5 py-4">
-                    <div className="font-semibold text-white">{m.type}</div>
-                    <div className="text-[11px] text-neutral-400">{m.metal} Asset Class</div>
+                    <div className="font-semibold text-[#111827]">{m.type}</div>
+                    <div className="text-[11px] text-[#6B7280]">{m.metal} Asset Class</div>
                   </td>
-                  <td className="px-5 py-4 font-mono text-neutral-300">{m.purity}</td>
-                  <td className="px-5 py-4 font-mono text-white font-semibold">
+                  <td className="px-5 py-4 font-mono text-[#374151]">{m.purity}</td>
+                  <td className="px-5 py-4 font-mono text-[#111827] font-semibold">
                     {m.weightGrams >= 1000 ? `${(m.weightGrams / 1000).toFixed(1)} kg` : `${m.weightGrams}g`}
                   </td>
-                  <td className="px-5 py-4 text-right font-mono text-neutral-400">
+                  <td className="px-5 py-4 text-right font-mono text-[#6B7280]">
                     ₹{m.purchaseRate.toLocaleString('en-IN')}
                   </td>
-                  <td className="px-5 py-4 text-right font-mono font-bold text-white">
+                  <td className="px-5 py-4 text-right font-mono font-bold text-[#111827]">
                     ₹{m.currentValue.toLocaleString('en-IN')}
                   </td>
                   <td className="px-5 py-4 text-right">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-[#059669] bg-[#ECFDF5] px-2 py-0.5 rounded-full border border-[#A7F3D0]">
                       <ArrowUpRight size={12} /> +{m.pnlPercent}%
                     </span>
                   </td>
@@ -111,4 +111,3 @@ export default function GoldSilverPage() {
     </div>
   );
 }
-

@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Sparkles,
 } from 'lucide-react';
+import { FinbudLogo } from '@/components/common/FinbudLogo';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -52,40 +53,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* Main Sidebar Shell */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#0A0A0C] border-r border-[#1F1F26] transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-white border-r border-[#E5E7EB] transition-all duration-300 ease-in-out shadow-xs ${
           collapsed ? 'w-20' : 'w-64'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
-        {/* Brand Header */}
-        <div className="flex items-center justify-between h-20 px-4 border-b border-[#1F1F26]">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-amber-500/20">
-              F
-            </div>
-            {!collapsed && (
-              <div>
-                <div className="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
-                  FINBUD
-                  <span className="text-[10px] uppercase font-semibold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    AI
-                  </span>
-                </div>
-                <p className="text-xs text-neutral-400 font-medium">Wealth Intelligence</p>
-              </div>
+        {/* Brand Header with Official SVG Logo */}
+        <div className="flex items-center justify-between h-20 px-4 border-b border-[#E5E7EB]">
+          <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
+            {collapsed ? (
+              <FinbudLogo showWordmark={false} size="md" />
+            ) : (
+              <FinbudLogo showWordmark={true} size="md" />
             )}
           </Link>
 
           {/* Desktop Toggle Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-[#1A1A22] transition-colors"
+            className="hidden lg:flex p-1.5 rounded-lg text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6] transition-colors"
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
@@ -103,35 +95,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`group flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-200 relative ${
+                className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 relative ${
                   isActive
-                    ? 'bg-[#10B981] text-black font-semibold shadow-lg shadow-emerald-500/20'
-                    : 'text-neutral-400 hover:text-white hover:bg-[#141418]'
+                    ? 'bg-[#10B981] text-white font-semibold shadow-sm'
+                    : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6]'
                 }`}
               >
                 <Icon
-                  size={20}
+                  size={19}
                   className={`${
                     isActive
-                      ? 'text-black'
+                      ? 'text-white'
                       : item.isAi
-                      ? 'text-[#F59E0B] group-hover:scale-110 transition-transform'
-                      : 'text-neutral-400 group-hover:text-white'
+                      ? 'text-[#10B981] group-hover:scale-110 transition-transform'
+                      : 'text-[#6B7280] group-hover:text-[#111827]'
                   }`}
                 />
                 {!collapsed && (
                   <span className="flex-1 flex items-center justify-between">
                     {item.name}
                     {item.isAi && !isActive && (
-                      <span className="text-[10px] bg-amber-500/20 text-[#F59E0B] border border-amber-500/30 px-1.5 py-0.5 rounded font-mono font-semibold">
+                      <span className="text-[10px] bg-[#ECFDF5] text-[#087F5B] border border-[#A7F3D0] px-1.5 py-0.5 rounded font-mono font-semibold">
                         RAG
                       </span>
                     )}
                   </span>
-                )}
-                {/* Active Indicator Bar */}
-                {isActive && collapsed && (
-                  <div className="absolute right-0 top-2 bottom-2 w-1 bg-black rounded-l" />
                 )}
               </Link>
             );
@@ -139,37 +127,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
 
         {/* Bottom Banner & Utilities */}
-        <div className="p-3 border-t border-[#1F1F26] space-y-3">
+        <div className="p-3 border-t border-[#E5E7EB] space-y-3 bg-[#FAFAF9]">
           {!collapsed && (
-            <div className="p-3.5 rounded-2xl bg-linear-to-b from-[#1C1C24] to-[#121217] border border-[#2E2E3A] relative overflow-hidden">
-              <div className="flex items-center gap-2 mb-1.5">
-                <Sparkles size={16} className="text-[#F59E0B]" />
-                <span className="text-xs font-semibold text-white">Academic Edition</span>
+            <div className="p-3.5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles size={15} className="text-[#10B981]" />
+                <span className="text-xs font-semibold text-[#111827]">Academic Edition</span>
               </div>
-              <p className="text-[11px] text-neutral-400 mb-3 leading-relaxed">
+              <p className="text-[11px] text-[#6B7280] mb-2 leading-relaxed">
                 FINBUD Machine Learning & Financial Decision Support
               </p>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-emerald-400 font-mono font-medium">CSD Final Year</span>
-                <span className="text-neutral-400">Team ABG</span>
+                <span className="text-[#087F5B] font-mono font-semibold">CSD Final Year</span>
+                <span className="text-[#6B7280]">Team ABG</span>
               </div>
             </div>
           )}
 
-          <div className="flex items-center justify-between px-2 text-xs text-neutral-400">
+          <div className="flex items-center justify-between px-2 text-xs text-[#6B7280]">
             <Link
               href="/settings"
-              className="flex items-center gap-2 hover:text-white transition-colors"
+              className="flex items-center gap-2 hover:text-[#111827] transition-colors"
             >
-              <HelpCircle size={16} />
+              <HelpCircle size={15} />
               {!collapsed && <span>Help & Docs</span>}
             </Link>
             <button
-              onClick={() => alert('Demo Session Reset: Data cleared for academic presentation.')}
-              className="flex items-center gap-1.5 hover:text-rose-400 transition-colors"
+              onClick={() => alert('Demo Session Reset: Cache cleared for academic presentation.')}
+              className="flex items-center gap-1.5 hover:text-[#DC2626] transition-colors"
               title="Reset Demo"
             >
-              <LogOut size={16} />
+              <LogOut size={15} />
               {!collapsed && <span>Reset</span>}
             </button>
           </div>
@@ -178,4 +166,3 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </>
   );
 };
-

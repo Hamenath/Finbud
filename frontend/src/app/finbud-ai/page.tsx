@@ -6,9 +6,6 @@ import {
   Send,
   Sparkles,
   BookOpen,
-  ShieldCheck,
-  CheckCircle,
-  HelpCircle,
   ArrowRight,
 } from 'lucide-react';
 
@@ -59,7 +56,6 @@ export default function FinbudAiPage() {
     if (!queryText) setInput('');
     setIsTyping(true);
 
-    // Contextual Grounded Mock Response with explicit citations
     setTimeout(() => {
       let reply = 'According to our curated Indian financial knowledge repository: ';
       let citation = { title: 'Income Tax Act & Wealth Guidelines', section: 'General Wealth Principles' };
@@ -88,7 +84,7 @@ export default function FinbudAiPage() {
 
       setMessages((prev) => [...prev, botReply]);
       setIsTyping(false);
-    }, 800);
+    }, 700);
   };
 
   return (
@@ -96,20 +92,20 @@ export default function FinbudAiPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
             FINBUD RAG Financial Assistant
           </h1>
-          <span className="text-[10px] bg-amber-500/10 text-[#F59E0B] border border-amber-500/20 px-2 py-0.5 rounded font-mono font-bold">
+          <span className="text-[10px] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] px-2 py-0.5 rounded font-mono font-bold">
             GROUNDED RAG COPILOT
           </span>
         </div>
-        <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+        <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
           Grounded conversational intelligence with verifiable source citations and zero hallucinated financial advice
         </p>
       </div>
 
-      {/* Main Chat Interface */}
-      <div className="rounded-2xl bg-[#141418] border border-[#22222D] flex flex-col h-140 overflow-hidden">
+      {/* Main Chat Interface (Light Theme) */}
+      <div className="rounded-2xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col h-140 overflow-hidden">
         {/* Chat History */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
           {messages.map((m) => (
@@ -120,8 +116,8 @@ export default function FinbudAiPage() {
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                   m.sender === 'user'
-                    ? 'bg-emerald-500 text-black'
-                    : 'bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] text-black shadow-md shadow-amber-500/20'
+                    ? 'bg-[#10B981] text-white shadow-xs'
+                    : 'bg-[#ECFDF5] text-[#087F5B] border border-[#A7F3D0]'
                 }`}
               >
                 {m.sender === 'user' ? 'U' : <Bot size={16} />}
@@ -131,22 +127,21 @@ export default function FinbudAiPage() {
                 <div
                   className={`p-4 rounded-2xl text-xs leading-relaxed ${
                     m.sender === 'user'
-                      ? 'bg-[#1C1C26] text-white border border-[#2B2B38]'
-                      : 'bg-[#0A0A0C] text-neutral-200 border border-[#22222E]'
+                      ? 'bg-[#10B981] text-white shadow-xs'
+                      : 'bg-[#F9FAFB] text-[#1F2937] border border-[#E5E7EB]'
                   }`}
                 >
                   {m.text}
                 </div>
 
-                {/* Citations Box */}
                 {m.citations && (
                   <div className="flex flex-wrap gap-2 text-[10px] font-mono">
                     {m.citations.map((c, i) => (
                       <span
                         key={i}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#16161E] border border-[#262634] text-neutral-400"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563]"
                       >
-                        <BookOpen size={11} className="text-[#F59E0B]" />
+                        <BookOpen size={11} className="text-[#10B981]" />
                         <span>{c.title} • {c.section}</span>
                       </span>
                     ))}
@@ -157,8 +152,8 @@ export default function FinbudAiPage() {
           ))}
 
           {isTyping && (
-            <div className="flex gap-3 max-w-sm items-center text-xs text-neutral-400">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-[#F59E0B] flex items-center justify-center">
+            <div className="flex gap-3 max-w-sm items-center text-xs text-[#6B7280]">
+              <div className="w-8 h-8 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
                 <Sparkles size={14} className="animate-spin" />
               </div>
               <span className="animate-pulse">Retrieving grounded knowledge passages...</span>
@@ -167,15 +162,15 @@ export default function FinbudAiPage() {
         </div>
 
         {/* Suggested Quick Prompts */}
-        <div className="p-3 bg-[#0E0E12] border-t border-[#1F1F2A] overflow-x-auto whitespace-nowrap flex gap-2 no-scrollbar">
+        <div className="p-3 bg-[#F9FAFB] border-t border-[#E5E7EB] overflow-x-auto whitespace-nowrap flex gap-2 no-scrollbar">
           {SUGGESTED_QUERIES.map((q, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(q)}
-              className="text-[11px] px-3 py-1.5 rounded-lg bg-[#141418] hover:bg-[#1E1E28] border border-[#242432] text-neutral-300 hover:text-white transition-all flex items-center gap-1.5 shrink-0"
+              className="text-[11px] px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] hover:text-[#111827] transition-all flex items-center gap-1.5 shrink-0 shadow-2xs"
             >
               <span>{q}</span>
-              <ArrowRight size={11} className="text-[#F59E0B]" />
+              <ArrowRight size={11} className="text-[#10B981]" />
             </button>
           ))}
         </div>
@@ -186,18 +181,18 @@ export default function FinbudAiPage() {
             e.preventDefault();
             handleSend();
           }}
-          className="p-3 bg-[#141418] border-t border-[#22222D] flex items-center gap-3"
+          className="p-3 bg-white border-t border-[#E5E7EB] flex items-center gap-3"
         >
           <input
             type="text"
             placeholder="Ask about Indian taxation, SIP compounding, SGBs, or insurance adequacy..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 bg-[#0A0A0C] border border-[#242432] rounded-xl px-4 py-2.5 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B]"
+            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
           />
           <button
             type="submit"
-            className="p-2.5 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
+            className="p-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold shadow-xs transition-all active:scale-95"
             aria-label="Send message"
           >
             <Send size={16} />
@@ -207,4 +202,3 @@ export default function FinbudAiPage() {
     </div>
   );
 }
-

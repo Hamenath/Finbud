@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 820" role="img" aria-labelledby="title desc">
+<title id="title">FINBUD logo</title>
+<desc id="desc">A geometric finance growth mark with an ascending arrow, orbit and bars, above the FINBUD wordmark.</desc>
+<defs>
+  <linearGradient id="green" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#079B68"/>
+    <stop offset=".52" stop-color="#10C982"/>
+    <stop offset="1" stop-color="#56E58A"/>
+  </linearGradient>
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#263238"/>
+    <stop offset="1" stop-color="#111827"/>
+  </linearGradient>
+</defs>
+<g transform="translate(0,0)">
+  <!-- rising finance bars -->
+  <path d="M390 560 L390 478 L455 455 L455 560 Z" fill="url(#green)"/>
+  <path d="M475 560 L475 420 L540 397 L540 560 Z" fill="url(#green)"/>
+  <path d="M560 560 L560 360 L625 337 L625 560 Z" fill="url(#green)"/>
+  <!-- stylised F-shaped body -->
+  <path d="M220 560 L220 265 Q220 170 315 170 L630 170 L575 238 L350 238 Q300 238 300 292 L300 365 L520 365 L470 430 L300 430 L300 560 Z"
+        fill="url(#dark)"/>
+  <!-- green rising stroke and arrow head -->
+  <path d="M300 560 L365 560 L430 420 Q448 382 490 382 L615 382 Q645 382 666 357 L770 230 L718 230 L825 105 L830 270 L795 230 L690 360 Q655 405 610 405 L492 405 Q472 405 462 429 L405 560 Z"
+        fill="url(#green)"/>
+  <!-- orbit swoosh -->
+  <path d="M190 495 C85 545 112 650 255 665 C455 686 730 574 830 420 C855 382 857 350 843 326"
+        fill="none" stroke="url(#green)" stroke-width="28" stroke-linecap="round"/>
+  <path d="M190 495 C85 545 112 650 255 665 C455 686 730 574 830 420"
+        fill="none" stroke="#087F5B" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+</g>
+<g font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="132" letter-spacing="2">
+  <text x="125" y="765" fill="#1F2937">FIN</text>
+  <text x="400" y="765" fill="#10B981">BUD</text>
+</g>
+</svg>

@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
-import { Lock, Mail, ArrowRight, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import { FinbudLogo } from '@/components/common/FinbudLogo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -34,29 +35,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#141418] border border-[#22222E] rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-        {/* Glow */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#F7FAF8] flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm relative">
+        <div className="flex justify-center mb-6">
+          <FinbudLogo showWordmark={true} size="lg" />
+        </div>
 
-        {/* Brand */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-amber-500/20">
-            F
-          </div>
-          <div>
-            <h1 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-1.5">
-              FINBUD
-              <span className="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                PROD
-              </span>
-            </h1>
-            <p className="text-xs text-neutral-400">Sign in to your secure financial vault</p>
-          </div>
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-extrabold text-[#111827] tracking-tight">Welcome Back</h1>
+          <p className="text-xs text-[#6B7280] mt-1">Sign in to your secure financial vault</p>
         </div>
 
         {errorMsg && (
-          <div className="mb-5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+          <div className="mb-5 p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] text-xs flex items-center gap-2">
             <AlertCircle size={16} className="shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -64,41 +55,41 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+            <label className="block text-xs font-medium text-[#374151] mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
                 type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-medium text-neutral-300">Password</label>
+              <label className="text-xs font-medium text-[#374151]">Password</label>
               <Link
                 href="/auth/reset-password"
-                className="text-[11px] text-[#F59E0B] hover:underline"
+                className="text-[11px] text-[#059669] hover:underline"
               >
                 Forgot?
               </Link>
             </div>
             <div className="relative">
-              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
               />
             </div>
           </div>
@@ -106,16 +97,16 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full mt-2 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
             <ArrowRight size={15} />
           </button>
         </form>
 
-        <div className="mt-6 pt-5 border-t border-[#1F1F2A] text-center text-xs text-neutral-400">
+        <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center text-xs text-[#6B7280]">
           Do not have an account?{' '}
-          <Link href="/auth/signup" className="text-[#F59E0B] font-semibold hover:underline">
+          <Link href="/auth/signup" className="text-[#059669] font-semibold hover:underline">
             Create Free Account
           </Link>
         </div>
@@ -123,4 +114,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

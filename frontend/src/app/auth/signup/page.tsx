@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
-import { Lock, Mail, User, ArrowRight, AlertCircle, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, User, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { FinbudLogo } from '@/components/common/FinbudLogo';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -39,7 +40,6 @@ export default function SignupPage() {
       setLoading(false);
     } else {
       if (data?.session) {
-        // Direct auto-login if email confirmation is disabled in Supabase
         router.push('/');
         router.refresh();
       } else {
@@ -50,29 +50,26 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#141418] border border-[#22222E] rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#F7FAF8] flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm relative">
+        <div className="flex justify-center mb-6">
+          <FinbudLogo showWordmark={true} size="lg" />
+        </div>
 
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-amber-500/20">
-            F
-          </div>
-          <div>
-            <h1 className="text-xl font-extrabold text-white tracking-tight">Create Account</h1>
-            <p className="text-xs text-neutral-400">Join FINBUD Multi-Asset Intelligence</p>
-          </div>
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-extrabold text-[#111827] tracking-tight">Create Account</h1>
+          <p className="text-xs text-[#6B7280] mt-1">Join FINBUD Multi-Asset Intelligence</p>
         </div>
 
         {errorMsg && (
-          <div className="mb-5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+          <div className="mb-5 p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] text-xs flex items-center gap-2">
             <AlertCircle size={16} className="shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="mb-5 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
+          <div className="mb-5 p-3.5 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs flex items-center gap-2">
             <CheckCircle size={16} className="shrink-0" />
             <span>{successMsg}</span>
           </div>
@@ -80,77 +77,77 @@ export default function SignupPage() {
 
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">Full Name</label>
+            <label className="block text-xs font-medium text-[#374151] mb-1.5">Full Name</label>
             <div className="relative">
-              <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
                 type="text"
                 required
-                placeholder="e.g. Diwakar D"
+                placeholder="e.g. Hamenath B"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">Email Address</label>
+            <label className="block text-xs font-medium text-[#374151] mb-1.5">Email Address</label>
             <div className="relative">
-              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
                 type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">Password</label>
+            <label className="block text-xs font-medium text-[#374151] mb-1.5">Password</label>
             <div className="relative">
-              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
                 type="password"
                 required
                 placeholder="Minimum 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-neutral-300 mb-1.5">
+            <label className="block text-xs font-medium text-[#374151] mb-1.5">
               Monthly Inflow Target (₹ INR)
             </label>
             <input
               type="number"
               required
-              placeholder="e.g. 75000"
+              placeholder="e.g. 50000"
               value={monthlyIncome}
               onChange={(e) => setMonthlyIncome(e.target.value)}
-              className="w-full bg-[#0A0A0C] border border-[#262634] rounded-xl px-4 py-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#F59E0B]"
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full mt-2 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold text-xs shadow-xs active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? 'Creating Account...' : 'Register Account'}
             <ArrowRight size={15} />
           </button>
         </form>
 
-        <div className="mt-6 pt-5 border-t border-[#1F1F2A] text-center text-xs text-neutral-400">
+        <div className="mt-6 pt-5 border-t border-[#E5E7EB] text-center text-xs text-[#6B7280]">
           Already registered?{' '}
-          <Link href="/auth/login" className="text-[#F59E0B] font-semibold hover:underline">
+          <Link href="/auth/login" className="text-[#059669] font-semibold hover:underline">
             Sign In here
           </Link>
         </div>
@@ -158,4 +155,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
