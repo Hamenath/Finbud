@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Query, HTTPException
+from fastapi import FastAPI, Depends, Query, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
@@ -11,6 +11,7 @@ from app.ml.anomaly_surveillance import category_anomaly_service
 from app.ml.synthetic import generate_synthetic_transactions
 from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
+from app.services.report_generator import pdf_report_generator
 from app.rag.rag_pipeline import rag_pipeline
 from app.rag.evaluator import run_rag_evaluation
 
@@ -64,6 +65,24 @@ class RAGQueryRequest(BaseModel):
     query: str
     conversation_history: Optional[List[Dict[str, str]]] = None
 
+class ScorecardReportRequest(BaseModel):
+    user_email: Optional[str] = "investor@finbud.ai"
+    period: Optional[str] = "November 2026"
+    total_income: float
+    total_expenses: float
+    net_savings: float
+    savings_rate: float
+    net_worth: Optional[float] = 0.0
+    category_spending: List[Dict[str, Any]] = []
+    gold_grams: Optional[float] = 0.0
+    silver_grams: Optional[float] = 0.0
+    metals_valuation: Optional[float] = 0.0
+    term_insurance_cover: Optional[float] = 0.0
+    ml_projected_month_end_burn: Optional[float] = None
+    ml_projected_month_end_savings: Optional[float] = None
+    detected_anomalies_count: Optional[int] = 0
+    is_demo: Optional[bool] = False
+
 # ----------------- Endpoints -----------------
 @app.get("/health", tags=["Health"])
 def health_check():
@@ -100,6 +119,18 @@ def ask_rag_assistant(req: RAGQueryRequest):
 def evaluate_rag_assistant():
     """Runs automated benchmark evaluation on retrieval relevance, answer faithfulness and citation coverage."""
     return run_rag_evaluation()
+
+@app.post(f"{settings.API_V1_STR}/reports/scorecard-pdf", tags=["Reports"])
+def generate_pdf_scorecard(req: ScorecardReportRequest):
+    """Generates an audit-ready downloadable PDF financial health scorecard."""
+    pdf_bytes = pdf_report_generator.generate_scorecard_pdf(req.model_dump())
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment; filename=FINBUD_Financial_Scorecard_{req.period.replace(' ', '_')}.pdf"
+        }
+    )
 
 @app.post(f"{settings.API_V1_STR}/wealth/compound", tags=["Wealth Multiplier Lab"])
 def calculate_compound(req: CompoundCalcRequest):
