@@ -196,6 +196,7 @@ class MarketDataEngine:
         """
         Determines if active market trading hours apply (09:00 AM to 07:00 PM IST).
         Covers Indian trading sessions across Equities, Derivatives, Commodity Bullion, and Forex.
+        Outside this window (remaining time), markets are strictly OFFLINE.
         """
         now_ist = datetime.now(IST)
         # Check active trading window: 09:00 AM to 07:00 PM (19:00) IST
@@ -211,14 +212,14 @@ class MarketDataEngine:
         return window_start <= current_minute < window_end
 
     def get_status_for_instrument(self, inst: Dict[str, Any]) -> str:
-        """Evaluates statutory market status: LIVE, DELAYED, MARKET_CLOSED, or DAILY_NAV."""
+        """Evaluates statutory market status: LIVE, OFFLINE, or DAILY_NAV."""
         category = inst["category"]
         if category == "MUTUAL_FUND_DIRECT":
             return "DAILY_NAV"
             
         is_open = self.is_market_open(category)
         if not is_open:
-            return "MARKET_CLOSED"
+            return "OFFLINE"
             
         return "LIVE"
 
@@ -278,7 +279,7 @@ class MarketDataEngine:
                 "unit": inst["unit"],
                 "last_provider_update": inst["last_provider_update"],
                 "market_hours": inst["market_hours"],
-                "tick_direction": "FLAT" if status == "MARKET_CLOSED" else ("UP" if change > 0 else ("DOWN" if change < 0 else "FLAT")),
+                "tick_direction": "FLAT" if status == "OFFLINE" else ("UP" if change > 0 else ("DOWN" if change < 0 else "FLAT")),
                 "pricing_mode": inst.get("pricing_mode", "MARKET_PRICE"),
                 "official_amfi_nav": inst.get("official_amfi_nav")
             })

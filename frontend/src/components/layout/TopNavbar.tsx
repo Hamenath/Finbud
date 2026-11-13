@@ -38,9 +38,27 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   const supabase = createClient();
   const [user, setUser] = useState<any>(null);
   const { ticks, isConnected, connectionState } = useMarketTicks();
+  const [isClientMarketOpen, setIsClientMarketOpen] = useState<boolean>(false);
 
   // Prefer live WebSocket streaming ticks if connected and available, else fallback to baseline
   const activeTickers = ticks && ticks.length > 0 ? ticks : DEMO_MARKET_TICKERS;
+
+  // Check client-side IST time inside useEffect to comply with Next.js prerender rules
+  useEffect(() => {
+    const checkMarketWindow = () => {
+      const now = new Date();
+      const utcHours = now.getUTCHours();
+      const utcMinutes = now.getUTCMinutes();
+      const istMinutes = (utcHours * 60 + utcMinutes + 330) % 1440;
+      setIsClientMarketOpen(istMinutes >= 9 * 60 && istMinutes < 19 * 60);
+    };
+    checkMarketWindow();
+    const interval = setInterval(checkMarketWindow, 30000); // Re-check every 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  const hasLiveTicker = Boolean(activeTickers.find((t: any) => t.status === 'LIVE'));
+  const isMarketWindowOpen = hasLiveTicker || isClientMarketOpen;
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -69,9 +87,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
       {/* 1. Subtle Market Ticker Bar */}
       <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-4 sm:px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-4 sm:gap-6">
-          {/* Connection status indicator */}
+          {/* Connection & Trading Status Indicator */}
           <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
-            {connectionState === 'CONNECTED' ? (
+            {isMarketWindowOpen && connectionState === 'CONNECTED' ? (
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
@@ -87,10 +105,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
             )}
             <span
               className={`text-[10px] uppercase tracking-wider font-mono font-bold flex items-center gap-1 ${
-                connectionState === 'CONNECTED' ? 'text-red-600' : 'text-[#4B5563]'
+                isMarketWindowOpen && connectionState === 'CONNECTED'
+                  ? 'text-red-600'
+                  : 'text-[#6B7280]'
               }`}
             >
-              {connectionState === 'CONNECTED'
+              {isMarketWindowOpen && connectionState === 'CONNECTED'
                 ? 'LIVE'
                 : connectionState === 'RECONNECTING'
                 ? 'RECONNECTING...'
@@ -101,15 +121,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           {activeTickers.map((ticker: any) => {
             const isUp = ticker.tick_direction === 'UP';
             const isDown = ticker.tick_direction === 'DOWN';
-            const status = ticker.status || 'DELAYED';
-            const isClosed = status === 'MARKET_CLOSED';
+            const status = ticker.status || (isMarketWindowOpen ? 'LIVE' : 'OFFLINE');
+            const isOffline = status === 'OFFLINE' || !isMarketWindowOpen;
             const isNav = status === 'DAILY_NAV';
 
             return (
               <div
                 key={ticker.symbol}
                 className={`flex items-center gap-1.5 font-mono text-[11px] px-2 py-0.5 rounded transition-colors duration-300 border ${
-                  isClosed
+                  isOffline
                     ? 'border-[#E5E7EB]/60 bg-white/70'
                     : isUp
                     ? 'border-[#A7F3D0]/60 bg-[#ECFDF5]/80'
@@ -117,12 +137,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                     ? 'border-[#FECACA]/60 bg-[#FEF2F2]/80'
                     : 'border-transparent'
                 }`}
-                title={`${ticker.name} | Upstream: ${ticker.provider || 'NSE'} | Freq: ${ticker.upstream_frequency || 'Delayed'} | Status: ${status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}`}
+                title={`${ticker.name} | Upstream: ${ticker.provider || 'NSE'} | Freq: ${ticker.upstream_frequency || 'Delayed'} | Status: ${isOffline ? 'OFFLINE (Closed)' : status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}`}
               >
                 <span className="text-[#6B7280] font-medium">{ticker.symbol}</span>
                 <span
                   className={`font-semibold transition-colors duration-200 ${
-                    isClosed
+                    isOffline
                       ? 'text-[#4B5563]'
                       : isUp
                       ? 'text-[#059669]'
@@ -137,14 +157,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                 {/* Status Badge */}
                 <span
                   className={`text-[9px] px-1 py-0.2 rounded font-sans uppercase font-bold tracking-tight ${
-                    isClosed
+                    isOffline
                       ? 'bg-[#F3F4F6] text-[#6B7280]'
                       : isNav
                       ? 'bg-[#EFF6FF] text-[#2563EB]'
                       : 'bg-[#ECFDF5] text-[#059669]'
                   }`}
                 >
-                  {isClosed ? 'CLOSED' : isNav ? 'DAILY NAV' : 'LIVE'}
+                  {isOffline ? 'OFFLINE' : isNav ? 'DAILY NAV' : 'LIVE'}
                 </span>
 
                 <span
@@ -152,8 +172,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                     ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
                   }`}
                 >
-                  {isUp && !isClosed && <TrendingUp className="w-2.5 h-2.5 inline" />}
-                  {isDown && !isClosed && <TrendingDown className="w-2.5 h-2.5 inline" />}
+                  {isUp && !isOffline && <TrendingUp className="w-2.5 h-2.5 inline" />}
+                  {isDown && !isOffline && <TrendingDown className="w-2.5 h-2.5 inline" />}
                   {ticker.change}
                 </span>
               </div>
