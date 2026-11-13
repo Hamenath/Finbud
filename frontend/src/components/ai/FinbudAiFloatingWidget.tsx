@@ -88,12 +88,12 @@ export const FinbudAiFloatingWidget: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/ai/rag-assistant', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/rag/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          question: textToSend.trim(),
-          history: messages.slice(-4).map((m) => ({
+          query: textToSend.trim(),
+          conversation_history: messages.slice(-4).map((m) => ({
             role: m.sender === 'user' ? 'user' : 'assistant',
             content: m.text,
           })),
@@ -110,8 +110,8 @@ export const FinbudAiFloatingWidget: React.FC = () => {
         sender: 'assistant',
         text: data.answer,
         citations: data.citations || [],
-        model: data.model_used,
-        isOutOfScope: data.out_of_scope,
+        model: data.model || 'Curated Vector RAG Pipeline',
+        isOutOfScope: data.is_out_of_scope,
         evidenceSufficient: data.evidence_sufficient,
         timestamp: 'Just now',
       };
