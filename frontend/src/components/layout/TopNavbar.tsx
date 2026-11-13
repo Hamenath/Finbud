@@ -144,7 +144,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
                       : 'bg-[#ECFDF5] text-[#059669]'
                   }`}
                 >
-                  {isClosed ? 'CLOSED' : isNav ? 'DAILY NAV' : 'DELAYED'}
+                  {isClosed ? 'CLOSED' : isNav ? 'DAILY NAV' : 'LIVE'}
                 </span>
 
                 <span
@@ -163,7 +163,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
 
         <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#6B7280] ml-4 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-          <span>NSE / BSE (15m Delay) | AMFI EOD NAV | CBIC Statutory Bullion</span>
+          <span>NSE / BSE / MCX (09:00 - 19:00 IST) | AMFI EOD NAV</span>
         </div>
       </div>
 

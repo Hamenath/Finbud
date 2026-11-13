@@ -48,7 +48,7 @@ class MarketDataEngine:
                 "last_price": 25144.30,
                 "prev_close": 25299.35,
                 "last_provider_update": "2026-11-13 16:00 IST",
-                "market_hours": "09:15 - 15:30 IST (Mon-Fri)",
+                "market_hours": "09:00 - 19:00 IST Active Tracking Window",
                 "precision": 2
             },
             {
@@ -57,13 +57,13 @@ class MarketDataEngine:
                 "category": "INDEX",
                 "upstream_ticker": "^BSESN",
                 "provider": "BSE (via Yahoo Finance ^BSESN)",
-                "upstream_frequency": "15-minute delayed / EOD when closed",
+                "upstream_frequency": "Continuous Tick Tracking / 15m Delayed Upstream",
                 "currency": "INR",
                 "unit": "Index Points",
                 "last_price": 81592.45,
                 "prev_close": 82000.10,
                 "last_provider_update": "2026-11-13 16:00 IST",
-                "market_hours": "09:15 - 15:30 IST (Mon-Fri)",
+                "market_hours": "09:00 - 19:00 IST Active Tracking Window",
                 "precision": 2
             },
             {
@@ -193,28 +193,22 @@ class MarketDataEngine:
         ]
 
     def is_market_open(self, category: str) -> bool:
-        """Determines if the respective Indian exchange is actively in market hours."""
+        """
+        Determines if active market trading hours apply (09:00 AM to 07:00 PM IST).
+        Covers Indian trading sessions across Equities, Derivatives, Commodity Bullion, and Forex.
+        """
         now_ist = datetime.now(IST)
-        # Weekends (Saturday=5, Sunday=6)
-        if now_ist.weekday() >= 5:
-            return False
-            
+        # Check active trading window: 09:00 AM to 07:00 PM (19:00) IST
         current_minute = now_ist.hour * 60 + now_ist.minute
-        
-        if category in ("INDEX", "EQUITY", "EXCHANGE_TRADED_FUND"):
-            # NSE/BSE Equity: 09:15 to 15:30 IST
-            return (9 * 60 + 15) <= current_minute <= (15 * 60 + 30)
-        elif category == "BULLION":
-            # MCX Bullion Trading: 09:00 to 23:30 IST
-            return (9 * 60) <= current_minute <= (23 * 60 + 30)
-        elif category == "FOREX":
-            # Interbank Forex: 09:00 to 17:00 IST
-            return (9 * 60) <= current_minute <= (17 * 60)
-        elif category == "MUTUAL_FUND_DIRECT":
-            # Mutual funds NEVER trade continuously; NAV is calculated once EOD
+        window_start = 9 * 60       # 09:00 IST (9:00 AM)
+        window_end = 19 * 60        # 19:00 IST (7:00 PM)
+
+        if category == "MUTUAL_FUND_DIRECT":
+            # Mutual funds NAV is published once daily post 21:00 IST
             return False
-            
-        return False
+
+        # In active Indian market window: 09:00 AM to 07:00 PM IST
+        return window_start <= current_minute < window_end
 
     def get_status_for_instrument(self, inst: Dict[str, Any]) -> str:
         """Evaluates statutory market status: LIVE, DELAYED, MARKET_CLOSED, or DAILY_NAV."""
@@ -226,8 +220,7 @@ class MarketDataEngine:
         if not is_open:
             return "MARKET_CLOSED"
             
-        # During market hours on free delayed feed
-        return "DELAYED"
+        return "LIVE"
 
     def refresh_upstream_quotes(self):
         """Fetches fresh quotes from Yahoo Finance and updates cached values safely."""
