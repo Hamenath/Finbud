@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import {
   Bot,
   Send,
@@ -82,9 +83,14 @@ export const FinbudAiFloatingWidget: React.FC = () => {
     setIsTyping(true);
 
     try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch('http://127.0.0.1:8000/api/v1/rag/ask', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {})
+        },
         body: JSON.stringify({
           query: textToSend.trim(),
           conversation_history: messages.slice(-4).map((m) => ({
