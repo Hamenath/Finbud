@@ -13,7 +13,7 @@ from app.ml.anomaly_surveillance import category_anomaly_service
 from app.ml.synthetic import generate_synthetic_transactions
 from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
-from app.services.market_stream import market_tick_manager
+from app.services.market_stream import market_data_engine
 from app.services.report_generator import pdf_report_generator
 from app.services.aggregator import financial_aggregator
 from app.core.auth import get_current_user, get_optional_current_user
@@ -23,8 +23,8 @@ from app.rag.conversational_router import conversational_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start the 1-second live tick broadcasting background loop
-    broadcast_task = asyncio.create_task(market_tick_manager.broadcast_loop())
+    # Start the 1-second market tick broadcasting background loop
+    broadcast_task = asyncio.create_task(market_data_engine.broadcast_loop())
     yield
     broadcast_task.cancel()
     try:
@@ -119,17 +119,33 @@ def get_market_tickers():
 async def websocket_market_ticks(websocket: WebSocket):
     """
     Real-time 1-second market watch ticker WebSocket stream.
-    Streams live ticks for Nifty 50, Sensex, Gold 24K, Silver 999, Equities, and Mutual Fund ETFs.
+    Origin-validated, resource-controlled streaming of Indian Equities, Indices,
+    Wholesale Bullion benchmarks, and AMFI Mutual Fund NAVs.
     """
-    await market_tick_manager.connect(websocket)
+    # 1. Origin verification against CORS_ORIGINS
+    origin = websocket.headers.get("origin")
+    allowed_origins = settings.CORS_ORIGINS if isinstance(settings.CORS_ORIGINS, list) else [settings.CORS_ORIGINS]
+    
+    # If origin header is present, ensure it is within allowed origins or development localhost
+    if origin and allowed_origins and "*" not in allowed_origins:
+        # Check against normalized domain list
+        is_allowed = any(origin.rstrip("/") == o.rstrip("/") for o in allowed_origins)
+        if not is_allowed and not (origin.startswith("http://localhost") or origin.startswith("http://127.0.0.1")):
+            await websocket.close(code=1008, reason="WebSocket Origin Not Allowed")
+            return
+
+    connected = await market_data_engine.connect(websocket)
+    if not connected:
+        return
+
     try:
         while True:
             # Keep connection alive; client can send pings or messages
             data = await websocket.receive_text()
     except WebSocketDisconnect:
-        market_tick_manager.disconnect(websocket)
+        market_data_engine.disconnect(websocket)
     except Exception:
-        market_tick_manager.disconnect(websocket)
+        market_data_engine.disconnect(websocket)
 
 @app.get(f"{settings.API_V1_STR}/market/metals/spot", tags=["Precious Metals"])
 def get_metal_spot_rates():

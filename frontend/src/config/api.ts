@@ -23,6 +23,29 @@ const getApiBaseUrl = (): string => {
 
 export const API_BASE_URL = getApiBaseUrl();
 
+/**
+ * Derives the WebSocket URL dynamically from the API_BASE_URL:
+ * - In local development: http://127.0.0.1:8000/api/v1 -> ws://127.0.0.1:8000/ws/market-ticks
+ * - In production: https://api.finbud.app/api/v1 -> wss://api.finbud.app/ws/market-ticks
+ * Zero hardcoded localhost in production builds.
+ */
+export const getMarketWebSocketUrl = (): string => {
+  const envWs = process.env.NEXT_PUBLIC_WS_URL;
+  if (envWs) return envWs.replace(/\/+$/, '');
+
+  try {
+    const url = new URL(API_BASE_URL);
+    const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${url.host}/ws/market-ticks`;
+  } catch (e) {
+    if (typeof window !== 'undefined' && window.location) {
+      const isHttps = window.location.protocol === 'https:';
+      return `${isHttps ? 'wss:' : 'ws:'}//${window.location.host}/ws/market-ticks`;
+    }
+    return 'ws://127.0.0.1:8000/ws/market-ticks';
+  }
+};
+
 export const API_ENDPOINTS = {
   // RAG & Conversational Assistant
   ragAsk: `${API_BASE_URL}/rag/ask`,

@@ -37,7 +37,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   const router = useRouter();
   const supabase = createClient();
   const [user, setUser] = useState<any>(null);
-  const { ticks, isConnected } = useMarketTicks();
+  const { ticks, isConnected, connectionState } = useMarketTicks();
 
   // Prefer live WebSocket streaming ticks if connected and available, else fallback to baseline
   const activeTickers = ticks && ticks.length > 0 ? ticks : DEMO_MARKET_TICKERS;
@@ -68,43 +68,83 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB]">
       {/* 1. Subtle Market Ticker Bar */}
       <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-4 sm:px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
-        <div className="flex items-center gap-5 sm:gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Connection status indicator */}
           <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
             <span
               className={`w-2 h-2 rounded-full ${
-                isConnected ? 'bg-[#10B981] animate-pulse' : 'bg-[#F59E0B]'
+                connectionState === 'CONNECTED'
+                  ? 'bg-[#10B981] animate-pulse'
+                  : connectionState === 'RECONNECTING' || connectionState === 'CONNECTING'
+                  ? 'bg-[#F59E0B] animate-ping'
+                  : 'bg-[#DC2626]'
               }`}
             />
             <span className="text-[10px] uppercase tracking-wider text-[#374151] font-mono font-bold flex items-center gap-1">
-              {isConnected ? 'LIVE 1s TICK' : 'MARKET WATCH'}
+              {connectionState === 'CONNECTED'
+                ? 'MARKET STREAM (1s)'
+                : connectionState === 'RECONNECTING'
+                ? 'RECONNECTING...'
+                : 'OFFLINE CACHE'}
             </span>
           </div>
 
           {activeTickers.map((ticker: any) => {
             const isUp = ticker.tick_direction === 'UP';
             const isDown = ticker.tick_direction === 'DOWN';
+            const status = ticker.status || 'DELAYED';
+            const isClosed = status === 'MARKET_CLOSED';
+            const isNav = status === 'DAILY_NAV';
+
             return (
               <div
                 key={ticker.symbol}
-                className={`flex items-center gap-1.5 font-mono text-[11px] px-2 py-0.5 rounded transition-colors duration-300 ${
-                  isUp ? 'bg-[#ECFDF5]' : isDown ? 'bg-[#FEF2F2]' : ''
+                className={`flex items-center gap-1.5 font-mono text-[11px] px-2 py-0.5 rounded transition-colors duration-300 border ${
+                  isClosed
+                    ? 'border-[#E5E7EB]/60 bg-white/70'
+                    : isUp
+                    ? 'border-[#A7F3D0]/60 bg-[#ECFDF5]/80'
+                    : isDown
+                    ? 'border-[#FECACA]/60 bg-[#FEF2F2]/80'
+                    : 'border-transparent'
                 }`}
+                title={`${ticker.name} | Upstream: ${ticker.provider || 'NSE'} | Freq: ${ticker.upstream_frequency || 'Delayed'} | Status: ${status}${ticker.official_amfi_nav ? ` | ${ticker.official_amfi_nav}` : ''}`}
               >
                 <span className="text-[#6B7280] font-medium">{ticker.symbol}</span>
                 <span
                   className={`font-semibold transition-colors duration-200 ${
-                    isUp ? 'text-[#059669]' : isDown ? 'text-[#DC2626]' : 'text-[#1F2937]'
+                    isClosed
+                      ? 'text-[#4B5563]'
+                      : isUp
+                      ? 'text-[#059669]'
+                      : isDown
+                      ? 'text-[#DC2626]'
+                      : 'text-[#1F2937]'
                   }`}
                 >
                   {ticker.price}
                 </span>
+
+                {/* Status Badge */}
+                <span
+                  className={`text-[9px] px-1 py-0.2 rounded font-sans uppercase font-bold tracking-tight ${
+                    isClosed
+                      ? 'bg-[#F3F4F6] text-[#6B7280]'
+                      : isNav
+                      ? 'bg-[#EFF6FF] text-[#2563EB]'
+                      : 'bg-[#ECFDF5] text-[#059669]'
+                  }`}
+                >
+                  {isClosed ? 'CLOSED' : isNav ? 'DAILY NAV' : 'DELAYED'}
+                </span>
+
                 <span
                   className={`text-[10px] font-semibold flex items-center gap-0.5 ${
                     ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
                   }`}
                 >
-                  {isUp && <TrendingUp className="w-2.5 h-2.5 inline" />}
-                  {isDown && <TrendingDown className="w-2.5 h-2.5 inline" />}
+                  {isUp && !isClosed && <TrendingUp className="w-2.5 h-2.5 inline" />}
+                  {isDown && !isClosed && <TrendingDown className="w-2.5 h-2.5 inline" />}
                   {ticker.change}
                 </span>
               </div>
@@ -112,9 +152,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           })}
         </div>
 
-        <div className="hidden md:flex items-center gap-2 text-[10px] text-[#6B7280] ml-4 font-mono">
+        <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#6B7280] ml-4 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-          <span>NSE / BSE / IBJA Spot / AMFI Reference</span>
+          <span>NSE / BSE (15m Delay) | AMFI EOD NAV | CBIC Statutory Bullion</span>
         </div>
       </div>
 
