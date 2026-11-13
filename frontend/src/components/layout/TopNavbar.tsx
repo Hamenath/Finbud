@@ -4,12 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Menu,
-  Bell,
   PlusCircle,
   LogIn,
   LogOut,
-  Sparkles,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
@@ -17,7 +14,6 @@ import { FinbudLogo } from '../common/FinbudLogo';
 import { StaggeredMenu } from '../ui/StaggeredMenu';
 
 interface TopNavbarProps {
-  onMenuClick: () => void;
   onOpenQuickAdd: () => void;
 }
 
@@ -50,7 +46,7 @@ const STAGGERED_SOCIAL_ITEMS = [
   { label: 'SEBI Portal', link: 'https://sebi.gov.in' },
 ];
 
-export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAdd }) => {
+export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenQuickAdd }) => {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
@@ -113,28 +109,24 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
 
       {/* 2. Main Horizontal Navigation Bar */}
       <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto w-full">
-        {/* Left Side: Mobile Menu Button & Breadcrumb */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFD05B] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#E5B842] transition-colors cursor-pointer"
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+        {/* Left Side: Logo & Breadcrumb */}
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2.5">
+            <FinbudLogo showWordmark={true} size="sm" />
+          </Link>
 
-          <div className="flex items-center gap-2.5">
-            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider hidden sm:inline">
+          <div className="hidden sm:flex items-center gap-2.5 pl-3 border-l-[1.5px] border-[#182B46]/30">
+            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider">
               FINBUD
             </span>
-            <span className="text-[#182B46] font-bold hidden sm:inline">/</span>
-            <h1 className="text-base sm:text-lg font-extrabold text-[#182B46] tracking-tight">
+            <span className="text-[#182B46] font-bold">/</span>
+            <h1 className="text-sm sm:text-base font-extrabold text-[#182B46] tracking-tight">
               {currentTitle}
             </h1>
           </div>
         </div>
 
-        {/* Right Side: Quick Action, StaggeredMenu, & Profile */}
+        {/* Right Side: Quick Action, StaggeredMenu (Single Unified Menu), & Profile */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
@@ -144,7 +136,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
             <span className="hidden sm:inline">New Entry</span>
           </button>
 
-          {/* React Bits StaggeredMenu Trigger */}
+          {/* Single Unified StaggeredMenu Navigation */}
           <div className="relative">
             <StaggeredMenu
               position="right"
@@ -165,7 +157,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
 
           {user ? (
             <div className="flex items-center gap-2 pl-2 border-l-[1.5px] border-[#182B46]">
-              <div className="hidden sm:flex flex-col text-right">
+              <div className="hidden md:flex flex-col text-right">
                 <span className="text-xs font-bold text-[#182B46] leading-tight">
                   {user.email?.split('@')[0]}
                 </span>
