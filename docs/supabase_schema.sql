@@ -1,7 +1,7 @@
 -- ==============================================================================
 -- FINBUD PRODUCTION POSTGRESQL SCHEMA (Supabase SQL Editor Ready)
 -- Full Multi-Asset Personal Wealth Management & Financial Decision Support
--- Author: Team Alpha Beta Gamma (Diwakar D, Hamenath B, Kisshorekumar S)
+-- Author: Team Alpha Beta Gamma (Diwakar K, Hamenath B, Kisshorekumar S)
 -- ==============================================================================
 
 -- 1. EXTENSIONS

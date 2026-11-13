@@ -1,7 +1,7 @@
 # FINBUD — Complete End-to-End System Integration & Final Audit Report
 
 **Project Title:** FINBUD (AI-Driven Personal Wealth Management & Multi-Asset Financial Advisory Platform)  
-**Engineering Team:** Alpha Beta Gamma (Diwakar D, Hamenath B, Kisshorekumar S)  
+**Engineering Team:** Alpha Beta Gamma (Diwakar K, Hamenath B, Kisshorekumar S)  
 **Academic Target:** Final-Year Engineering Capstone Project Evaluation  
 **Audit Date:** November 2026  
 **Audit Standard:** Strict Multi-Tenant Security, ISO/IEC 25010 Software Quality, Financial Fiduciary Non-Advisory Guardrails

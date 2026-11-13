@@ -104,6 +104,6 @@ cd frontend; npm run build
 
 ## 👥 Authors
 **Team Alpha Beta Gamma:**
-- Diwakar D
+- Diwakar K
 - Hamenath B
 - Kisshorekumar S
