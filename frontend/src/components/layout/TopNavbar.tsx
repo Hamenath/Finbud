@@ -90,7 +90,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           {/* Quick Transaction Action */}
           <button
             onClick={onOpenQuickAdd}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all"
           >
             <PlusCircle size={15} className="stroke-[2.5]" />
             <span className="hidden md:inline">Log Transaction</span>
@@ -152,7 +152,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
 
           {/* User Profile Capsule */}
           <div className="flex items-center gap-2.5 pl-2 border-l border-[#1F1F26]">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-600 via-neutral-700 to-emerald-600 p-[1px]">
+            <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-amber-600 via-neutral-700 to-emerald-600 p-px">
               <div className="w-full h-full bg-[#141418] rounded-[11px] flex items-center justify-center text-xs font-bold text-white">
                 DV
               </div>

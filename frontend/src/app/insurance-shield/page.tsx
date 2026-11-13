@@ -31,7 +31,7 @@ export default function InsuranceShieldPage() {
       </div>
 
       {/* Heuristic Adequacy Analysis Card */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#141418] to-[#1A1A24] border border-[#262638] space-y-4">
+      <div className="p-5 sm:p-6 rounded-2xl bg-linear-to-r from-[#141418] to-[#1A1A24] border border-[#262638] space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">

@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Brand Header */}
         <div className="flex items-center justify-between h-20 px-4 border-b border-[#1F1F26]">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#F59E0B] to-[#FBBF24] flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] flex items-center justify-center font-bold text-black text-xl shadow-lg shadow-amber-500/20">
               F
             </div>
             {!collapsed && (
@@ -141,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Bottom Banner & Utilities */}
         <div className="p-3 border-t border-[#1F1F26] space-y-3">
           {!collapsed && (
-            <div className="p-3.5 rounded-2xl bg-gradient-to-b from-[#1C1C24] to-[#121217] border border-[#2E2E3A] relative overflow-hidden">
+            <div className="p-3.5 rounded-2xl bg-linear-to-b from-[#1C1C24] to-[#121217] border border-[#2E2E3A] relative overflow-hidden">
               <div className="flex items-center gap-2 mb-1.5">
                 <Sparkles size={16} className="text-[#F59E0B]" />
                 <span className="text-xs font-semibold text-white">Academic Edition</span>

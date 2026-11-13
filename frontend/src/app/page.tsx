@@ -277,7 +277,7 @@ export default function DashboardPage() {
                 <div key={item.category} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: item.color }} />
-                    <span className="text-neutral-300 truncate max-w-[150px]">{item.category}</span>
+                    <span className="text-neutral-300 truncate max-w-37.5">{item.category}</span>
                   </div>
                   <span className="font-mono font-semibold text-white">{item.percentage}%</span>
                 </div>

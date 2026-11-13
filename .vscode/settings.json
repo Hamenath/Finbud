@@ -1,12 +1,16 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/venv/Scripts/python.exe",
+  "python.defaultInterpreterPath": "C:\\Users\\hamen\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
   "python.analysis.extraPaths": [
+    "C:\\Users\\hamen\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages",
+    "c:\\Users\\hamen\\Desktop\\FINBUD\\venv\\Lib\\site-packages",
     "${workspaceFolder}/backend",
     "${workspaceFolder}/backend/app"
   ],
   "python.autoComplete.extraPaths": [
+    "C:\\Users\\hamen\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages",
+    "c:\\Users\\hamen\\Desktop\\FINBUD\\venv\\Lib\\site-packages",
     "${workspaceFolder}/backend",
     "${workspaceFolder}/backend/app"
-  ]
+  ],
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
 }
-

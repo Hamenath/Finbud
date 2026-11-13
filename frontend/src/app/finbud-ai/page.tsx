@@ -109,7 +109,7 @@ export default function FinbudAiPage() {
       </div>
 
       {/* Main Chat Interface */}
-      <div className="rounded-2xl bg-[#141418] border border-[#22222D] flex flex-col h-[560px] overflow-hidden">
+      <div className="rounded-2xl bg-[#141418] border border-[#22222D] flex flex-col h-140 overflow-hidden">
         {/* Chat History */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
           {messages.map((m) => (
@@ -121,7 +121,7 @@ export default function FinbudAiPage() {
                 className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                   m.sender === 'user'
                     ? 'bg-emerald-500 text-black'
-                    : 'bg-gradient-to-tr from-[#F59E0B] to-[#FBBF24] text-black shadow-md shadow-amber-500/20'
+                    : 'bg-linear-to-tr from-[#F59E0B] to-[#FBBF24] text-black shadow-md shadow-amber-500/20'
                 }`}
               >
                 {m.sender === 'user' ? 'U' : <Bot size={16} />}
@@ -197,7 +197,7 @@ export default function FinbudAiPage() {
           />
           <button
             type="submit"
-            className="p-2.5 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
+            className="p-2.5 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
             aria-label="Send message"
           >
             <Send size={16} />

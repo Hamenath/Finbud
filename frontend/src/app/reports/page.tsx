@@ -38,7 +38,7 @@ export default function ReportsPage() {
           </button>
           <button
             onClick={() => alert('PDF Scorecard Export initiated: FINBUD_November_2026_Report.pdf')}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/20 hover:brightness-110 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/20 hover:brightness-110 transition-all"
           >
             <Download size={15} />
             <span>Download PDF</span>

@@ -174,7 +174,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-95"
                 >
                   Save Record
                 </button>
