@@ -122,12 +122,61 @@ class GroundedRAGPipeline:
     def answer_query(self, query: str, conversation_history: Optional[List[Dict[str, str]]] = None) -> Dict[str, Any]:
         """
         Executes grounded RAG pipeline:
-        1. Out-of-scope check (medical, coding, gossip, gambling).
-        2. Vector retrieval.
-        3. Evidence sufficiency check.
-        4. Synthesis with citations.
+        1. Greetings & conversational fallback guardrail (ensures greetings never trigger refusal).
+        2. Out-of-scope check (medical, coding, gossip, gambling).
+        3. Vector retrieval.
+        4. Evidence sufficiency check.
+        5. Synthesis with citations.
         """
-        q_lower = query.lower()
+        q_clean = query.strip()
+        q_lower = q_clean.lower().strip("?!.,;:'\"")
+
+        # 0. Conversational greetings & pleasantries guardrail
+        greeting_words = {"hi", "hello", "hey", "namaste", "good morning", "good evening", "good afternoon", "greetings", "hi there", "hello there"}
+        if q_lower in greeting_words or any(q_lower == g or q_lower.startswith(g + " ") for g in greeting_words):
+            return {
+                "answer": "Namaste! How can I help you with your personal finances today? You can ask me about Indian tax provisions (80C, 80D, LTCG), SIP compounding, Sovereign Gold Bonds, insurance adequacy heuristics, or live bullion and market benchmark rates.",
+                "is_out_of_scope": False,
+                "citations": [],
+                "retrieved_chunks_count": 0,
+                "evidence_sufficient": True,
+                "model": "conversational-greeting-guardrail"
+            }
+
+        small_talk_words = {"how are you", "how are you doing", "what's up", "whats up", "how is it going", "how's it going"}
+        if q_lower in small_talk_words or any(q_lower == s or q_lower.startswith(s + " ") for s in small_talk_words):
+            return {
+                "answer": "I am doing well, thank you! As your FINBUD financial intelligence copilot, I am ready to assist you with Indian taxation, wealth calculations, gold & silver rates, and portfolio management.",
+                "is_out_of_scope": False,
+                "citations": [],
+                "retrieved_chunks_count": 0,
+                "evidence_sufficient": True,
+                "model": "conversational-small-talk-guardrail"
+            }
+
+        capability_words = {"what can you do", "help", "who are you", "what are you", "what is finbud", "tell me about finbud"}
+        if q_lower in capability_words or any(q_lower == c or q_lower.startswith(c + " ") for c in capability_words):
+            return {
+                "answer": (
+                    "I am FINBUD AI, an educational copilot designed for Indian personal wealth management. Here is what I can do for you:\n\n"
+                    "• **Tax & Regulations**: Explain Section 80C, 80D, Section 112A/111A capital gains, and SGB tax exemptions.\n"
+                    "• **Wealth Math**: Explain SIP compounding, Rupee Cost Averaging, Rule of 72, and CAGR.\n"
+                    "• **Precious Metals**: Provide domestic bullion import parity rates (24K, 22K, silver) and BIS hallmarking guidelines.\n"
+                    "• **Insurance Adequacy**: Explain the 10x gross annual income term insurance heuristic and family floater basics.\n"
+                    "• **Cash-Flow Budgeting**: Guide you on the 50/30/20 framework and emergency reserve sizing."
+                ),
+                "is_out_of_scope": False,
+                "citations": [
+                    {
+                        "title": "FINBUD Financial Curriculum",
+                        "source": "AMFI, RBI, Income Tax Dept, IRDAI",
+                        "section": "Core Personal Finance Framework"
+                    }
+                ],
+                "retrieved_chunks_count": 1,
+                "evidence_sufficient": True,
+                "model": "conversational-capability-guardrail"
+            }
 
         # 1. Out-of-scope & speculative tip detection
         out_of_scope_keywords = [
