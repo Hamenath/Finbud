@@ -184,7 +184,10 @@ export const FinbudAiFloatingWidget: React.FC = () => {
             : 'opacity-0 scale-95 translate-y-4 pointer-events-none h-0 w-0 overflow-hidden'
         }`}
       >
-        <div className="w-[360px] sm:w-[400px] h-[520px] max-h-[80vh] bg-white border border-[#E5E7EB] rounded-2xl flex flex-col overflow-hidden">
+        <div 
+          data-lenis-prevent
+          className="w-[360px] sm:w-[400px] h-[520px] max-h-[80vh] bg-white border border-[#E5E7EB] rounded-2xl flex flex-col overflow-hidden shadow-2xl"
+        >
           {/* Header */}
           <div className="bg-[#F8FAF9] border-b border-[#E5E7EB] p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -215,7 +218,11 @@ export const FinbudAiFloatingWidget: React.FC = () => {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 text-sm font-normal overscroll-contain select-text">
+          <div 
+            data-lenis-prevent
+            className="flex-1 overflow-y-scroll overflow-x-hidden p-4 space-y-4 text-sm font-normal overscroll-contain select-text"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             {messages.map((m) => (
               <div
                 key={m.id}
