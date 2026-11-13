@@ -12,6 +12,8 @@ from app.ml.synthetic import generate_synthetic_transactions
 from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
 from app.services.report_generator import pdf_report_generator
+from app.services.aggregator import financial_aggregator
+from app.core.auth import get_current_user
 from app.rag.rag_pipeline import rag_pipeline
 from app.rag.evaluator import run_rag_evaluation
 
@@ -121,14 +123,36 @@ def evaluate_rag_assistant():
     return run_rag_evaluation()
 
 @app.post(f"{settings.API_V1_STR}/reports/scorecard-pdf", tags=["Reports"])
-def generate_pdf_scorecard(req: ScorecardReportRequest):
-    """Generates an audit-ready downloadable PDF financial health scorecard."""
-    pdf_bytes = pdf_report_generator.generate_scorecard_pdf(req.model_dump())
+def generate_pdf_scorecard(
+    user: Dict[str, Any] = Depends(get_current_user),
+    period: str = Query("November 2026", description="Reporting period string")
+):
+    """
+    Generates an audit-ready downloadable PDF financial health scorecard.
+    SECURITY ENFORCED:
+    1. Requires verified Supabase JWT Bearer token via get_current_user.
+    2. Identity is derived strictly from the server-verified JWT context (user['id'], user['email']).
+    3. All financial metrics (income, burn, savings, category distributions, metals, insurance)
+       are independently computed on the server from Supabase records.
+    4. Client-supplied financial totals are NEVER trusted.
+    """
+    server_aggregated_finances = financial_aggregator.aggregate_user_finances(
+        user_id=user["id"],
+        user_email=user.get("email", "investor@finbud.ai")
+    )
+    server_aggregated_finances["period"] = period
+
+    pdf_bytes = pdf_report_generator.generate_scorecard_pdf(server_aggregated_finances)
+    safe_filename = f"FINBUD_Financial_Scorecard_{period.replace(' ', '_')}.pdf"
+
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
         headers={
-            "Content-Disposition": f"attachment; filename=FINBUD_Financial_Scorecard_{req.period.replace(' ', '_')}.pdf"
+            "Content-Disposition": f"attachment; filename={safe_filename}",
+            "X-Content-Type-Options": "nosniff",
+            "Cache-Control": "no-store, no-cache, must-revalidate, private",
+            "Pragma": "no-cache"
         }
     )
 

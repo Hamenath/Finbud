@@ -202,32 +202,32 @@ export default function ReportsPage() {
   const handleDownloadPDF = async () => {
     setDownloading(true);
     try {
-      const payload = {
-        user_email: user?.email || (isDemoMode ? 'demo.investor@finbud.ai' : 'investor@finbud.ai'),
-        period: reportingPeriod,
-        total_income: totalIncome,
-        total_expenses: totalExpenses,
-        net_savings: netSavings,
-        savings_rate: savingsRate,
-        net_worth: totalIncome * 12 + metalsValuation,
-        category_spending: categoryBreakdown,
-        gold_grams: goldGrams,
-        silver_grams: silverGrams,
-        metals_valuation: metalsValuation,
-        term_insurance_cover: termLifeCoverage,
-        ml_projected_month_end_burn: mlProjectedBurn,
-        ml_projected_month_end_savings: mlProjectedSavings,
-        detected_anomalies_count: 0,
-        is_demo: isDemoMode,
-      };
+      // Get current authenticated session token from Supabase
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      const res = await fetch('http://127.0.0.1:8000/api/v1/reports/scorecard-pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      if (!session?.access_token) {
+        alert('Please sign in to generate and download your authenticated financial scorecard.');
+        setDownloading(false);
+        return;
+      }
 
-      if (!res.ok) throw new Error('PDF generation failed');
+      // Backend independently calculates all totals from authorized DB records
+      const res = await fetch(
+        `http://127.0.0.1:8000/api/v1/reports/scorecard-pdf?period=${encodeURIComponent(reportingPeriod)}`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => null);
+        throw new Error(errJson?.detail || 'PDF generation failed on server');
+      }
 
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -238,9 +238,9 @@ export default function ReportsPage() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-    } catch (e) {
+    } catch (e: any) {
       console.error('PDF Download failed', e);
-      alert('Failed to generate PDF scorecard. Please ensure the backend server is active.');
+      alert(`Failed to generate PDF: ${e.message || 'Server error'}`);
     } finally {
       setDownloading(false);
     }
