@@ -68,20 +68,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <FinbudLogo showWordmark={true} size="sm" />
             )}
           </Link>
-
-          {/* Desktop Toggle Button */}
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex p-1.5 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFFDF5] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#FFD05B] transition-colors cursor-pointer"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            aria-label="Toggle sidebar"
-          >
-            {collapsed ? (
-              <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-            ) : (
-              <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
-            )}
-          </button>
         </div>
 
         {/* Navigation Link List */}
