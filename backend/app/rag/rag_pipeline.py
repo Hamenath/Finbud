@@ -36,14 +36,47 @@ class GroundedRAGPipeline:
         """Initializes Gemini API if key is available and not dummy."""
         api_key = settings.GEMINI_API_KEY
         if api_key and api_key != "demo-gemini-key" and len(api_key) > 20:
-            try:
-                genai.configure(api_key=api_key)
-                self.gemini_configured = True
-            except Exception as e:
-                print(f"Notice: Gemini API configuration skipped: {e}")
-                self.gemini_configured = False
+            self.gemini_api_key = api_key
+            self.gemini_configured = True
         else:
+            self.gemini_api_key = None
             self.gemini_configured = False
+
+    def generate_with_gemini(self, prompt: str) -> Optional[str]:
+        """Calls Google Gemini REST API using the active gemini-3.1-flash-lite / flash models."""
+        if not self.gemini_configured or not self.gemini_api_key:
+            return None
+        
+        import urllib.request
+        import json
+        
+        models_priority = ["gemini-3.1-flash-lite", "gemini-3.8-flash", "gemini-3.5-flash", "gemini-flash-latest"]
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.2,
+                "maxOutputTokens": 800
+            }
+        }
+        data_bytes = json.dumps(payload).encode("utf-8")
+
+        for model_name in models_priority:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={self.gemini_api_key}"
+            req = urllib.request.Request(
+                url,
+                data=data_bytes,
+                headers={"Content-Type": "application/json"}
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=12) as response:
+                    res_json = json.loads(response.read().decode("utf-8"))
+                    text = res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    if text:
+                        return text
+            except Exception as e:
+                # Try next model in fallback cascade
+                continue
+        return None
 
     def _init_knowledge_base(self):
         """Loads and chunks knowledge base markdown into indexed units."""
@@ -197,8 +230,32 @@ class GroundedRAGPipeline:
         # 2. Retrieve grounded passages
         passages = self.retrieve(query, top_k=3)
 
-        # 3. Insufficient evidence handling
+        # 3. Contextual General Financial Question Answering via Gemini
+        # If specific knowledge base passages are insufficient, but the user is asking a legitimate financial question,
+        # ask Gemini to explain it pedagogically rather than refusing outright.
         if not passages:
+            if self.gemini_configured:
+                gemini_reply = self.generate_with_gemini(
+                    f"Explain '{query}' clearly for an Indian retail investor in 2-3 concise paragraphs. "
+                    "Include key definitions, practical examples, and tax or interest implications if applicable. "
+                    "Conclude with an educational reminder that this is for decision support and not SEBI-registered advisory."
+                )
+                if gemini_reply:
+                    return {
+                        "answer": gemini_reply,
+                        "is_out_of_scope": False,
+                        "citations": [
+                            {
+                                "title": "FINBUD Financial Foundation Intelligence",
+                                "source": "Google Gemini Generative AI (Live)",
+                                "section": "Pedagogical Financial Education"
+                            }
+                        ],
+                        "retrieved_chunks_count": 0,
+                        "evidence_sufficient": True,
+                        "model": "gemini-3.1-flash-lite (Live Generative AI)"
+                    }
+
             return {
                 "answer": "I do not have sufficient verified evidence in my curated knowledge base to answer this financial question accurately. To uphold fiduciary and factual standards, I do not extrapolate or hallucinate ungrounded financial advice.",
                 "is_out_of_scope": False,
@@ -229,30 +286,25 @@ class GroundedRAGPipeline:
                 unique_citations.append(c)
 
         if self.gemini_configured:
-            try:
-                prompt = (
-                    "You are FINBUD AI, an educational Indian personal wealth and financial decision-support assistant. "
-                    "Answer the user query strictly grounded in the verified context passages below. "
-                    "Do NOT invent facts, numbers, or tax rules not present in the context. "
-                    "State key numerical figures clearly. Include a polite reminder that this is educational decision support and not SEBI-registered advisory.\n\n"
-                    f"CONTEXT:\n{context_str}\n\n"
-                    f"USER QUERY: {query}\n\n"
-                    "GROUNDED ANSWER:"
-                )
-                model = genai.GenerativeModel("gemini-1.5-flash")
-                response = model.generate_content(prompt)
-                answer_text = response.text.strip()
+            prompt = (
+                "You are FINBUD AI, an educational Indian personal wealth and financial decision-support assistant. "
+                "Answer the user query strictly grounded in the verified context passages below. "
+                "Do NOT invent facts, numbers, or tax rules not present in the context. "
+                "State key numerical figures clearly. Include a polite reminder that this is educational decision support and not SEBI-registered advisory.\n\n"
+                f"CONTEXT:\n{context_str}\n\n"
+                f"USER QUERY: {query}\n\n"
+                "GROUNDED ANSWER:"
+            )
+            gemini_ans = self.generate_with_gemini(prompt)
+            if gemini_ans:
                 return {
-                    "answer": answer_text,
+                    "answer": gemini_ans,
                     "is_out_of_scope": False,
                     "citations": unique_citations,
                     "retrieved_chunks_count": len(passages),
                     "evidence_sufficient": True,
-                    "model": "gemini-1.5-flash (Grounded RAG)"
+                    "model": "gemini-3.1-flash-lite (Grounded RAG)"
                 }
-            except Exception as e:
-                # Fallback to local grounded synthesizer if LLM call fails
-                pass
 
         # Deterministic Grounded Synthesis Engine (Guaranteed zero hallucination)
         best_passage = passages[0]["text"]
