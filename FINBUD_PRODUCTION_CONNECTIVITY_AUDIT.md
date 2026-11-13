@@ -142,3 +142,4 @@ backend/tests/test_end_to_end.py::test_rag_evaluation_benchmark PASSED
    - Deploy.
 3. **Update Backend CORS**:
    - Add your newly assigned Vercel domain to `CORS_ORIGINS` in your backend environment settings.
+
