@@ -6,13 +6,7 @@ import {
   Send,
   Sparkles,
   X,
-  Minimize2,
-  Maximize2,
   BookOpen,
-  ArrowRight,
-  ShieldCheck,
-  AlertCircle,
-  HelpCircle,
 } from 'lucide-react';
 
 interface Citation {
@@ -140,30 +134,30 @@ export const FinbudAiFloatingWidget: React.FC = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
-      {/* 1. Animated Chat Window */}
+      {/* 1. Animated Dark Chat Window */}
       <div
         className={`pointer-events-auto transition-all duration-300 ease-out origin-bottom-right mb-4 ${
           isOpen
-            ? 'opacity-100 scale-100 translate-y-0 shadow-[6px_6px_0_#182B46]'
+            ? 'opacity-100 scale-100 translate-y-0'
             : 'opacity-0 scale-95 translate-y-4 pointer-events-none h-0 w-0 overflow-hidden'
         }`}
       >
-        <div className="w-[360px] sm:w-[400px] h-[540px] max-h-[80vh] bg-[#FFFDF5] border-[2px] border-[#182B46] rounded-[20px] flex flex-col overflow-hidden">
+        <div className="w-[360px] sm:w-[400px] h-[540px] max-h-[80vh] bg-[#0B0D14] border border-[#191B25] rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="bg-[#FFD05B] border-b-[1.5px] border-[#182B46] p-3.5 flex items-center justify-between">
+          <div className="bg-[#10131D] border-b border-[#191B25] p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg border-[1.5px] border-[#182B46] bg-white flex items-center justify-center shadow-[1.5px_1.5px_0_#182B46]">
-                <Bot className="w-4 h-4 text-[#182B46] stroke-[2.5]" />
+              <div className="w-8 h-8 rounded-lg border border-[#0033FF]/40 bg-[#10245C] flex items-center justify-center text-[#0033FF]">
+                <Bot className="w-4 h-4 stroke-[2.2]" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-extrabold text-[#182B46] tracking-tight">FINBUD AI</h3>
-                  <span className="px-1.5 py-0.2 rounded border border-[#182B46] bg-[#E9FFF5] text-[9px] font-mono font-extrabold text-[#182B46]">
+                  <h3 className="text-xs font-semibold text-[#F4F6FF] tracking-tight">FINBUD AI</h3>
+                  <span className="px-1.5 py-0.2 rounded border border-[#0033FF]/40 bg-[#10245C] text-[9px] font-mono font-medium text-[#A9BCE0]">
                     RAG
                   </span>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-[#182B46]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#182B46] animate-pulse" />
+                <div className="flex items-center gap-1 text-[10px] text-[#71809B]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0033FF] animate-pulse" />
                   Knowledge Base Grounded
                 </div>
               </div>
@@ -171,70 +165,70 @@ export const FinbudAiFloatingWidget: React.FC = () => {
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-md border-[1.5px] border-[#182B46] bg-white hover:bg-[#FFFDF5] text-[#182B46] shadow-[1.5px_1.5px_0_#182B46] cursor-pointer"
+              className="p-1 rounded-md border border-[#191B25] bg-[#05060A] hover:bg-[#10131D] text-[#A9BCE0] hover:text-[#F4F6FF] cursor-pointer"
               title="Close assistant"
             >
-              <X className="w-4 h-4 stroke-[2.5]" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs font-medium">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-[14px] p-3 border-[1.5px] border-[#182B46] ${
+                  className={`max-w-[85%] rounded-[12px] p-3 border ${
                     m.sender === 'user'
-                      ? 'bg-[#182B46] text-white shadow-[2px_2px_0_#182B46]'
-                      : 'bg-white text-[#182B46] shadow-[2px_2px_0_#9DE8CB]'
+                      ? 'bg-[#0033FF] text-[#F4F6FF] border-[#0033FF]'
+                      : 'bg-[#10131D] text-[#F4F6FF] border-[#191B25]'
                   }`}
                 >
                   <p className="leading-relaxed whitespace-pre-wrap font-sans">{m.text}</p>
 
                   {/* Citations Pill */}
                   {m.citations && m.citations.length > 0 && (
-                    <div className="mt-2.5 pt-2 border-t-[1.5px] border-[#182B46]/10 space-y-1">
-                      <div className="flex items-center gap-1 text-[10px] font-bold text-[#4B5E76] uppercase tracking-wider">
+                    <div className="mt-2.5 pt-2 border-t border-[#191B25] space-y-1">
+                      <div className="flex items-center gap-1 text-[10px] font-medium text-[#71809B] uppercase tracking-wider">
                         <BookOpen size={11} />
                         <span>Curated Grounding</span>
                       </div>
                       {m.citations.map((c, i) => (
                         <div
                           key={i}
-                          className="p-1.5 rounded-md bg-[#FFFDF5] border border-[#182B46]/30 text-[10px]"
+                          className="p-1.5 rounded-md bg-[#05060A] border border-[#191B25] text-[10px]"
                         >
-                          <div className="font-extrabold text-[#182B46] truncate">{c.title}</div>
-                          <div className="text-[#4B5E76] font-mono truncate">{c.section}</div>
+                          <div className="font-semibold text-[#F4F6FF] truncate">{c.title}</div>
+                          <div className="text-[#71809B] font-mono truncate">{c.section}</div>
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-                <span className="text-[9px] font-mono font-bold text-[#4B5E76] mt-1 px-1">
+                <span className="text-[9px] font-mono text-[#71809B] mt-1 px-1">
                   {m.timestamp}
                 </span>
               </div>
             ))}
 
             {isTyping && (
-              <div className="flex items-center gap-1.5 p-3 rounded-[12px] bg-white border-[1.5px] border-[#182B46] w-fit shadow-[2px_2px_0_#9DE8CB]">
-                <Sparkles className="w-3.5 h-3.5 text-[#182B46] animate-spin" />
-                <span className="text-[11px] font-bold text-[#182B46]">Retrieving knowledge...</span>
+              <div className="flex items-center gap-1.5 p-2.5 rounded-[10px] bg-[#10131D] border border-[#191B25] w-fit">
+                <Sparkles className="w-3.5 h-3.5 text-[#0033FF] animate-spin" />
+                <span className="text-[11px] text-[#A9BCE0]">Retrieving knowledge...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Prompts */}
-          <div className="px-3 py-2 bg-white border-t-[1.5px] border-[#182B46] flex gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap">
+          <div className="px-3 py-2 bg-[#05060A] border-t border-[#191B25] flex gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap">
             {SUGGESTED_QUERIES.map((q) => (
               <button
                 key={q}
                 onClick={() => handleSend(q)}
-                className="px-2.5 py-1 rounded-full border border-[#182B46] bg-[#FFFDF5] hover:bg-[#FFD05B] text-[10px] font-bold text-[#182B46] transition-colors shrink-0 cursor-pointer"
+                className="px-2.5 py-1 rounded-full border border-[#191B25] bg-[#10131D] hover:bg-[#10245C] hover:border-[#0033FF]/40 text-[10px] text-[#A9BCE0] hover:text-[#F4F6FF] transition-colors shrink-0 cursor-pointer"
               >
                 {q}
               </button>
@@ -247,41 +241,40 @@ export const FinbudAiFloatingWidget: React.FC = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="p-3 bg-[#FFFDF5] border-t-[1.5px] border-[#182B46] flex items-center gap-2"
+            className="p-3 bg-[#0B0D14] border-t border-[#191B25] flex items-center gap-2"
           >
             <input
               type="text"
               placeholder="Ask FINBUD AI anything..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 bg-white border-[1.5px] border-[#182B46] rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFD05B]"
+              className="flex-1 dark-input text-xs"
             />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="p-2 rounded-xl border-[1.5px] border-[#182B46] bg-[#FFD05B] hover:bg-[#E5B842] text-[#182B46] shadow-[2px_2px_0_#182B46] disabled:opacity-50 cursor-pointer"
+              className="p-2 rounded-xl bg-[#0033FF] hover:bg-[#164DFF] text-white disabled:opacity-50 cursor-pointer transition-colors"
             >
-              <Send className="w-4 h-4 stroke-[2.5]" />
+              <Send className="w-3.5 h-3.5" />
             </button>
           </form>
         </div>
       </div>
 
-      {/* 2. Floating Action Button (Always visible on bottom-right) */}
+      {/* 2. Floating Action Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="pointer-events-auto group flex items-center gap-2.5 px-4 py-3 rounded-[16px] border-[2px] border-[#182B46] bg-[#FFD05B] shadow-[4px_4px_0_#182B46] hover:shadow-[5px_5px_0_#182B46] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[1px_1px_0_#182B46] transition-all cursor-pointer"
+        className="pointer-events-auto group flex items-center gap-2 px-3.5 py-2.5 rounded-[12px] border border-[#191B25] bg-[#0B0D14] hover:bg-[#10131D] hover:border-[#0033FF]/50 shadow-[0_4px_16px_rgba(0,0,0,0.5)] transition-all cursor-pointer"
         aria-label="Toggle FINBUD AI"
       >
         <div className="relative">
-          <Bot className="w-5 h-5 text-[#182B46] stroke-[2.5]" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#E9FFF5] border border-[#182B46]" />
+          <Bot className="w-4 h-4 text-[#0033FF]" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#0033FF] animate-pulse" />
         </div>
-        <span className="text-xs font-extrabold text-[#182B46] tracking-tight">
+        <span className="text-xs font-semibold text-[#F4F6FF] tracking-tight">
           {isOpen ? 'Close AI' : 'FINBUD AI'}
         </span>
       </button>
     </div>
   );
 };
-
