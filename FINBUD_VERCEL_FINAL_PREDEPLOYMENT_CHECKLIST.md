@@ -144,3 +144,4 @@ Official Vercel documentation (November 2026) specifies the following operationa
 3. **Non-Commercial Terms:** The Vercel Hobby plan is permitted strictly for non-commercial evaluation and personal portfolio use.
 
 FINBUD is fully validated and prepared for two-project deployment on Vercel.
+
