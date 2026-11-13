@@ -158,3 +158,4 @@ ALL 5 AUDIT TESTS EXECUTED AND PASSED.
    - FINBUD does not hold a direct SEBI real-time Tick-by-Tick (TBT) colocation feed agreement. Real-time sub-second Level 2 order book streaming would require commercial vendor agreements with NSE/BSE authorized redistributors (e.g., Refinitiv, Bloomberg, TrueData).
 2. **Cloud Hosting WebSocket Compatibility:**
    - When deploying to **Vercel**, serverless Edge functions terminate after request completion; the FastAPI backend hosting the WebSocket server (`/ws/market-ticks`) should be hosted on a persistent container platform such as **Railway**, **Render**, or **AWS ECS/EC2**, with standard reverse proxy (`Nginx` / `Traefik`) configured with `Upgrade` and `Connection` headers.
+
