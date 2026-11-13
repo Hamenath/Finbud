@@ -13,9 +13,10 @@ from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
 from app.services.report_generator import pdf_report_generator
 from app.services.aggregator import financial_aggregator
-from app.core.auth import get_current_user
+from app.core.auth import get_current_user, get_optional_current_user
 from app.rag.rag_pipeline import rag_pipeline
 from app.rag.evaluator import run_rag_evaluation
+from app.rag.conversational_router import conversational_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -110,11 +111,19 @@ def get_metal_history(metal: str = Query("GOLD", pattern="^(GOLD|SILVER)$"), per
     return market_service.get_metal_historical_chart(metal=metal, period=period)
 
 @app.post(f"{settings.API_V1_STR}/rag/ask", tags=["RAG Financial Assistant"])
-def ask_rag_assistant(req: RAGQueryRequest):
-    """Answers financial questions grounded in verified curated knowledge base with source citations."""
-    return rag_pipeline.answer_query(
+def ask_rag_assistant(
+    req: RAGQueryRequest,
+    user: Optional[Dict[str, Any]] = Depends(get_optional_current_user)
+):
+    """
+    Intelligent Conversational Assistant for FINBUD.
+    Handles Greetings, General Chat, Live Market Data, Personal Spending, and Follow-ups
+    before falling back to the strict statutory Financial RAG pipeline.
+    """
+    return conversational_router.handle_message(
         query=req.query,
-        conversation_history=req.conversation_history
+        conversation_history=req.conversation_history,
+        user=user
     )
 
 @app.get(f"{settings.API_V1_STR}/rag/evaluate", tags=["RAG Financial Assistant"])
