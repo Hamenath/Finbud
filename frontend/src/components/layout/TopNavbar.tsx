@@ -4,13 +4,16 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
+  Menu,
+  Bell,
   PlusCircle,
   LogIn,
   LogOut,
+  Sparkles,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
-import { StaggeredMenu, StaggeredMenuItem } from '../ui/StaggeredMenu';
+import { FinbudLogo } from '../common/FinbudLogo';
 
 interface TopNavbarProps {
   onMenuClick: () => void;
@@ -24,27 +27,10 @@ const ROUTE_TITLES: Record<string, string> = {
   '/wealth-lab': 'Wealth Multiplier Lab',
   '/gold-silver': 'Gold & Silver Vault',
   '/insurance-shield': 'Smart Insurance Shield',
+  '/finbud-ai': 'FINBUD AI Assistant',
   '/reports': 'Financial Reports',
   '/settings': 'Platform Settings',
 };
-
-const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
-  { label: 'Overview', ariaLabel: 'Navigate to Overview', link: '/' },
-  { label: 'Transactions', ariaLabel: 'Navigate to Transactions Ledger', link: '/transactions' },
-  { label: 'Analytics', ariaLabel: 'Navigate to Predictive Analytics', link: '/analytics' },
-  { label: 'Wealth Lab', ariaLabel: 'Navigate to Wealth Multiplier Lab', link: '/wealth-lab' },
-  { label: 'Gold & Silver', ariaLabel: 'Navigate to Gold and Silver Vault', link: '/gold-silver' },
-  { label: 'Insurance Shield', ariaLabel: 'Navigate to Insurance Shield', link: '/insurance-shield' },
-  { label: 'Reports', ariaLabel: 'Navigate to Financial Reports', link: '/reports' },
-  { label: 'Settings', ariaLabel: 'Navigate to Platform Settings', link: '/settings' },
-];
-
-const STAGGERED_SOCIAL_ITEMS = [
-  { label: 'NSE India', link: 'https://www.nseindia.com' },
-  { label: 'RBI Monetary', link: 'https://rbi.org.in' },
-  { label: 'Income Tax Portal', link: 'https://eportal.incometax.gov.in' },
-  { label: 'IRDAI Guidelines', link: 'https://irdai.gov.in' },
-];
 
 export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAdd }) => {
   const pathname = usePathname();
@@ -107,25 +93,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
         </div>
       </div>
 
-      {/* 2. Main Horizontal Navigation Bar with Left-Side StaggeredMenu */}
-      <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between max-w-7xl mx-auto w-full">
-        {/* Left Side: StaggeredMenu with Animated Greater-Than Arrow Toggle */}
+      {/* 2. Main Horizontal Navigation Bar */}
+      <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto w-full">
+        {/* Left Side: Mobile Menu Button & Breadcrumb */}
         <div className="flex items-center gap-3">
-          <StaggeredMenu
-            position="left"
-            items={STAGGERED_MENU_ITEMS}
-            socialItems={STAGGERED_SOCIAL_ITEMS}
-            displaySocials={true}
-            displayItemNumbering={true}
-            colors={['#9DE8CB', '#FFD05B', '#182B46']}
-            menuButtonColor="#182B46"
-            openMenuButtonColor="#182B46"
-            accentColor="#FFD05B"
-            changeMenuColorOnOpen={true}
-            closeOnClickAway={true}
-          />
+          <button
+            onClick={onMenuClick}
+            className="lg:hidden p-2 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFD05B] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#E5B842] transition-colors cursor-pointer"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
 
-          <div className="flex items-center gap-2.5 pl-1">
+          <div className="flex items-center gap-2.5">
             <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider hidden sm:inline">
               FINBUD
             </span>

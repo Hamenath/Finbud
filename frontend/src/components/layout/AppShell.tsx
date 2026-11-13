@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
 import { X, Check } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
@@ -12,6 +13,8 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const supabase = createClient();
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [showQuickModal, setShowQuickModal] = useState(false);
   const [user, setUser] = useState<any>(null);
 
@@ -72,10 +75,22 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#FFFDF5] text-[#182B46] flex flex-col font-sans selection:bg-[#FFD05B] selection:text-[#182B46]">
-      {/* 1. Primary Full-Width Layout Canvas with StaggeredMenu Header */}
-      <div className="flex-1 flex flex-col w-full">
+      {/* 1. Sidebar */}
+      <Sidebar
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+      />
+
+      {/* 2. Primary Layout Canvas */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-200 ease-in-out ${
+          collapsed ? 'lg:pl-20' : 'lg:pl-64'
+        }`}
+      >
         <TopNavbar
-          onMenuClick={() => {}}
+          onMenuClick={() => setMobileOpen(true)}
           onOpenQuickAdd={() => setShowQuickModal(true)}
         />
 
@@ -95,10 +110,10 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         </footer>
       </div>
 
-      {/* 2. Global Static Bottom-Right FINBUD AI Widget with Smooth Open/Close */}
+      {/* 3. Global Static Bottom-Right FINBUD AI Widget with Smooth Open/Close */}
       <FinbudAiFloatingWidget />
 
-      {/* 3. Neo-Brutalist Quick Add Modal */}
+      {/* 4. Neo-Brutalist Quick Add Modal */}
       {showQuickModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#182B46]/40 backdrop-blur-xs">
           <div className="bg-[#FFFDF5] border-[2px] border-[#182B46] rounded-[18px] shadow-[6px_6px_0_#182B46] max-w-md w-full p-6 relative">
@@ -133,7 +148,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                   onClick={() => setTxType('INCOME')}
                   className={`py-2 text-xs font-extrabold rounded-lg border-[1.5px] border-[#182B46] transition-all cursor-pointer ${
                     txType === 'INCOME'
-                      ? 'bg-[#FFD05B] text-[#182B46] shadow-[2px_2px_0_#182B46]'
+                      ? 'bg-[#FFD05B] text-[#182B46 shadow-[2px_2px_0_#182B46]'
                       : 'bg-white text-[#182B46]'
                   }`}
                 >
@@ -198,7 +213,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         </div>
       )}
 
-      {/* 4. Success Toast Notification */}
+      {/* 5. Success Toast Notification */}
       {successToast && (
         <div className="fixed bottom-6 left-6 z-50 bg-[#E9FFF5] border-[1.5px] border-[#182B46] rounded-xl px-4 py-3 shadow-[4px_4px_0_#182B46] flex items-center gap-3">
           <div className="p-1 rounded-md bg-[#FFD05B] border border-[#182B46]">
