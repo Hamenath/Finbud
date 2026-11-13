@@ -231,14 +231,14 @@ class GroundedRAGPipeline:
         passages = self.retrieve(query, top_k=3)
 
         # 3. Contextual General Financial Question Answering via Gemini
-        # If specific knowledge base passages are insufficient, but the user is asking a legitimate financial question,
-        # ask Gemini to explain it pedagogically rather than refusing outright.
+        # Ultra-concise, smart AI bot style: strictly 1 paragraph, under 2 lines.
         if not passages:
             if self.gemini_configured:
                 gemini_reply = self.generate_with_gemini(
-                    f"Explain '{query}' clearly for an Indian retail investor in 2-3 concise paragraphs. "
-                    "Include key definitions, practical examples, and tax or interest implications if applicable. "
-                    "Conclude with an educational reminder that this is for decision support and not SEBI-registered advisory."
+                    f"Explain '{query}' as a smart financial AI bot. "
+                    "STRICT REQUIREMENT: Answer in exactly ONE short paragraph of maximum 2 sentences (under 2 lines). "
+                    "Make it punchy, crystal clear, smart, and easy to grasp for everyday Indian users. "
+                    "No bullet points, no disclaimers, no fluff."
                 )
                 if gemini_reply:
                     return {
@@ -248,12 +248,12 @@ class GroundedRAGPipeline:
                             {
                                 "title": "FINBUD Financial Foundation Intelligence",
                                 "source": "Google Gemini Generative AI (Live)",
-                                "section": "Pedagogical Financial Education"
+                                "section": "Smart Financial Bot"
                             }
                         ],
                         "retrieved_chunks_count": 0,
                         "evidence_sufficient": True,
-                        "model": "gemini-3.1-flash-lite (Live Generative AI)"
+                        "model": "gemini-3.1-flash-lite (Smart AI Bot)"
                     }
 
             return {
@@ -287,13 +287,15 @@ class GroundedRAGPipeline:
 
         if self.gemini_configured:
             prompt = (
-                "You are FINBUD AI, an educational Indian personal wealth and financial decision-support assistant. "
-                "Answer the user query strictly grounded in the verified context passages below. "
-                "Do NOT invent facts, numbers, or tax rules not present in the context. "
-                "State key numerical figures clearly. Include a polite reminder that this is educational decision support and not SEBI-registered advisory.\n\n"
+                "You are FINBUD AI, a smart financial intelligence copilot. "
+                "Answer the user's question using the verified context passages below.\n"
+                "STRICT REQUIREMENT:\n"
+                "- Write exactly ONE short paragraph of under 2 lines (maximum 2 concise sentences).\n"
+                "- Be direct, smart, and clear with key figures in bold.\n"
+                "- Do NOT use bullet points, greetings, or lengthy disclaimers.\n\n"
                 f"CONTEXT:\n{context_str}\n\n"
                 f"USER QUERY: {query}\n\n"
-                "GROUNDED ANSWER:"
+                "SHORT 2-LINE ANSWER:"
             )
             gemini_ans = self.generate_with_gemini(prompt)
             if gemini_ans:
@@ -303,18 +305,18 @@ class GroundedRAGPipeline:
                     "citations": unique_citations,
                     "retrieved_chunks_count": len(passages),
                     "evidence_sufficient": True,
-                    "model": "gemini-3.1-flash-lite (Grounded RAG)"
+                    "model": "gemini-3.1-flash-lite (Smart Grounded RAG)"
                 }
 
         # Deterministic Grounded Synthesis Engine (Guaranteed zero hallucination)
         best_passage = passages[0]["text"]
-        secondary = f" Additionally, {passages[1]['text']}" if len(passages) > 1 else ""
+        # Skip markdown headings and extract clean explanatory sentences
+        clean_lines = [line.strip().lstrip("#").strip() for line in best_passage.split("\n") if line.strip() and not line.strip().startswith("#") and not line.strip().startswith("SECTION")]
+        clean_text = " ".join(clean_lines) if clean_lines else best_passage
+        sentences = [s.strip() for s in clean_text.split(".") if len(s.strip()) > 15]
+        first_two_sentences = ". ".join(sentences[:2]) + "." if sentences else clean_text[:160] + "..."
         
-        answer_text = (
-            f"According to verified documentation ({unique_citations[0]['title']}):\n\n"
-            f"{best_passage}{secondary}\n\n"
-            "Disclaimer: FINBUD provides educational decision-support heuristics and does not constitute SEBI-registered financial advisory."
-        )
+        answer_text = first_two_sentences
 
         return {
             "answer": answer_text,
