@@ -231,26 +231,19 @@ class GroundedRAGPipeline:
         passages = self.retrieve(query, top_k=3)
 
         # 3. Contextual General Financial Question Answering via Gemini
-        # Ultra-concise, smart AI bot style: strictly 1 paragraph, under 2 lines.
         if not passages:
             if self.gemini_configured:
-                gemini_reply = self.generate_with_gemini(
-                    f"Explain '{query}' as a smart financial AI bot. "
-                    "STRICT REQUIREMENT: Answer in exactly ONE short paragraph of maximum 2 sentences (under 2 lines). "
-                    "Make it punchy, crystal clear, smart, and easy to grasp for everyday Indian users. "
-                    "No bullet points, no disclaimers, no fluff."
+                prompt = (
+                    f"Explain '{query}' in the exact friendly, vivid conversational format below:\n"
+                    "A **[Term Name]** is just like putting a few coins into your **magic piggy bank** (or relevant everyday metaphor) every single month. Over many years, those small coins grow into a **giant treasure** all by themselves!\n\n"
+                    "What **other word or topic** would you like me to explain next in this fun, easy way?"
                 )
+                gemini_reply = self.generate_with_gemini(prompt)
                 if gemini_reply:
                     return {
                         "answer": gemini_reply,
                         "is_out_of_scope": False,
-                        "citations": [
-                            {
-                                "title": "FINBUD Financial Foundation Intelligence",
-                                "source": "Google Gemini Generative AI (Live)",
-                                "section": "Smart Financial Bot"
-                            }
-                        ],
+                        "citations": [],
                         "retrieved_chunks_count": 0,
                         "evidence_sufficient": True,
                         "model": "gemini-3.1-flash-lite (Smart AI Bot)"
@@ -271,38 +264,18 @@ class GroundedRAGPipeline:
             for i, p in enumerate(passages)
         ])
 
-        citations = [
-            {"title": p["title"], "source": p["source"], "section": p["section"]}
-            for p in passages
-        ]
-
-        # De-duplicate citations
-        seen = set()
-        unique_citations = []
-        for c in citations:
-            key = (c["title"], c["section"])
-            if key not in seen:
-                seen.add(key)
-                unique_citations.append(c)
-
         if self.gemini_configured:
             prompt = (
-                "You are FINBUD AI, a smart financial intelligence copilot. "
-                "Answer the user's question using the verified context passages below.\n"
-                "STRICT REQUIREMENT:\n"
-                "- Write exactly ONE short paragraph of under 2 lines (maximum 2 concise sentences).\n"
-                "- Be direct, smart, and clear with key figures in bold.\n"
-                "- Do NOT use bullet points, greetings, or lengthy disclaimers.\n\n"
-                f"CONTEXT:\n{context_str}\n\n"
-                f"USER QUERY: {query}\n\n"
-                "SHORT 2-LINE ANSWER:"
+                f"Explain '{query}' in the exact friendly, vivid conversational format below based on context:\n"
+                "A **[Term Name]** is just like putting a few coins into your **magic piggy bank** (or relevant everyday metaphor) every single month. Over many years, those small coins grow into a **giant treasure** all by themselves!\n\n"
+                "What **other word or topic** would you like me to explain next in this fun, easy way?"
             )
             gemini_ans = self.generate_with_gemini(prompt)
             if gemini_ans:
                 return {
                     "answer": gemini_ans,
                     "is_out_of_scope": False,
-                    "citations": unique_citations,
+                    "citations": [],
                     "retrieved_chunks_count": len(passages),
                     "evidence_sufficient": True,
                     "model": "gemini-3.1-flash-lite (Smart Grounded RAG)"

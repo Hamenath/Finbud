@@ -180,22 +180,22 @@ export const FinbudAiFloatingWidget: React.FC = () => {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs font-normal">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 text-sm font-normal overscroll-contain select-text">
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl p-3.5 border ${
+                  className={`max-w-[88%] rounded-2xl p-4 border text-[13.5px] leading-relaxed tracking-normal ${
                     m.sender === 'user'
                       ? 'bg-[#10B981] text-white border-[#10B981]'
-                      : 'bg-[#F9FAFB] text-[#111827] border-[#E5E7EB]'
+                      : 'bg-[#F9FAFB] text-[#1F2937] border-[#E5E7EB]'
                   }`}
                 >
-                  <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
+                  <p className="whitespace-pre-wrap">{m.text}</p>
                 </div>
-                <span className="text-[9px] font-mono text-[#6B7280] mt-1 px-1">
+                <span className="text-[10px] font-mono text-[#9CA3AF] mt-1 px-1">
                   {m.timestamp}
                 </span>
               </div>
