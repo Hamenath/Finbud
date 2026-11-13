@@ -1,0 +1,37 @@
+# ==============================================================================
+# FINBUD RENDER BLUEPRINT SPECIFICATION (render.yaml)
+# ==============================================================================
+services:
+  - type: web
+    name: finbud-backend
+    env: python
+    region: oregon
+    plan: starter # Starter plan recommended for persistent WebSocket connections
+    rootDir: backend
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ENVIRONMENT
+        value: production
+      - key: PROJECT_NAME
+        value: FINBUD Financial Intelligence
+      - key: API_V1_STR
+        value: /api/v1
+      - key: CORS_ORIGINS
+        sync: false # Set to production Vercel frontend domain, e.g. "https://finbud.vercel.app"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MARKET_CACHE_TTL_SECONDS
+        value: "3600"
