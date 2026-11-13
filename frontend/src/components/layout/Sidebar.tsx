@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   FileSpreadsheet,
   Settings,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { FinbudLogo } from '@/components/common/FinbudLogo';
 
@@ -46,29 +48,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-[#182B46]/30 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Dark Minimalist Sidebar Shell */}
+      {/* Main Neo-Brutalist Sidebar Shell */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#0B0D14] border-r border-[#191B25] transition-all duration-200 ease-in-out ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#FFFDF5] border-r-[1.5px] border-[#182B46] transition-all duration-200 ease-in-out ${
           collapsed ? 'w-20' : 'w-64'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
-        {/* Brand Header with Exact Reference Logo */}
-        <div className="flex items-center justify-between h-16 px-5 border-b border-[#191B25]">
+        {/* Brand Header */}
+        <div className="flex items-center justify-between h-16 px-4 border-b-[1.5px] border-[#182B46] bg-white">
           <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
-            <FinbudLogo showWordmark={!collapsed} size="sm" />
+            {collapsed ? (
+              <FinbudLogo showWordmark={false} size="sm" />
+            ) : (
+              <FinbudLogo showWordmark={true} size="sm" />
+            )}
           </Link>
         </div>
 
         {/* Navigation Link List */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 no-scrollbar">
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5 no-scrollbar">
           {!collapsed && (
-            <div className="px-3 pb-2 text-[11px] font-mono font-medium uppercase tracking-wider text-[#71809B]">
-              Navigation
+            <div className="px-3 pb-2 text-[10px] font-mono font-extrabold uppercase tracking-wider text-[#4B5E76]">
+              Workspace
             </div>
           )}
 
@@ -84,19 +90,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`group flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all ${
+                className={`group flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-xs font-bold transition-all relative ${
                   isActive
-                    ? 'bg-[#10245C] text-[#F4F6FF] border border-[#0033FF]/40'
-                    : 'text-[#A9BCE0] hover:bg-[#10131D] hover:text-[#F4F6FF]'
+                    ? 'bg-[#FFD05B] text-[#182B46] border-[1.5px] border-[#182B46] shadow-[3px_3px_0_#182B46] translate-y-[-1px]'
+                    : 'text-[#182B46] hover:bg-white hover:border-[1.5px] hover:border-[#182B46] hover:shadow-[2px_2px_0_#9DE8CB]'
                 }`}
                 title={collapsed ? item.name : undefined}
               >
                 <div
-                  className={`p-1 rounded-md transition-colors ${
-                    isActive ? 'text-[#0033FF]' : 'text-[#71809B] group-hover:text-[#A9BCE0]'
+                  className={`p-1.5 rounded-lg transition-transform ${
+                    isActive
+                      ? 'bg-white border-[1.5px] border-[#182B46]'
+                      : 'group-hover:scale-105'
                   }`}
                 >
-                  <Icon className="w-4 h-4 stroke-[2]" />
+                  <Icon
+                    className={`w-4 h-4 stroke-[2.2] ${
+                      isActive ? 'text-[#182B46]' : 'text-[#4B5E76] group-hover:text-[#182B46]'
+                    }`}
+                  />
                 </div>
 
                 {!collapsed && (
@@ -109,15 +121,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Footer Info Pill */}
         {!collapsed && (
-          <div className="p-3 m-3 rounded-[10px] bg-[#05060A] border border-[#191B25]">
+          <div className="p-3 m-3 rounded-[12px] bg-[#E9FFF5] border-[1.5px] border-[#182B46] shadow-[2px_2px_0_#182B46]">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 rounded-full bg-[#0033FF] animate-pulse" />
-              <span className="text-[11px] font-semibold text-[#F4F6FF]">
-                Telemetry Engine
+              <span className="w-2 h-2 rounded-full bg-[#182B46]" />
+              <span className="text-[11px] font-extrabold text-[#182B46]">
+                Security Active
               </span>
             </div>
-            <p className="text-[10px] font-normal text-[#71809B] leading-tight">
-              Sub-second latency • AES-256 Encrypted
+            <p className="text-[10px] font-medium text-[#4B5E76] leading-tight">
+              Supabase RLS & AES-256 Protected
             </p>
           </div>
         )}

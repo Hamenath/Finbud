@@ -8,100 +8,34 @@ import {
   ArrowDownRight,
   ChevronRight,
   Database,
-  Plus,
-  Minus,
   Sparkles,
   Zap,
-  Activity,
-  CreditCard,
-  Lock,
-  ArrowRight,
 } from 'lucide-react';
 import {
   AreaChart,
   Area,
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
 import {
   DEMO_OVERVIEW_METRICS,
   DEMO_CASH_FLOW,
+  DEMO_ASSET_ALLOCATION,
   DEMO_TRANSACTIONS,
 } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
-
-// Card 1: Revenue Line Data
-const REVENUE_SERIES = [
-  { day: '1', val: 12000 },
-  { day: '4', val: 18000 },
-  { day: '8', val: 15000 },
-  { day: '12', val: 24000 },
-  { day: '16', val: 22000 },
-  { day: '20', val: 32000 },
-  { day: '24', val: 29000 },
-  { day: '28', val: 41000 },
-  { day: '30', val: 48000 },
-];
-
-// Card 2: Subscription Growth Data
-const SUBSCRIPTION_SERIES = [
-  { day: '1', count: 1210 },
-  { day: '5', count: 1350 },
-  { day: '10', count: 1480 },
-  { day: '15', count: 1620 },
-  { day: '20', count: 1890 },
-  { day: '25', count: 2140 },
-  { day: '30', count: 2350 },
-];
-
-// Card 3: Move Goal Bar Data
-const MOVE_GOAL_BARS = [
-  { day: 'M', value: 380 },
-  { day: 'T', value: 450 },
-  { day: 'W', value: 510 },
-  { day: 'T', value: 340 },
-  { day: 'F', value: 490 },
-  { day: 'S', value: 580 },
-  { day: 'S', value: 520 },
-];
-
-// Card 4: Exercise Minutes Two-Series Data
-const EXERCISE_SERIES = [
-  { day: 'Mon', current: 35, previous: 25 },
-  { day: 'Tue', current: 50, previous: 30 },
-  { day: 'Wed', current: 40, previous: 45 },
-  { day: 'Thu', current: 65, previous: 35 },
-  { day: 'Fri', current: 55, previous: 40 },
-  { day: 'Sat', current: 80, previous: 60 },
-  { day: 'Sun', current: 70, previous: 50 },
-];
 
 export default function DashboardPage() {
   const supabase = createClient();
   const [user, setUser] = useState<any>(null);
   const [realTransactions, setRealTransactions] = useState<any[]>([]);
   const [isLiveConnected, setIsLiveConnected] = useState(false);
-
-  // Card 3 State: Move Goal Interactive Counter
-  const [moveGoal, setMoveGoal] = useState<number>(450);
-
-  // Forms State
-  const [upgradeEmail, setUpgradeEmail] = useState('');
-  const [upgradeName, setUpgradeName] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExp, setCardExp] = useState('');
-  const [cardCvc, setCardCvc] = useState('');
-
-  const [regEmail, setRegEmail] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [formFeedback, setFormFeedback] = useState<string | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -130,11 +64,10 @@ export default function DashboardPage() {
     if (!isLiveConnected || realTransactions.length === 0) {
       return {
         isDemo: true,
-        revenue: '₹2,45,000',
-        revenueChange: '+12.5%',
-        subscriptions: '2,350',
-        subGrowth: '+18.2%',
-        burnRate: '₹1,32,400',
+        netWorth: DEMO_OVERVIEW_METRICS.netWorth,
+        monthlyIncome: DEMO_OVERVIEW_METRICS.monthlyIncome,
+        monthlyExpense: DEMO_OVERVIEW_METRICS.monthlyExpense,
+        savingsRate: DEMO_OVERVIEW_METRICS.savingsRate,
         netSavings: '₹1,12,600',
       };
     }
@@ -148,459 +81,374 @@ export default function DashboardPage() {
     });
 
     const netSavings = income - expense;
+    const rate = income > 0 ? ((netSavings / income) * 100).toFixed(1) : '0.0';
 
     return {
       isDemo: false,
-      revenue: `₹${income.toLocaleString('en-IN')}`,
-      revenueChange: '+8.4%',
-      subscriptions: `${realTransactions.length}`,
-      subGrowth: '+5.1%',
-      burnRate: `₹${expense.toLocaleString('en-IN')}`,
+      netWorth: `₹${(netSavings + 12000000).toLocaleString('en-IN')}`,
+      monthlyIncome: `₹${income.toLocaleString('en-IN')}`,
+      monthlyExpense: `₹${expense.toLocaleString('en-IN')}`,
       netSavings: `₹${netSavings.toLocaleString('en-IN')}`,
+      savingsRate: `${rate}%`,
     };
   }, [isLiveConnected, realTransactions]);
 
-  const handleUpgradeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormFeedback('Subscription upgrade request processed.');
-    setTimeout(() => setFormFeedback(null), 3000);
-  };
-
-  const handleAccountSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormFeedback('Account creation initiated.');
-    setTimeout(() => setFormFeedback(null), 3000);
-  };
+  const recentList = useMemo(() => {
+    if (!isLiveConnected || realTransactions.length === 0) {
+      return DEMO_TRANSACTIONS.slice(0, 4);
+    }
+    return realTransactions.slice(0, 4).map((t) => ({
+      id: t.id,
+      title: t.notes || t.category,
+      category: t.category,
+      account: t.payment_method || 'Verified Account',
+      date: t.transaction_date,
+      amount: parseFloat(t.amount),
+      type: t.type,
+      isAnomaly: t.is_anomaly,
+    }));
+  }, [isLiveConnected, realTransactions]);
 
   return (
-    <div className="space-y-8 max-w-[1440px] mx-auto">
-      {/* 1. Header Meta Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-[#191B25]">
+    <div className="space-y-8">
+      {/* 1. Playful Neo-Brutalist Welcome Header */}
+      <div className="neo-card-yellow p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-[#F4F6FF] tracking-tight">
-            Telemetry & Financial Performance
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border-[1.5px] border-[#182B46] bg-[#FFD05B] text-xs font-mono font-extrabold text-[#182B46] mb-2.5">
+            <Zap className="w-3.5 h-3.5 fill-[#182B46]" />
+            FINBUD 2.0 • Playful Geometric Intelligence
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
+            Welcome back{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name.split(' ')[0]}` : ''}
           </h1>
-          <p className="text-xs text-[#71809B] mt-0.5">
-            Real-time analytics engine • Verified statement period November 2026
+          <p className="text-xs sm:text-sm font-semibold text-[#4B5E76] mt-1">
+            Financial Statement Period: <span className="text-[#182B46] font-bold">November 2026</span>
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div>
           {metrics.isDemo ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono text-[#A9BCE0] bg-[#10131D] border border-[#191B25]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0033FF] animate-pulse" />
-              Demo Benchmark
+            <span className="neo-badge">
+              <span className="w-2 h-2 rounded-full bg-[#182B46]" />
+              Demo Preview
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono text-[#F4F6FF] bg-[#10245C] border border-[#0033FF]/40">
-              <Database size={11} className="text-[#0033FF]" />
-              Live PostgreSQL
+            <span className="neo-badge-mint">
+              <Database size={13} className="text-[#182B46]" />
+              Supabase Live
             </span>
           )}
         </div>
       </div>
 
-      {formFeedback && (
-        <div className="p-3 rounded-xl bg-[#10245C] border border-[#0033FF]/40 text-xs text-[#F4F6FF] font-medium animate-fadeIn">
-          {formFeedback}
-        </div>
-      )}
-
-      {/* 2. THE 4 PRIMARY DASHBOARD CARDS (Exact 2x2 Grid from Spec) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* CARD 1 — TOTAL REVENUE */}
-        <div className="dark-card flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-xs text-[#A9BCE0] mb-1 font-medium">
-              <span>Total Revenue</span>
-              <span className="text-[11px] font-mono text-[#0033FF] font-semibold">
-                {metrics.revenueChange}
-              </span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#F4F6FF] tracking-tight">
-              {metrics.revenue}
-            </div>
-            <p className="text-xs text-[#71809B] mt-1">
-              +₹32,450 from last reporting month
-            </p>
+      {/* 2. Hero: Total Net Worth Neo Paper Block */}
+      <div className="neo-card p-6 sm:p-8">
+        <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#4B5E76]">
+          Total Net Worth
+        </span>
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mt-2">
+          <div className="text-3xl sm:text-5xl font-extrabold text-[#182B46] tracking-tight">
+            {metrics.netWorth}
           </div>
-
-          <div className="h-36 w-full mt-6">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={REVENUE_SERIES} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="neonBlueFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0033FF" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#0033FF" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0B0D14',
-                    borderColor: '#191B25',
-                    borderRadius: '8px',
-                    color: '#F4F6FF',
-                    fontSize: '11px',
-                  }}
-                  formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, 'Revenue']}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="val"
-                  stroke="#0033FF"
-                  strokeWidth={2}
-                  fill="url(#neonBlueFill)"
-                  dot={{ r: 2.5, fill: '#0033FF', stroke: '#0B0D14', strokeWidth: 1 }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* CARD 2 — SUBSCRIPTIONS */}
-        <div className="dark-card flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-xs text-[#A9BCE0] mb-1 font-medium">
-              <span>Subscriptions</span>
-              <span className="text-[11px] font-mono text-[#0033FF] font-semibold">
-                {metrics.subGrowth}
-              </span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#F4F6FF] tracking-tight">
-              +{metrics.subscriptions}
-            </div>
-            <p className="text-xs text-[#71809B] mt-1">
-              +180.1% from previous cycle
-            </p>
-          </div>
-
-          <div className="h-36 w-full mt-6">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={SUBSCRIPTION_SERIES} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0B0D14',
-                    borderColor: '#191B25',
-                    borderRadius: '8px',
-                    color: '#F4F6FF',
-                    fontSize: '11px',
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="count"
-                  stroke="#0033FF"
-                  strokeWidth={2}
-                  dot={{ r: 3, fill: '#0033FF', stroke: '#0B0D14', strokeWidth: 1 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* CARD 3 — MOVE GOAL */}
-        <div className="dark-card flex flex-col justify-between space-y-4">
-          <div>
-            <h2 className="text-sm font-semibold text-[#F4F6FF]">Move Goal</h2>
-            <p className="text-xs text-[#71809B]">Set your daily activity goal</p>
-          </div>
-
-          {/* Centered Goal Counter */}
-          <div className="flex items-center justify-center gap-6 py-2">
-            <button
-              onClick={() => setMoveGoal((g) => Math.max(100, g - 25))}
-              className="w-8 h-8 rounded-full border border-[#191B25] bg-[#05060A] hover:bg-[#10131D] hover:border-[#0033FF] text-white flex items-center justify-center transition-colors cursor-pointer"
-              title="Decrease goal"
-            >
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#F4F6FF] tracking-tight font-mono">
-                {moveGoal}
-              </div>
-              <div className="text-[10px] uppercase font-mono tracking-wider text-[#71809B]">
-                CALORIES/DAY
-              </div>
-            </div>
-
-            <button
-              onClick={() => setMoveGoal((g) => g + 25)}
-              className="w-8 h-8 rounded-full border border-[#191B25] bg-[#05060A] hover:bg-[#10131D] hover:border-[#0033FF] text-white flex items-center justify-center transition-colors cursor-pointer"
-              title="Increase goal"
-            >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Electric Blue Vertical Bar Chart */}
-          <div className="h-28 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={MOVE_GOAL_BARS} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
-                <Bar
-                  dataKey="value"
-                  fill="#0033FF"
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <button
-            onClick={() => {
-              setFormFeedback(`Daily move goal saved: ${moveGoal} cal/day.`);
-              setTimeout(() => setFormFeedback(null), 3000);
-            }}
-            className="w-full btn-electric text-xs py-2.5 cursor-pointer text-center"
-          >
-            Set Goal
-          </button>
-        </div>
-
-        {/* CARD 4 — EXERCISE MINUTES */}
-        <div className="dark-card flex flex-col justify-between space-y-4">
-          <div>
-            <h2 className="text-sm font-semibold text-[#F4F6FF]">Exercise Minutes</h2>
-            <p className="text-xs text-[#71809B]">Your exercise minutes are ahead of last week</p>
-          </div>
-
-          <div className="h-48 w-full mt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={EXERCISE_SERIES} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#191B25" vertical={false} />
-                <XAxis dataKey="day" stroke="#71809B" tick={{ fontSize: 11 }} />
-                <YAxis stroke="#71809B" tick={{ fontSize: 11 }} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0B0D14',
-                    borderColor: '#191B25',
-                    borderRadius: '8px',
-                    color: '#F4F6FF',
-                    fontSize: '11px',
-                  }}
-                />
-                {/* Primary Electric Blue Solid Line */}
-                <Line
-                  type="monotone"
-                  dataKey="current"
-                  name="This Week"
-                  stroke="#0033FF"
-                  strokeWidth={2}
-                  dot={{ r: 3, fill: '#0033FF', stroke: '#0B0D14', strokeWidth: 1 }}
-                />
-                {/* Secondary Blue Dashed Line */}
-                <Line
-                  type="monotone"
-                  dataKey="previous"
-                  name="Last Week"
-                  stroke="#1744B8"
-                  strokeDasharray="4 4"
-                  strokeWidth={1.5}
-                  dot={{ r: 2.5, fill: '#1744B8', stroke: '#0B0D14' }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="flex items-center justify-between text-xs text-[#71809B] pt-2 border-t border-[#191B25] font-mono">
-            <span>Weekly Target: 300 min</span>
-            <span className="text-[#0033FF] font-semibold">395 min achieved</span>
+          <div className="flex items-center gap-2">
+            <span className="neo-badge-mint text-xs">
+              <ArrowUpRight size={14} className="stroke-[2.5]" />
+              +1.5% MoM
+            </span>
+            <span className="text-xs font-bold text-[#4B5E76]">YTD Outperformance: +14.2%</span>
           </div>
         </div>
       </div>
 
-      {/* 3. FORMS SECTION (Side-by-Side Dark Form Cards from Spec) */}
-      <div className="space-y-4 pt-4">
-        <div>
-          <h2 className="text-sm font-semibold text-[#F4F6FF] uppercase tracking-wider">
-            Forms
-          </h2>
-          <p className="text-xs text-[#71809B]">Institutional checkout & access authorization</p>
+      {/* 3. Three Geometric Financial Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Income (Mint Card) */}
+        <div className="neo-card-mint p-6 space-y-2">
+          <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
+            Monthly Income
+          </span>
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#182B46]">
+            {metrics.monthlyIncome}
+          </div>
+          <p className="text-xs font-medium text-[#4B5E76]">Primary salary & portfolio inflows</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* CARD 1 — UPGRADE YOUR SUBSCRIPTION */}
-          <div className="dark-card space-y-4">
-            <div>
-              <h3 className="text-base font-semibold text-[#F4F6FF]">
-                Upgrade your subscription
-              </h3>
-              <p className="text-xs text-[#71809B] mt-0.5">
-                Unlock full financial telemetry, Monte Carlo projections and multi-asset automation.
-              </p>
+        {/* Expenses (White Card with Bold Outline) */}
+        <div className="neo-card p-6 space-y-2">
+          <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
+            Monthly Expenses (Burn)
+          </span>
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#EF4444]">
+            {metrics.monthlyExpense}
+          </div>
+          <p className="text-xs font-medium text-[#4B5E76]">Non-discretionary & lifestyle burn</p>
+        </div>
+
+        {/* Savings (Yellow Accent Card) */}
+        <div className="neo-card-yellow p-6 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-[#182B46] uppercase tracking-wider">
+              Net Monthly Savings
+            </span>
+            <span className="px-2 py-0.5 rounded-full border border-[#182B46] bg-white text-[11px] font-mono font-extrabold text-[#182B46]">
+              {metrics.savingsRate}
+            </span>
+          </div>
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#182B46]">
+            {metrics.netSavings}
+          </div>
+          <p className="text-xs font-medium text-[#4B5E76]">Target guideline: ≥ 30% of income</p>
+        </div>
+      </div>
+
+      {/* 4. Monthly Cash Flow Chart */}
+      <div className="neo-card p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b-[1.5px] border-[#182B46]">
+          <div>
+            <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Monthly Cash Flow</h2>
+            <p className="text-xs font-semibold text-[#4B5E76] mt-0.5">Historical trajectory and baseline expense forecast</p>
+          </div>
+          <div className="flex items-center gap-4 text-xs font-mono font-bold">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-[#182B46] border border-[#182B46]" />
+              <span className="text-[#182B46]">Income</span>
             </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-[#EF4444] border border-[#182B46]" />
+              <span className="text-[#182B46]">Expenses</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-1 bg-[#FFD05B] border border-[#182B46]" />
+              <span className="text-[#182B46]">Forecast</span>
+            </div>
+          </div>
+        </div>
 
-            <form onSubmit={handleUpgradeSubmit} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="First and last name"
-                  value={upgradeName}
-                  onChange={(e) => setUpgradeName(e.target.value)}
-                  className="w-full dark-input"
-                  required
-                />
-              </div>
+        <div className="h-72 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={DEMO_CASH_FLOW} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="incFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#182B46" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#182B46" stopOpacity={0.0} />
+                </linearGradient>
+                <linearGradient id="expFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#EF4444" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#EF4444" stopOpacity={0.0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+              <XAxis dataKey="month" stroke="#182B46" tick={{ fontSize: 11, fontWeight: 700 }} />
+              <YAxis
+                stroke="#182B46"
+                tick={{ fontSize: 11, fontWeight: 700 }}
+                tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#FFFDF5',
+                  borderColor: '#182B46',
+                  borderWidth: '1.5px',
+                  borderRadius: '12px',
+                  boxShadow: '3px 3px 0 #182B46',
+                  color: '#182B46',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                }}
+                formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, '']}
+              />
+              <Area
+                type="monotone"
+                dataKey="actualIncome"
+                name="Income"
+                stroke="#182B46"
+                strokeWidth={2.5}
+                fill="url(#incFill)"
+              />
+              <Area
+                type="monotone"
+                dataKey="actualExpense"
+                name="Expenses"
+                stroke="#EF4444"
+                strokeWidth={2.5}
+                fill="url(#expFill)"
+              />
+              <Area
+                type="monotone"
+                dataKey="forecastExpense"
+                name="Forecast"
+                stroke="#FFD05B"
+                strokeDasharray="4 4"
+                strokeWidth={2.5}
+                fill="none"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="name@organization.com"
-                  value={upgradeEmail}
-                  onChange={(e) => setUpgradeEmail(e.target.value)}
-                  className="w-full dark-input"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                  Card number
-                </label>
-                <input
-                  type="text"
-                  placeholder="4242 •••• •••• 4242"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full dark-input font-mono"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                    Expires
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    value={cardExp}
-                    onChange={(e) => setCardExp(e.target.value)}
-                    className="w-full dark-input font-mono"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                    CVC
-                  </label>
-                  <input
-                    type="password"
-                    maxLength={4}
-                    placeholder="•••"
-                    value={cardCvc}
-                    onChange={(e) => setCardCvc(e.target.value)}
-                    className="w-full dark-input font-mono"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="w-full btn-electric text-xs py-2.5 cursor-pointer text-center"
-                >
-                  Upgrade subscription
-                </button>
-              </div>
-            </form>
+      {/* 5. Asset Allocation & 6. Predictive Savings Forecast */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Asset Allocation */}
+        <div className="neo-card p-6 sm:p-8 space-y-6">
+          <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+            <div>
+              <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Asset Allocation</h2>
+              <p className="text-xs font-semibold text-[#4B5E76]">Multi-asset portfolio distribution</p>
+            </div>
+            <Link
+              href="/wealth-lab"
+              className="neo-btn-secondary px-3 py-1 text-xs flex items-center gap-1"
+            >
+              Analyze <ChevronRight size={13} className="stroke-[2.5]" />
+            </Link>
           </div>
 
-          {/* CARD 2 — CREATE AN ACCOUNT */}
-          <div className="dark-card space-y-4">
-            <div>
-              <h3 className="text-base font-semibold text-[#F4F6FF]">
-                Create an account
-              </h3>
-              <p className="text-xs text-[#71809B] mt-0.5">
-                Enter your email below to create your account or continue with federated providers.
-              </p>
-            </div>
-
-            {/* Social Logins */}
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setFormFeedback('GitHub OAuth connection simulated.');
-                  setTimeout(() => setFormFeedback(null), 3000);
-                }}
-                className="btn-charcoal text-xs py-2 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>GitHub</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFormFeedback('Google OAuth connection simulated.');
-                  setTimeout(() => setFormFeedback(null), 3000);
-                }}
-                className="btn-charcoal text-xs py-2 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Google</span>
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#191B25]" />
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="h-44 w-44 shrink-0 relative flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={DEMO_ASSET_ALLOCATION}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
+                    paddingAngle={3}
+                    dataKey="amount"
+                  >
+                    {DEMO_ASSET_ALLOCATION.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} stroke="#182B46" strokeWidth={1.5} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#FFFDF5',
+                      borderColor: '#182B46',
+                      borderWidth: '1.5px',
+                      borderRadius: '10px',
+                      boxShadow: '3px 3px 0 #182B46',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                    }}
+                    formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, '']}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-xs font-extrabold text-[#182B46]">₹1.25 Cr</span>
+                <span className="text-[9px] font-bold text-[#4B5E76] uppercase tracking-wider">Total</span>
               </div>
-              <div className="relative flex justify-center text-[10px] uppercase font-mono">
-                <span className="bg-[#0B0D14] px-2 text-[#71809B]">
-                  OR CONTINUE WITH
+            </div>
+
+            <div className="flex-1 space-y-2.5 w-full">
+              {DEMO_ASSET_ALLOCATION.map((item) => (
+                <div key={item.category} className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-sm border border-[#182B46]" style={{ backgroundColor: item.color }} />
+                    <span className="text-[#182B46] truncate">{item.category}</span>
+                  </div>
+                  <span className="font-mono text-[#182B46]">{item.percentage}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Predictive Savings Forecast */}
+        <div className="neo-card-yellow p-6 sm:p-8 space-y-6 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+              <div>
+                <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Predictive Forecast</h2>
+                <p className="text-xs font-semibold text-[#4B5E76]">Machine learning month-end estimate</p>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full border border-[#182B46] bg-white text-[10px] font-mono font-extrabold text-[#182B46]">
+                Ridge ML Model
+              </span>
+            </div>
+
+            <div className="p-5 rounded-xl bg-white border-[1.5px] border-[#182B46] shadow-[2px_2px_0_#182B46] space-y-3">
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs font-bold text-[#4B5E76]">Projected Month-End Outflow</span>
+                <span className="text-base font-extrabold text-[#EF4444] font-mono">
+                  {metrics.isDemo ? '₹1,32,400' : metrics.monthlyExpense}
                 </span>
               </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs font-bold text-[#4B5E76]">Estimated Month-End Surplus</span>
+                <span className="text-base font-extrabold text-[#182B46] font-mono">
+                  {metrics.isDemo ? '₹1,12,600' : metrics.netSavings}
+                </span>
+              </div>
+              <div className="w-full bg-[#FFFDF5] border border-[#182B46] h-2 rounded-full overflow-hidden p-0.5">
+                <div className="bg-[#182B46] h-full rounded-full" style={{ width: '46%' }} />
+              </div>
             </div>
 
-            {/* Account Form */}
-            <form onSubmit={handleAccountSubmit} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="m@example.com"
-                  value={regEmail}
-                  onChange={(e) => setRegEmail(e.target.value)}
-                  className="w-full dark-input"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#F4F6FF] mb-1">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••••••"
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  className="w-full dark-input font-mono"
-                  required
-                />
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="w-full btn-electric text-xs py-2.5 cursor-pointer text-center"
-                >
-                  Create account
-                </button>
-              </div>
-            </form>
+            <p className="text-xs font-medium text-[#4B5E76] leading-relaxed">
+              Based on historical daily spending velocity and category-level recurrence patterns. Model uses time-based holdout validation to prevent lookahead leakage.
+            </p>
           </div>
+
+          <Link
+            href="/analytics"
+            className="w-full neo-btn-primary py-2.5 text-xs font-extrabold text-center block"
+          >
+            Explore Detailed Analytics
+          </Link>
+        </div>
+      </div>
+
+      {/* 7. Recent Transactions (Neo-Brutalist Paper Table) */}
+      <div className="neo-card p-6 sm:p-8 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b-[1.5px] border-[#182B46]">
+          <div>
+            <h2 className="text-lg font-extrabold text-[#182B46] tracking-tight">Recent Transactions</h2>
+            <p className="text-xs font-semibold text-[#4B5E76]">
+              {isLiveConnected ? 'Real records from your Supabase PostgreSQL ledger' : 'Sample transaction records'}
+            </p>
+          </div>
+          <Link
+            href="/transactions"
+            className="neo-btn-secondary px-3 py-1 text-xs flex items-center gap-1"
+          >
+            View All <ChevronRight size={13} className="stroke-[2.5]" />
+          </Link>
+        </div>
+
+        <div className="divide-y-[1.5px] divide-[#182B46]/10">
+          {recentList.map((tx) => (
+            <div key={tx.id} className="py-3.5 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-9 h-9 rounded-lg border-[1.5px] border-[#182B46] flex items-center justify-center shrink-0 shadow-[1.5px_1.5px_0_#182B46] ${
+                    tx.type === 'INCOME'
+                      ? 'bg-[#E9FFF5] text-[#182B46]'
+                      : 'bg-white text-[#182B46]'
+                  }`}
+                >
+                  {tx.type === 'INCOME' ? (
+                    <ArrowUpRight size={16} className="stroke-[2.5]" />
+                  ) : (
+                    <ArrowDownRight size={16} className="stroke-[2.5]" />
+                  )}
+                </div>
+                <div>
+                  <div className="font-extrabold text-[#182B46] text-sm">{tx.title}</div>
+                  <div className="text-[11px] font-bold text-[#4B5E76]">{tx.category} • {tx.date}</div>
+                </div>
+              </div>
+
+              <div
+                className={`font-mono font-extrabold text-sm px-2.5 py-1 rounded-md border-[1.5px] border-[#182B46] shadow-[1.5px_1.5px_0_#182B46] ${
+                  tx.type === 'INCOME' ? 'bg-[#E9FFF5] text-[#182B46]' : 'bg-white text-[#EF4444]'
+                }`}
+              >
+                {tx.type === 'INCOME' ? '+' : '-'}₹{tx.amount.toLocaleString('en-IN')}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

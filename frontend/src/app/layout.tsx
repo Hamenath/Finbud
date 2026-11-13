@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { AppShell } from '@/components/layout/AppShell';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
   display: 'swap',
 });
 
@@ -18,13 +19,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'FINBUD • Dark Minimalist Analytics Dashboard',
+  title: 'FINBUD • AI Personal Wealth & Predictive Market Analytics',
   description:
-    'A high-performance dark minimalist personal wealth intelligence platform with neon blue real-time telemetry.',
+    'A predictive financial intelligence and decision-support system designed for accessible personal wealth management in India.',
   icons: {
-    icon: '/brand/finbud-logo-ref.png',
-    shortcut: '/brand/finbud-logo-ref.png',
-    apple: '/brand/finbud-logo-ref.png',
+    icon: '/brand/finbud-icon.svg',
+    shortcut: '/brand/finbud-icon.svg',
+    apple: '/brand/finbud-icon-512.png',
   },
 };
 
@@ -34,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-[#05060A] text-[#F4F6FF] antialiased selection:bg-[#0033FF]/30 selection:text-[#F4F6FF]">
+    <html lang="en" className={`light ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
+      <body className="bg-[#FFFDF5] text-[#182B46] antialiased selection:bg-[#FFD05B] selection:text-[#182B46]">
         <SmoothScrollProvider>
           <AppShell>{children}</AppShell>
         </SmoothScrollProvider>
