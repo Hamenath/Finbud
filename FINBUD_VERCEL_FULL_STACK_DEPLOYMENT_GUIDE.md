@@ -214,3 +214,4 @@ MARKET_CACHE_TTL_SECONDS="3600"
 | **Cost Profile** | Free tier friendly (within quotas) | Free tier available on Render/Railway |
 | **Operational Complexity** | Single cloud provider dashboard | Two cloud provider dashboards |
 | **Recommendation** | Ideal for simple portfolio & ML tasks | **Strongly recommended** for real-time tickers |
+
