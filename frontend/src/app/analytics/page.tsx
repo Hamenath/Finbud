@@ -115,16 +115,16 @@ export default function AnalyticsPage() {
       {/* 1. Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
             Predictive Expense & Savings Engine
           </h1>
-          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#4B5E76] mt-0.5">
             Ridge time-series regression and category-level anomaly surveillance on authenticated records
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E3A8A] text-xs font-mono font-semibold">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#E9FFF5] border border-[#182B46] text-[#182B46] text-xs font-mono font-semibold">
             <Database size={13} />
             {forecastData?.status === 'REGRESSION_ACTIVE'
               ? 'RIDGE REGRESSION ACTIVE'
@@ -135,67 +135,67 @@ export default function AnalyticsPage() {
 
       {/* 2. Model Health & Statistical Limitations Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
-          <div className="text-xs text-[#6B7280]">Daily Spending Burn Velocity</div>
-          <div className="text-2xl font-black text-[#111827] mt-1 font-mono">
+        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs">
+          <div className="text-xs text-[#4B5E76]">Daily Spending Burn Velocity</div>
+          <div className="text-2xl font-black text-[#182B46] mt-1 font-mono">
             ₹{forecastData?.daily_burn_velocity ? forecastData.daily_burn_velocity.toLocaleString('en-IN') : '3,230'} / day
           </div>
-          <div className="text-[11px] text-[#1E40AF] mt-1 flex items-center gap-1 font-mono">
+          <div className="text-[11px] text-[#182B46] mt-1 flex items-center gap-1 font-mono">
             <ArrowUpRight size={12} /> {forecastData?.days_observed || 13} days observed in month
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
-          <div className="text-xs text-[#6B7280]">Predicted Remaining Outflow</div>
+        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs">
+          <div className="text-xs text-[#4B5E76]">Predicted Remaining Outflow</div>
           <div className="text-2xl font-black text-[#DC2626] mt-1 font-mono">
             ₹{forecastData?.remaining_forecast_outflow ? forecastData.remaining_forecast_outflow.toLocaleString('en-IN') : '54,923'}
           </div>
-          <div className="text-[11px] text-[#6B7280] mt-1 font-mono">
+          <div className="text-[11px] text-[#4B5E76] mt-1 font-mono">
             Confidence: {forecastData?.confidence_label || 'High Calibration'}
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
-          <div className="text-xs text-[#6B7280]">Estimated Month-End Savings</div>
-          <div className="text-2xl font-black text-[#1E40AF] mt-1 font-mono">
+        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs">
+          <div className="text-xs text-[#4B5E76]">Estimated Month-End Savings</div>
+          <div className="text-2xl font-black text-[#182B46] mt-1 font-mono">
             ₹{forecastData?.estimated_month_end_savings ? forecastData.estimated_month_end_savings.toLocaleString('en-IN') : '33,000'}
           </div>
-          <div className="text-[11px] text-[#1E40AF] mt-1 font-mono">
+          <div className="text-[11px] text-[#182B46] mt-1 font-mono">
             Savings Rate: {forecastData?.predicted_savings_rate || 44.0}%
           </div>
         </div>
       </div>
 
       {/* 3. Prediction Uncertainty Bounds Card */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-3">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#182B46] flex items-center gap-2">
               95% Statistical Prediction Interval (Month-End Expense)
             </h2>
-            <p className="text-xs text-[#6B7280]">
+            <p className="text-xs text-[#4B5E76]">
               Quantifies forecasting uncertainty without claiming false deterministic precision
             </p>
           </div>
 
           <div className="text-right">
-            <span className="text-xs text-[#6B7280]">Expected Outflow Range</span>
-            <div className="text-sm font-mono font-bold text-[#111827]">
+            <span className="text-xs text-[#4B5E76]">Expected Outflow Range</span>
+            <div className="text-sm font-mono font-bold text-[#182B46]">
               ₹{forecastData?.lower_bound_95?.toLocaleString('en-IN') || '68,982'} – ₹
               {forecastData?.upper_bound_95?.toLocaleString('en-IN') || '82,373'}
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#E5E7EB] relative">
+        <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#182B46] relative">
           <div
             className="h-full bg-linear-to-r from-[#1E40AF] via-[#D97706] to-[#DC2626] rounded-full"
             style={{ width: '100%' }}
           />
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] text-[#6B7280]">
-          <Info size={13} className="text-[#1E40AF]" />
+        <div className="flex items-center gap-2 text-[11px] text-[#4B5E76]">
+          <Info size={13} className="text-[#182B46]" />
           <span>
             {forecastData?.message ||
               'Personalized Ridge time-series regression calibrated on authenticated records.'}
@@ -204,17 +204,17 @@ export default function AnalyticsPage() {
       </div>
 
       {/* 4. Contributing Spending Categories Bar Chart */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
           <div>
-            <h2 className="text-base font-bold text-[#111827]">
+            <h2 className="text-base font-bold text-[#182B46]">
               Contributing Outflow Categories
             </h2>
-            <p className="text-xs text-[#6B7280]">
+            <p className="text-xs text-[#4B5E76]">
               Identifies which spending categories dominate current burn rate
             </p>
           </div>
-          <span className="text-xs font-mono text-[#6B7280]">
+          <span className="text-xs font-mono text-[#4B5E76]">
             TOTAL OBSERVED: ₹{forecastData?.current_month_outflow?.toLocaleString('en-IN') || '42,000'}
           </span>
         </div>
@@ -247,57 +247,57 @@ export default function AnalyticsPage() {
       </div>
 
       {/* 5. Academic Holdout Evaluation (MAE / RMSE Verification) */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#182B46]">
           <div>
-            <h2 className="text-base font-bold text-[#111827]">
+            <h2 className="text-base font-bold text-[#182B46]">
               Academic Model Evaluation & Validation
             </h2>
-            <p className="text-xs text-[#6B7280]">
+            <p className="text-xs text-[#4B5E76]">
               Time-based holdout validation comparing Ridge Regression against Historical Average baseline
             </p>
           </div>
-          <span className="text-[10px] font-mono uppercase bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-2.5 py-1 rounded-md font-bold">
+          <span className="text-[10px] font-mono uppercase bg-[#E9FFF5] text-[#182B46] border border-[#182B46] px-2.5 py-1 rounded-md font-bold">
             ZERO DATA LEAKAGE
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-          <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
-            <span className="text-[#6B7280]">Regression MAE</span>
-            <p className="text-base font-bold text-[#111827] mt-1 font-mono">
+          <div className="p-3.5 rounded-xl bg-[#FFFDF5] border border-[#182B46]">
+            <span className="text-[#4B5E76]">Regression MAE</span>
+            <p className="text-base font-bold text-[#182B46] mt-1 font-mono">
               ₹{evalData?.mae_regression?.toLocaleString('en-IN') || '17,284'}
             </p>
-            <span className="text-[10px] text-[#6B7280]">Mean Absolute Error</span>
+            <span className="text-[10px] text-[#4B5E76]">Mean Absolute Error</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
-            <span className="text-[#6B7280]">Regression RMSE</span>
-            <p className="text-base font-bold text-[#111827] mt-1 font-mono">
+          <div className="p-3.5 rounded-xl bg-[#FFFDF5] border border-[#182B46]">
+            <span className="text-[#4B5E76]">Regression RMSE</span>
+            <p className="text-base font-bold text-[#182B46] mt-1 font-mono">
               ₹{evalData?.rmse_regression?.toLocaleString('en-IN') || '17,284'}
             </p>
-            <span className="text-[10px] text-[#6B7280]">Root Mean Square Error</span>
+            <span className="text-[10px] text-[#4B5E76]">Root Mean Square Error</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
-            <span className="text-[#6B7280]">Baseline Average MAE</span>
+          <div className="p-3.5 rounded-xl bg-[#FFFDF5] border border-[#182B46]">
+            <span className="text-[#4B5E76]">Baseline Average MAE</span>
             <p className="text-base font-bold text-[#D97706] mt-1 font-mono">
               ₹{evalData?.mae_baseline_average?.toLocaleString('en-IN') || '11,540'}
             </p>
-            <span className="text-[10px] text-[#6B7280]">Simple Mean Benchmark</span>
+            <span className="text-[10px] text-[#4B5E76]">Simple Mean Benchmark</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB]">
-            <span className="text-[#6B7280]">Synthetic Test Cycles</span>
-            <p className="text-base font-bold text-[#1E40AF] mt-1 font-mono">
+          <div className="p-3.5 rounded-xl bg-[#FFFDF5] border border-[#182B46]">
+            <span className="text-[#4B5E76]">Synthetic Test Cycles</span>
+            <p className="text-base font-bold text-[#182B46] mt-1 font-mono">
               {evalData?.training_cycles_count || 6} Months
             </p>
-            <span className="text-[10px] text-[#6B7280]">Holdout: {evalData?.validation_holdout_month || '2026-11'}</span>
+            <span className="text-[10px] text-[#4B5E76]">Holdout: {evalData?.validation_holdout_month || '2026-11'}</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] text-xs text-[#4B5563] space-y-1">
-          <p className="font-semibold text-[#111827]">Academic Methodology Note:</p>
+        <div className="p-3.5 rounded-xl bg-[#FFFDF5] border border-[#182B46] text-xs text-[#4B5E76] space-y-1">
+          <p className="font-semibold text-[#182B46]">Academic Methodology Note:</p>
           <p className="text-[11px] leading-relaxed">
             Personal spending behaviors vary month-to-month. The FINBUD engine evaluates model performance exclusively on completed prior cycles, validating that models do not peek into future days. Early users with under 10 records are transparently served heuristic burn rates until adequate data is collected.
           </p>

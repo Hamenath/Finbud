@@ -51,99 +51,112 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-[#182B46]/30 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Main Sidebar Shell */}
+      {/* Main Neo-Brutalist Sidebar Shell */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-white border-r border-[#E5E7EB] transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#FFFDF5] border-r-[1.5px] border-[#182B46] transition-all duration-200 ease-in-out ${
           collapsed ? 'w-20' : 'w-64'
         } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-20 px-5 border-b border-[#E5E7EB]/80">
+        <div className="flex items-center justify-between h-16 px-4 border-b-[1.5px] border-[#182B46] bg-white">
           <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
             {collapsed ? (
-              <FinbudLogo showWordmark={false} size="md" />
+              <FinbudLogo showWordmark={false} size="sm" />
             ) : (
-              <FinbudLogo showWordmark={true} size="md" />
+              <FinbudLogo showWordmark={true} size="sm" />
             )}
           </Link>
 
           {/* Desktop Toggle Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex p-1.5 rounded-lg text-[#6B7280] hover:text-[#1F2937] hover:bg-[#F9FAFB] transition-colors cursor-pointer"
+            className="hidden lg:flex p-1.5 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFFDF5] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#FFD05B] transition-colors cursor-pointer"
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             aria-label="Toggle sidebar"
           >
-            {collapsed ? <ChevronRight size={17} /> : <ChevronLeft size={17} />}
+            {collapsed ? (
+              <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+            ) : (
+              <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+            )}
           </button>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+        {/* Navigation Link List */}
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5 no-scrollbar">
+          {!collapsed && (
+            <div className="px-3 pb-2 text-[10px] font-mono font-extrabold uppercase tracking-wider text-[#4B5E76]">
+              Workspace
+            </div>
+          )}
+
           {navigationItems.map((item) => {
+            const isActive =
+              item.href === '/'
+                ? pathname === '/'
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
-            const isActive = pathname === item.href;
 
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-[13px] transition-all duration-150 ${
+                className={`group flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-xs font-bold transition-all relative ${
                   isActive
-                    ? 'bg-[#1E40AF] text-white font-semibold shadow-xs'
-                    : 'text-[#4B5563] hover:text-[#1F2937] hover:bg-[#F9FAFB]'
+                    ? 'bg-[#FFD05B] text-[#182B46] border-[1.5px] border-[#182B46] shadow-[3px_3px_0_#182B46] translate-y-[-1px]'
+                    : 'text-[#182B46] hover:bg-white hover:border-[1.5px] hover:border-[#182B46] hover:shadow-[2px_2px_0_#9DE8CB]'
                 }`}
                 title={collapsed ? item.name : undefined}
               >
-                <Icon
-                  size={18}
-                  className={`shrink-0 ${
+                <div
+                  className={`p-1.5 rounded-lg transition-transform ${
                     isActive
-                      ? 'text-white'
-                      : item.isAi
-                      ? 'text-[#1E40AF]'
-                      : 'text-[#6B7280] group-hover:text-[#1F2937]'
+                      ? 'bg-white border-[1.5px] border-[#182B46]'
+                      : 'group-hover:scale-105'
                   }`}
-                />
+                >
+                  <Icon
+                    className={`w-4 h-4 stroke-[2.2] ${
+                      isActive ? 'text-[#182B46]' : 'text-[#4B5E76] group-hover:text-[#182B46]'
+                    }`}
+                  />
+                </div>
+
                 {!collapsed && (
-                  <span className="flex-1 flex items-center justify-between truncate tracking-tight">
-                    {item.name}
-                    {item.isAi && !isActive && (
-                      <span className="text-[10px] bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-1.5 py-0.5 rounded font-mono font-medium">
-                        RAG
-                      </span>
-                    )}
+                  <span className="flex-1 truncate tracking-tight">{item.name}</span>
+                )}
+
+                {!collapsed && item.isAi && (
+                  <span className="px-1.5 py-0.5 rounded-full border border-[#182B46] text-[9px] font-extrabold bg-[#E9FFF5] text-[#182B46]">
+                    RAG
                   </span>
                 )}
               </Link>
             );
           })}
-        </nav>
-
-        {/* Minimal Footer Info */}
-        <div className="p-4 border-t border-[#E5E7EB]/80">
-          {!collapsed ? (
-            <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#1E40AF]" />
-                <span>v2.4 Light</span>
-              </span>
-              <span className="font-mono text-[#1E3A8A]">Academic CSD</span>
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <span className="w-2 h-2 rounded-full bg-[#1E40AF]" title="Active" />
-            </div>
-          )}
         </div>
+
+        {/* Footer Info Pill */}
+        {!collapsed && (
+          <div className="p-3 m-3 rounded-[12px] bg-[#E9FFF5] border-[1.5px] border-[#182B46] shadow-[2px_2px_0_#182B46]">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#182B46]" />
+              <span className="text-[11px] font-extrabold text-[#182B46]">
+                Security Active
+              </span>
+            </div>
+            <p className="text-[10px] font-medium text-[#4B5E76] leading-tight">
+              Supabase RLS & AES-256 Protected
+            </p>
+          </div>
+        )}
       </aside>
     </>
   );
 };
-

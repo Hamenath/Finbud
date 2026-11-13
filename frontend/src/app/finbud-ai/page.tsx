@@ -161,14 +161,14 @@ export default function FinbudAiPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
               FINBUD RAG Financial Assistant
             </h1>
-            <span className="text-[10px] bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE] px-2 py-0.5 rounded font-mono font-bold">
+            <span className="text-[10px] bg-[#E9FFF5] text-[#182B46] border border-[#182B46] px-2 py-0.5 rounded font-mono font-bold">
               GROUNDED RAG COPILOT
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#4B5E76] mt-0.5">
             Grounded vector retrieval across Indian tax codes, SGBs, SIP mechanics, and insurance heuristics with verifiable source citations.
           </p>
         </div>
@@ -176,16 +176,16 @@ export default function FinbudAiPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleRunEvaluation}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-[#E5E7EB] hover:border-[#1E40AF] text-[#374151] hover:text-[#1E3A8A] rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-[#182B46] hover:border-[#1E40AF] text-[#374151] hover:text-[#182B46] rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
           >
-            <Award size={14} className="text-[#1E40AF]" />
+            <Award size={14} className="text-[#182B46]" />
             Audit RAG Evaluation Set
           </button>
         </div>
       </div>
 
       {/* Main Chat Interface */}
-      <div className="rounded-2xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col h-140 overflow-hidden">
+      <div className="rounded-2xl bg-white border border-[#182B46] shadow-xs flex flex-col h-140 overflow-hidden">
         {/* Chat History */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
           {messages.map((m) => (
@@ -196,8 +196,8 @@ export default function FinbudAiPage() {
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                   m.sender === 'user'
-                    ? 'bg-[#1E40AF] text-white shadow-xs'
-                    : 'bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE]'
+                    ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
+                    : 'bg-[#E9FFF5] text-[#182B46] border border-[#182B46]'
                 }`}
               >
                 {m.sender === 'user' ? 'U' : <Bot size={16} />}
@@ -207,19 +207,19 @@ export default function FinbudAiPage() {
                 <div
                   className={`p-4 rounded-2xl text-xs leading-relaxed ${
                     m.sender === 'user'
-                      ? 'bg-[#1E40AF] text-white shadow-xs'
+                      ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
                       : m.isOutOfScope
                       ? 'bg-[#FEF2F2] text-[#991B1B] border border-[#FECACA]'
-                      : 'bg-[#F9FAFB] text-[#1F2937] border border-[#E5E7EB]'
+                      : 'bg-[#FFFDF5] text-[#182B46] border border-[#182B46]'
                   }`}
                 >
                   <div className="whitespace-pre-line">{m.text}</div>
 
                   {m.model && m.sender === 'assistant' && (
-                    <div className="mt-2 pt-2 border-t border-[#E5E7EB] flex items-center justify-between text-[10px] text-[#6B7280]">
+                    <div className="mt-2 pt-2 border-t border-[#182B46] flex items-center justify-between text-[10px] text-[#4B5E76]">
                       <span className="font-mono">Engine: {m.model}</span>
-                      <span className="flex items-center gap-1 text-[#1E3A8A]">
-                        <ShieldCheck size={11} className="text-[#1E40AF]" /> Zero Hallucination Guard
+                      <span className="flex items-center gap-1 text-[#182B46]">
+                        <ShieldCheck size={11} className="text-[#182B46]" /> Zero Hallucination Guard
                       </span>
                     </div>
                   )}
@@ -231,9 +231,9 @@ export default function FinbudAiPage() {
                     {m.citations.map((c, i) => (
                       <span
                         key={i}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563]"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#182B46] text-[#4B5E76]"
                       >
-                        <BookOpen size={11} className="text-[#1E40AF] shrink-0" />
+                        <BookOpen size={11} className="text-[#182B46] shrink-0" />
                         <span>
                           <strong>{c.title}</strong> • {c.section}
                         </span>
@@ -246,8 +246,8 @@ export default function FinbudAiPage() {
           ))}
 
           {isTyping && (
-            <div className="flex gap-3 max-w-sm items-center text-xs text-[#6B7280]">
-              <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#1E40AF] flex items-center justify-center">
+            <div className="flex gap-3 max-w-sm items-center text-xs text-[#4B5E76]">
+              <div className="w-8 h-8 rounded-xl bg-[#E9FFF5] text-[#182B46] flex items-center justify-center">
                 <Sparkles size={14} className="animate-spin" />
               </div>
               <span className="animate-pulse">Retrieving grounded knowledge passages & synthesizing...</span>
@@ -257,15 +257,15 @@ export default function FinbudAiPage() {
         </div>
 
         {/* Suggested Quick Prompts */}
-        <div className="p-3 bg-[#F9FAFB] border-t border-[#E5E7EB] overflow-x-auto whitespace-nowrap flex gap-2 no-scrollbar">
+        <div className="p-3 bg-[#FFFDF5] border-t border-[#182B46] overflow-x-auto whitespace-nowrap flex gap-2 no-scrollbar">
           {SUGGESTED_QUERIES.map((q, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(q)}
-              className="text-[11px] px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] hover:text-[#111827] transition-all flex items-center gap-1.5 shrink-0 shadow-2xs cursor-pointer"
+              className="text-[11px] px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#182B46] text-[#374151] hover:text-[#182B46] transition-all flex items-center gap-1.5 shrink-0 shadow-2xs cursor-pointer"
             >
               <span>{q}</span>
-              <ArrowRight size={11} className="text-[#1E40AF]" />
+              <ArrowRight size={11} className="text-[#182B46]" />
             </button>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function FinbudAiPage() {
             e.preventDefault();
             handleSend();
           }}
-          className="p-3 bg-white border-t border-[#E5E7EB] flex items-center gap-3"
+          className="p-3 bg-white border-t border-[#182B46] flex items-center gap-3"
         >
           <input
             type="text"
@@ -284,12 +284,12 @@ export default function FinbudAiPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isTyping}
-            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF] disabled:opacity-50"
+            className="flex-1 bg-[#FFFDF5] border border-[#182B46] rounded-xl px-4 py-2.5 text-xs text-[#182B46] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#1E40AF] disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={isTyping || !input.trim()}
-            className="p-2.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-semibold shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+            className="p-2.5 rounded-xl bg-[#FFD05B] text-[#182B46] hover:bg-[#FFD05B] text-[#182B46] text-white font-semibold shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             aria-label="Send message"
           >
             <Send size={16} />
@@ -300,62 +300,62 @@ export default function FinbudAiPage() {
       {/* RAG Evaluation Audit Modal */}
       {evalModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xl w-full max-w-xl p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
-              <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
-                <Award size={18} className="text-[#1E40AF]" />
+          <div className="bg-white rounded-2xl border border-[#182B46] shadow-xl w-full max-w-xl p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#182B46] pb-3">
+              <h3 className="text-base font-bold text-[#182B46] flex items-center gap-2">
+                <Award size={18} className="text-[#182B46]" />
                 RAG Retrieval & Faithfulness Audit
               </h3>
               <button
                 onClick={() => setEvalModalOpen(false)}
-                className="text-[#9CA3AF] hover:text-[#111827] transition-colors cursor-pointer"
+                className="text-[#4B5E76] hover:text-[#182B46] transition-colors cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {evalLoading ? (
-              <div className="py-8 flex flex-col items-center justify-center gap-2 text-xs text-[#6B7280]">
-                <RefreshCw size={20} className="animate-spin text-[#1E40AF]" />
+              <div className="py-8 flex flex-col items-center justify-center gap-2 text-xs text-[#4B5E76]">
+                <RefreshCw size={20} className="animate-spin text-[#182B46]" />
                 <span>Running benchmark test suite across evaluation queries...</span>
               </div>
             ) : evalReport ? (
               <div className="space-y-4 text-xs">
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="p-3 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-center">
-                    <span className="text-[10px] text-[#1E3A8A] font-semibold block">Retrieval Relevance</span>
-                    <span className="text-xl font-bold font-mono text-[#1E3A8A]">
+                  <div className="p-3 rounded-xl bg-[#E9FFF5] border border-[#182B46] text-center">
+                    <span className="text-[10px] text-[#182B46] font-semibold block">Retrieval Relevance</span>
+                    <span className="text-xl font-bold font-mono text-[#182B46]">
                       {evalReport.retrieval_relevance_rate_pct}%
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-center">
-                    <span className="text-[10px] text-[#1E3A8A] font-semibold block">Answer Faithfulness</span>
-                    <span className="text-xl font-bold font-mono text-[#1E3A8A]">
+                  <div className="p-3 rounded-xl bg-[#E9FFF5] border border-[#182B46] text-center">
+                    <span className="text-[10px] text-[#182B46] font-semibold block">Answer Faithfulness</span>
+                    <span className="text-xl font-bold font-mono text-[#182B46]">
                       {evalReport.answer_faithfulness_rate_pct}%
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-center">
-                    <span className="text-[10px] text-[#1E3A8A] font-semibold block">Citation Coverage</span>
-                    <span className="text-xl font-bold font-mono text-[#1E3A8A]">
+                  <div className="p-3 rounded-xl bg-[#E9FFF5] border border-[#182B46] text-center">
+                    <span className="text-[10px] text-[#182B46] font-semibold block">Citation Coverage</span>
+                    <span className="text-xl font-bold font-mono text-[#182B46]">
                       {evalReport.citation_coverage_rate_pct}%
                     </span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] text-[#4B5563] space-y-1">
-                  <div className="font-semibold text-[#111827]">Academic Evaluation Benchmark:</div>
+                <div className="p-3 rounded-xl bg-[#FFFDF5] border border-[#182B46] text-[#4B5E76] space-y-1">
+                  <div className="font-semibold text-[#182B46]">Academic Evaluation Benchmark:</div>
                   <p>
                     Evaluated across {evalReport.total_test_queries} curated test cases covering taxation, SGB capital gains, Rule of 72 compounding, Section 80C/80D limits, and 50/30/20 budgeting.
                   </p>
-                  <p className="text-[#1E3A8A] font-semibold">
+                  <p className="text-[#182B46] font-semibold">
                     Status: {evalReport.status} • Grounded with zero unreferenced statements.
                   </p>
                 </div>
 
-                <div className="flex justify-end pt-2 border-t border-[#E5E7EB]">
+                <div className="flex justify-end pt-2 border-t border-[#182B46]">
                   <button
                     onClick={() => setEvalModalOpen(false)}
-                    className="px-4 py-2 bg-[#1E40AF] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1E40AF]"
+                    className="px-4 py-2 bg-[#FFD05B] text-[#182B46] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#FFD05B] text-[#182B46]"
                   >
                     Close Report
                   </button>

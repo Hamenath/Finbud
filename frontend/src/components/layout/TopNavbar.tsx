@@ -9,10 +9,11 @@ import {
   PlusCircle,
   LogIn,
   LogOut,
-  ChevronRight,
+  Sparkles,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
+import { FinbudLogo } from '../common/FinbudLogo';
 
 interface TopNavbarProps {
   onMenuClick: () => void;
@@ -60,24 +61,24 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   const currentTitle = ROUTE_TITLES[pathname] || 'Dashboard';
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB]">
-      {/* 1. Subtle Market Ticker Bar */}
-      <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
+    <header className="sticky top-0 z-30 bg-[#FFFDF5] border-b-[1.5px] border-[#182B46]">
+      {/* 1. Playful Geometric Market Watch Bar */}
+      <div className="bg-[#E9FFF5] border-b-[1.5px] border-[#182B46] px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1E40AF] animate-pulse" />
-            <span className="text-[10px] uppercase tracking-wider text-[#4B5563] font-mono">
-              Market Watch
+          <div className="flex items-center gap-1.5 font-bold text-[#182B46]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FFD05B] border-[1.5px] border-[#182B46] animate-pulse" />
+            <span className="text-[10px] uppercase tracking-wider font-mono">
+              Live Rates
             </span>
           </div>
 
           {DEMO_MARKET_TICKERS.map((ticker) => (
-            <div key={ticker.symbol} className="flex items-center gap-1.5 font-mono text-[11px]">
-              <span className="text-[#6B7280]">{ticker.symbol}</span>
-              <span className="text-[#1F2937] font-semibold">{ticker.price}</span>
+            <div key={ticker.symbol} className="flex items-center gap-1.5 font-mono text-[11px] font-bold">
+              <span className="text-[#4B5E76]">{ticker.symbol}</span>
+              <span className="text-[#182B46]">{ticker.price}</span>
               <span
-                className={`text-[10px] font-semibold ${
-                  ticker.isPositive ? 'text-[#1E40AF]' : 'text-[#DC2626]'
+                className={`text-[10px] px-1.5 py-0.5 rounded border border-[#182B46] ${
+                  ticker.isPositive ? 'bg-[#FFD05B] text-[#182B46]' : 'bg-[#EF4444]/20 text-[#DC2626]'
                 }`}
               >
                 {ticker.change}
@@ -86,74 +87,72 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-2 pl-4 text-[10px] text-[#6B7280] font-mono">
-          <span>NSE / IBJA 15M REF</span>
+        <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-[#182B46] ml-4 font-mono">
+          <span className="w-2 h-2 rounded-full bg-[#182B46]" />
+          <span>NSE / RBI Benchmark</span>
         </div>
       </div>
 
-      {/* 2. Main Minimal Navbar */}
-      <div className="px-6 h-16 flex items-center justify-between gap-4 max-w-7xl mx-auto w-full">
-        {/* Left: Mobile Menu & Clean Breadcrumb */}
+      {/* 2. Main Horizontal Navigation Bar */}
+      <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto w-full">
+        {/* Left Side: Mobile Menu Button & Breadcrumb */}
         <div className="flex items-center gap-3">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-xl text-[#4B5563] hover:text-[#1F2937] hover:bg-[#F9FAFB] transition-colors"
-            aria-label="Open navigation menu"
+            className="lg:hidden p-2 rounded-lg border-[1.5px] border-[#182B46] bg-[#FFD05B] shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#E5B842] transition-colors cursor-pointer"
+            aria-label="Open menu"
           >
-            <Menu size={20} />
+            <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-[#6B7280]">FINBUD</span>
-            <ChevronRight size={13} className="text-[#9CA3AF]" />
-            <span className="font-semibold text-[#1F2937] text-sm tracking-tight">{currentTitle}</span>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider hidden sm:inline">
+              FINBUD
+            </span>
+            <span className="text-[#182B46] font-bold hidden sm:inline">/</span>
+            <h1 className="text-base sm:text-lg font-extrabold text-[#182B46] tracking-tight">
+              {currentTitle}
+            </h1>
           </div>
         </div>
 
-        {/* Right: Quick Action & User Menu */}
+        {/* Right Side: Quick Action & Profile */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1E40AF] hover:bg-[#1E40AF] text-white font-medium text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
+            className="neo-btn-yellow flex items-center gap-1.5 px-3.5 py-1.5 text-xs cursor-pointer"
           >
-            <PlusCircle size={14} className="stroke-[2.5]" />
-            <span className="hidden sm:inline">Add Entry</span>
+            <PlusCircle className="w-4 h-4 stroke-[2.5]" />
+            <span className="hidden sm:inline">New Entry</span>
           </button>
 
-          {/* User Profile Capsule */}
           {user ? (
-            <div className="flex items-center gap-2.5 pl-3 border-l border-[#E5E7EB]">
-              <div className="w-8 h-8 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xs font-bold text-[#1E3A8A]">
-                {user.user_metadata?.full_name
-                  ? user.user_metadata.full_name.charAt(0).toUpperCase()
-                  : user.email?.charAt(0).toUpperCase()}
+            <div className="flex items-center gap-2 pl-2 border-l-[1.5px] border-[#182B46]">
+              <div className="hidden sm:flex flex-col text-right">
+                <span className="text-xs font-bold text-[#182B46] leading-tight">
+                  {user.email?.split('@')[0]}
+                </span>
+                <span className="text-[10px] font-bold text-[#4B5E76]">Verified Account</span>
               </div>
-              <span className="text-xs font-medium text-[#1F2937] hidden md:inline truncate max-w-32">
-                {user.user_metadata?.full_name || user.email?.split('@')[0]}
-              </span>
               <button
                 onClick={handleLogout}
-                className="p-1.5 rounded-lg text-[#6B7280] hover:text-[#DC2626] hover:bg-[#FEE2E2]/40 transition-colors cursor-pointer"
-                title="Sign Out"
-                aria-label="Sign out"
+                className="p-1.5 rounded-lg border-[1.5px] border-[#182B46] bg-white shadow-[2px_2px_0_#182B46] text-[#182B46] hover:bg-[#FFFDF5] transition-colors cursor-pointer"
+                title="Sign out"
               >
-                <LogOut size={15} />
+                <LogOut className="w-4 h-4 stroke-[2.2]" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2 pl-3 border-l border-[#E5E7EB]">
-              <Link
-                href="/auth/login"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#F9FAFB] border border-[#E5E7EB] text-xs font-semibold text-[#1F2937] transition-all"
-              >
-                <LogIn size={13} className="text-[#1E40AF]" />
-                <span>Sign In</span>
-              </Link>
-            </div>
+            <Link
+              href="/auth/login"
+              className="neo-btn-primary flex items-center gap-1.5 px-3 py-1.5 text-xs"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </Link>
           )}
         </div>
       </div>
     </header>
   );
 };
-

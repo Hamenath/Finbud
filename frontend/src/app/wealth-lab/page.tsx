@@ -234,26 +234,26 @@ export default function WealthLabPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
               Wealth Multiplier Lab
             </h1>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFF6FF] text-[#1E3A8A] border border-[#BFDBFE]">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E9FFF5] text-[#182B46] border border-[#182B46]">
               ACADEMIC SIMULATION
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#4B5E76] mt-0.5">
             Mathematically audited compounding engine: Monthly SIP annuities, Rule of 72, Inflation erosion, and Monte Carlo stochastic cones.
           </p>
         </div>
 
         {/* View Toggle */}
-        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#E5E7EB] shadow-xs">
+        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#182B46] shadow-xs">
           <button
             onClick={() => setActiveTab('monte-carlo')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeTab === 'monte-carlo'
-                ? 'bg-[#1E40AF] text-white shadow-xs'
-                : 'text-[#6B7280] hover:text-[#111827]'
+                ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
+                : 'text-[#4B5E76] hover:text-[#182B46]'
             }`}
           >
             Monte Carlo Cone
@@ -262,8 +262,8 @@ export default function WealthLabPage() {
             onClick={() => setActiveTab('inflation-trajectory')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeTab === 'inflation-trajectory'
-                ? 'bg-[#1E40AF] text-white shadow-xs'
-                : 'text-[#6B7280] hover:text-[#111827]'
+                ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
+                : 'text-[#4B5E76] hover:text-[#182B46]'
             }`}
           >
             Nominal vs Real
@@ -272,8 +272,8 @@ export default function WealthLabPage() {
             onClick={() => setActiveTab('cagr-lab')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeTab === 'cagr-lab'
-                ? 'bg-[#1E40AF] text-white shadow-xs'
-                : 'text-[#6B7280] hover:text-[#111827]'
+                ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
+                : 'text-[#4B5E76] hover:text-[#182B46]'
             }`}
           >
             CAGR Calculator
@@ -284,36 +284,36 @@ export default function WealthLabPage() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Invested */}
-        <div className="p-4 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#6B7280]">
+        <div className="p-4 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
             <span>Total Capital Invested</span>
-            <Coins size={14} className="text-[#1E40AF]" />
+            <Coins size={14} className="text-[#182B46]" />
           </div>
-          <div className="text-xl font-black text-[#111827] font-mono">
+          <div className="text-xl font-black text-[#182B46] font-mono">
             {formatCr(compoundData?.total_invested_principal)}
           </div>
-          <p className="text-[11px] text-[#6B7280]">
+          <p className="text-[11px] text-[#4B5E76]">
             {formatINR(initialCapital)} Lump Sum + {timeHorizonYears * 12} Monthly SIPs
           </p>
         </div>
 
         {/* Nominal Wealth */}
-        <div className="p-4 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#6B7280]">
+        <div className="p-4 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
             <span>Nominal Future Wealth</span>
-            <TrendingUp size={14} className="text-[#1E40AF]" />
+            <TrendingUp size={14} className="text-[#182B46]" />
           </div>
-          <div className="text-xl font-black text-[#1E40AF] font-mono">
+          <div className="text-xl font-black text-[#182B46] font-mono">
             {formatCr(compoundData?.nominal_future_value)}
           </div>
-          <p className="text-[11px] text-[#1E3A8A] font-semibold">
+          <p className="text-[11px] text-[#182B46] font-semibold">
             Gain: +{formatCr(compoundData?.total_wealth_gain)}
           </p>
         </div>
 
         {/* Real Wealth (Inflation Adjusted) */}
-        <div className="p-4 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#6B7280]">
+        <div className="p-4 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
             <span>Purchasing Power (Real @ {inflationRate}%)</span>
             <ShieldCheck size={14} className="text-[#D97706]" />
           </div>
@@ -326,15 +326,15 @@ export default function WealthLabPage() {
         </div>
 
         {/* Doubling Time */}
-        <div className="p-4 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#6B7280]">
+        <div className="p-4 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
             <span>Rule of 72 Doubling Time</span>
             <Compass size={14} className="text-[#0284C7]" />
           </div>
           <div className="text-xl font-black text-[#0284C7] font-mono">
             {ruleOf72DoublingYears} Years
           </div>
-          <p className="text-[11px] text-[#6B7280]">
+          <p className="text-[11px] text-[#4B5E76]">
             Capital doubles approx every {ruleOf72DoublingYears} yrs @ {expectedReturn}%
           </p>
         </div>
@@ -343,19 +343,19 @@ export default function WealthLabPage() {
       {/* Main Interactive Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Parameter Sliders & Formula Specs */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-5">
+        <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-[#111827]">
+            <h2 className="text-base font-bold text-[#182B46]">
               Simulation Parameters
             </h2>
-            {loading && <RefreshCw size={14} className="animate-spin text-[#1E40AF]" />}
+            {loading && <RefreshCw size={14} className="animate-spin text-[#182B46]" />}
           </div>
 
           {/* Initial Capital */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Initial Capital (Lump Sum)</span>
-              <span className="font-mono text-[#111827] font-semibold">
+              <span className="font-mono text-[#182B46] font-semibold">
                 {formatINR(initialCapital)}
               </span>
             </div>
@@ -368,7 +368,7 @@ export default function WealthLabPage() {
               onChange={(e) => setInitialCapital(Number(e.target.value))}
               className="w-full accent-[#1E40AF] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>₹0</span>
               <span>₹25 Lakh</span>
               <span>₹50 Lakh</span>
@@ -377,9 +377,9 @@ export default function WealthLabPage() {
 
           {/* Monthly SIP */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Monthly Recurring SIP</span>
-              <span className="font-mono text-[#111827] font-semibold">
+              <span className="font-mono text-[#182B46] font-semibold">
                 {formatINR(monthlyContribution)}
               </span>
             </div>
@@ -392,7 +392,7 @@ export default function WealthLabPage() {
               onChange={(e) => setMonthlyContribution(Number(e.target.value))}
               className="w-full accent-[#1E40AF] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>₹0</span>
               <span>₹1 Lakh</span>
               <span>₹2 Lakh</span>
@@ -401,9 +401,9 @@ export default function WealthLabPage() {
 
           {/* Expected Return */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Assumed Annual Return (CAGR)</span>
-              <span className="font-mono text-[#1E40AF] font-bold">{expectedReturn}%</span>
+              <span className="font-mono text-[#182B46] font-bold">{expectedReturn}%</span>
             </div>
             <input
               type="range"
@@ -414,7 +414,7 @@ export default function WealthLabPage() {
               onChange={(e) => setExpectedReturn(Number(e.target.value))}
               className="w-full accent-[#1E40AF] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>0% (Cash)</span>
               <span>7% (FD/Debt)</span>
               <span>12% (Nifty 50)</span>
@@ -424,9 +424,9 @@ export default function WealthLabPage() {
 
           {/* Time Horizon */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Investment Duration</span>
-              <span className="font-mono text-[#111827] font-semibold">{timeHorizonYears} Years</span>
+              <span className="font-mono text-[#182B46] font-semibold">{timeHorizonYears} Years</span>
             </div>
             <input
               type="range"
@@ -437,7 +437,7 @@ export default function WealthLabPage() {
               onChange={(e) => setTimeHorizonYears(Number(e.target.value))}
               className="w-full accent-[#1E40AF] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>1 Yr</span>
               <span>15 Yrs</span>
               <span>35 Yrs</span>
@@ -446,7 +446,7 @@ export default function WealthLabPage() {
 
           {/* Inflation Rate */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Annual Inflation Rate</span>
               <span className="font-mono text-[#D97706] font-semibold">{inflationRate}%</span>
             </div>
@@ -459,7 +459,7 @@ export default function WealthLabPage() {
               onChange={(e) => setInflationRate(Number(e.target.value))}
               className="w-full accent-[#D97706] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>0% (None)</span>
               <span>6.0% (RBI Avg)</span>
               <span>10% (High CPI)</span>
@@ -468,7 +468,7 @@ export default function WealthLabPage() {
 
           {/* Annual Volatility (Monte Carlo) */}
           <div>
-            <div className="flex justify-between text-xs text-[#6B7280] mb-1">
+            <div className="flex justify-between text-xs text-[#4B5E76] mb-1">
               <span>Market Volatility (Std Dev σ)</span>
               <span className="font-mono text-[#4F46E5] font-semibold">{volatility}%</span>
             </div>
@@ -481,7 +481,7 @@ export default function WealthLabPage() {
               onChange={(e) => setVolatility(Number(e.target.value))}
               className="w-full accent-[#4F46E5] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#9CA3AF] mt-0.5">
+            <div className="flex justify-between text-[10px] text-[#4B5E76] mt-0.5">
               <span>5% (Debt)</span>
               <span>15% (Index)</span>
               <span>25% (High Beta)</span>
@@ -489,14 +489,14 @@ export default function WealthLabPage() {
           </div>
 
           {/* Mathematical Formulas Card */}
-          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-2 text-xs text-[#475569]">
+          <div className="p-4 rounded-xl bg-[#FFFDF5] border border-[#182B46] space-y-2 text-xs text-[#475569]">
             <div className="font-bold text-[#0F172A] flex items-center gap-1.5">
-              <Calculator size={14} className="text-[#1E40AF]" />
+              <Calculator size={14} className="text-[#182B46]" />
               Formulas & Mathematical Audit
             </div>
             <ul className="space-y-1 font-mono text-[11px]">
               <li>• Lump Sum: <span className="text-[#0284C7]">FV = P × (1 + r)^t</span></li>
-              <li>• SIP Annuity: <span className="text-[#1E40AF]">FV = PMT × [((1+i)^n - 1) / i] × (1+i)</span></li>
+              <li>• SIP Annuity: <span className="text-[#182B46]">FV = PMT × [((1+i)^n - 1) / i] × (1+i)</span></li>
               <li>• Real Wealth: <span className="text-[#D97706]">FV_real = FV_nominal / (1 + inf)^t</span></li>
               <li>• Doubling Rule: <span className="text-[#64748B]">T ≈ 72 / r</span></li>
             </ul>
@@ -506,37 +506,37 @@ export default function WealthLabPage() {
         {/* Right Column: Visualization & Detailed Breakdown */}
         <div className="lg:col-span-2 space-y-6">
           {/* Main Visual Display */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs">
+          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs">
             {activeTab === 'monte-carlo' && (
               <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div>
-                    <h2 className="text-base font-bold text-[#111827]">
+                    <h2 className="text-base font-bold text-[#182B46]">
                       Monte Carlo Stochastic Probability Cone
                     </h2>
-                    <p className="text-xs text-[#6B7280]">
+                    <p className="text-xs text-[#4B5E76]">
                       1,000 geometric Brownian motion iterations showing 10th, 50th, and 90th percentile wealth paths
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-[#6B7280]">Expected P50 Corpus</span>
-                    <div className="text-2xl font-black text-[#1E40AF] font-mono">
+                    <span className="text-xs text-[#4B5E76]">Expected P50 Corpus</span>
+                    <div className="text-2xl font-black text-[#182B46] font-mono">
                       {formatCr(monteCarloData?.median_outcome_p50)}
                     </div>
                   </div>
                 </div>
 
                 {/* Outcome Percentile Pills */}
-                <div className="grid grid-cols-3 gap-3 p-3 rounded-xl bg-[#F9FAFB] border border-[#F3F4F6]">
+                <div className="grid grid-cols-3 gap-3 p-3 rounded-xl bg-[#FFFDF5] border border-[#F3F4F6]">
                   <div>
-                    <span className="text-[10px] text-[#6B7280] block">Conservative (P10 Bear)</span>
+                    <span className="text-[10px] text-[#4B5E76] block">Conservative (P10 Bear)</span>
                     <span className="text-xs sm:text-sm font-bold text-[#64748B] font-mono">
                       {formatCr(monteCarloData?.conservative_outcome_p10)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-[#1E3A8A] block font-semibold">Median (P50 Expected)</span>
-                    <span className="text-xs sm:text-sm font-bold text-[#1E40AF] font-mono">
+                    <span className="text-[10px] text-[#182B46] block font-semibold">Median (P50 Expected)</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#182B46] font-mono">
                       {formatCr(monteCarloData?.median_outcome_p50)}
                     </span>
                   </div>
@@ -617,10 +617,10 @@ export default function WealthLabPage() {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs text-[#6B7280]">
+                <div className="pt-3 border-t border-[#182B46] flex items-center justify-between text-xs text-[#4B5E76]">
                   <span className="flex items-center gap-1.5">
-                    <Info size={14} className="text-[#1E40AF]" />
-                    Probability of preserving invested capital: <strong className="text-[#1E3A8A]">{monteCarloData?.probability_of_capital_preservation_pct}%</strong>
+                    <Info size={14} className="text-[#182B46]" />
+                    Probability of preserving invested capital: <strong className="text-[#182B46]">{monteCarloData?.probability_of_capital_preservation_pct}%</strong>
                   </span>
                   <span className="font-mono text-[11px]">Seed: 42 (Reproducible)</span>
                 </div>
@@ -631,15 +631,15 @@ export default function WealthLabPage() {
               <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div>
-                    <h2 className="text-base font-bold text-[#111827]">
+                    <h2 className="text-base font-bold text-[#182B46]">
                       Purchasing Power Erosion Trajectory
                     </h2>
-                    <p className="text-xs text-[#6B7280]">
+                    <p className="text-xs text-[#4B5E76]">
                       Comparing nominal rupee value against inflation-adjusted real purchasing power
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-[#6B7280]">Real Worth Today</span>
+                    <span className="text-xs text-[#4B5E76]">Real Worth Today</span>
                     <div className="text-2xl font-black text-[#D97706] font-mono">
                       {formatCr(compoundData?.real_future_value_in_todays_rupees)}
                     </div>
@@ -711,8 +711,8 @@ export default function WealthLabPage() {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="pt-3 border-t border-[#E5E7EB] flex items-center justify-between text-xs text-[#6B7280]">
-                  <span>Cumulative nominal gain: <strong className="text-[#1E3A8A]">+{formatINR(compoundData?.total_wealth_gain)}</strong></span>
+                <div className="pt-3 border-t border-[#182B46] flex items-center justify-between text-xs text-[#4B5E76]">
+                  <span>Cumulative nominal gain: <strong className="text-[#182B46]">+{formatINR(compoundData?.total_wealth_gain)}</strong></span>
                   <span>Inflation loss: <strong className="text-[#991B1B]">-{formatINR(compoundData?.purchasing_power_loss)}</strong></span>
                 </div>
               </div>
@@ -721,72 +721,72 @@ export default function WealthLabPage() {
             {activeTab === 'cagr-lab' && (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-base font-bold text-[#111827]">
+                  <h2 className="text-base font-bold text-[#182B46]">
                     Compound Annual Growth Rate (CAGR) Precision Calculator
                   </h2>
-                  <p className="text-xs text-[#6B7280]">
+                  <p className="text-xs text-[#4B5E76]">
                     Determine the exact annualized rate of return across any investment period
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-xs text-[#6B7280] block mb-1">Present Value (PV)</label>
+                    <label className="text-xs text-[#4B5E76] block mb-1">Present Value (PV)</label>
                     <input
                       type="number"
                       value={cagrPV}
                       onChange={(e) => setCagrPV(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
+                      className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-[#6B7280] block mb-1">Future Value (FV)</label>
+                    <label className="text-xs text-[#4B5E76] block mb-1">Future Value (FV)</label>
                     <input
                       type="number"
                       value={cagrFV}
                       onChange={(e) => setCagrFV(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
+                      className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-[#6B7280] block mb-1">Holding Period (Years)</label>
+                    <label className="text-xs text-[#4B5E76] block mb-1">Holding Period (Years)</label>
                     <input
                       type="number"
                       step={0.5}
                       value={cagrYears}
                       onChange={(e) => setCagrYears(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
+                      className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono text-sm focus:outline-hidden focus:border-[#1E40AF]"
                     />
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="p-4 rounded-xl bg-[#E9FFF5] border border-[#182B46] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
-                    <span className="text-xs font-mono text-[#1E3A8A] font-bold uppercase block">
+                    <span className="text-xs font-mono text-[#182B46] font-bold uppercase block">
                       Audited Result
                     </span>
-                    <span className="text-xs text-[#1E3A8A]">
+                    <span className="text-xs text-[#182B46]">
                       Growing {formatINR(cagrPV)} into {formatINR(cagrFV)} over {cagrYears} years requires:
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={handleCalcCAGR}
-                      className="px-4 py-2 bg-[#1E40AF] text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#1E40AF] transition-all"
+                      className="px-4 py-2 bg-[#FFD05B] text-[#182B46] text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#FFD05B] text-[#182B46] transition-all"
                     >
                       Calculate CAGR
                     </button>
                     {cagrResult !== null && (
-                      <span className="text-2xl font-black text-[#1E3A8A] font-mono">
+                      <span className="text-2xl font-black text-[#182B46] font-mono">
                         {cagrResult}%
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white border border-[#E5E7EB] space-y-2 text-xs text-[#6B7280]">
-                  <div className="font-bold text-[#111827]">Mathematical Definition:</div>
-                  <p className="font-mono text-xs text-[#1E3A8A]">CAGR = (Future Value / Present Value) ^ (1 / Time) - 1</p>
+                <div className="p-4 rounded-xl bg-white border border-[#182B46] space-y-2 text-xs text-[#4B5E76]">
+                  <div className="font-bold text-[#182B46]">Mathematical Definition:</div>
+                  <p className="font-mono text-xs text-[#182B46]">CAGR = (Future Value / Present Value) ^ (1 / Time) - 1</p>
                   <p>
                     Unlike average annual return, CAGR smoothes out interim volatility to provide the constant geometric progression rate.
                   </p>
@@ -798,7 +798,7 @@ export default function WealthLabPage() {
           {/* Academic Governance & Plain Language Disclaimer Box */}
           <div className="p-4 rounded-2xl bg-[#F0FDF4] border border-[#BBF7D0] space-y-1.5 text-xs text-[#166534]">
             <div className="font-bold flex items-center gap-1.5 text-[#14532D]">
-              <Sparkles size={14} className="text-[#1E40AF]" />
+              <Sparkles size={14} className="text-[#182B46]" />
               Hypothetical Mathematical Projection Disclaimer
             </div>
             <p className="leading-relaxed">

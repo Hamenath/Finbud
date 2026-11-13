@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 interface LogoProps {
   className?: string;
@@ -12,29 +11,22 @@ export const FinbudLogo: React.FC<LogoProps> = ({
   showWordmark = true,
   size = 'md',
 }) => {
-  if (!showWordmark) {
-    const dim = size === 'sm' ? 28 : size === 'lg' ? 44 : 36;
-    return (
-      <img
-        src="/brand/finbud-icon.svg"
-        alt="FINBUD Mark"
-        width={dim}
-        height={dim}
-        className={`shrink-0 ${className}`}
-      />
-    );
-  }
+  const iconSize = size === 'sm' ? 'w-7 h-7 text-xs' : size === 'lg' ? 'w-10 h-10 text-base' : 'w-8 h-8 text-sm';
+  const textSize = size === 'sm' ? 'text-lg' : size === 'lg' ? 'text-2xl' : 'text-xl';
 
-  const height = size === 'sm' ? 30 : size === 'lg' ? 44 : 36;
   return (
-    <div className={`flex items-center ${className}`}>
-      <img
-        src="/brand/finbud-logo.svg"
-        alt="FINBUD Logo"
-        style={{ height: `${height}px`, width: 'auto' }}
-        className="object-contain"
-      />
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      {/* Playful Neo-Brutalist Geometric Square Icon */}
+      <div
+        className={`${iconSize} bg-[#FFD05B] border-[1.5px] border-[#182B46] rounded-[8px] shadow-[2px_2px_0_#182B46] flex items-center justify-center font-extrabold text-[#182B46] tracking-tighter shrink-0 select-none`}
+      >
+        FB
+      </div>
+      {showWordmark && (
+        <span className={`font-extrabold tracking-tight text-[#182B46] ${textSize}`}>
+          FINBUD
+        </span>
+      )}
     </div>
   );
 };
-
