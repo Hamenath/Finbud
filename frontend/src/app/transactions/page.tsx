@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search,
   Filter,
@@ -11,16 +11,71 @@ import {
   AlertTriangle,
   Calendar,
   CheckCircle,
+  Database,
+  Trash2,
 } from 'lucide-react';
 import { DEMO_TRANSACTIONS } from '@/data/demoData';
+import { createClient } from '@/utils/supabase/client';
 
 export default function TransactionsPage() {
+  const supabase = createClient();
   const [filterType, setFilterType] = useState<'ALL' | 'INCOME' | 'EXPENSE'>('ALL');
   const [search, setSearch] = useState('');
+  const [transactions, setTransactions] = useState(DEMO_TRANSACTIONS);
+  const [isDbConnected, setIsDbConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const filtered = DEMO_TRANSACTIONS.filter((tx) => {
+  // Fetch real data from Supabase if authenticated
+  useEffect(() => {
+    async function loadTransactions() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setIsDbConnected(true);
+        setLoading(true);
+
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('*')
+          .order('transaction_date', { ascending: false });
+
+        if (data && data.length > 0) {
+          const mapped = data.map((item: any) => ({
+            id: item.id,
+            title: item.notes || item.category,
+            account: item.payment_method || 'Verified Bank Account',
+            category: item.category,
+            date: item.transaction_date,
+            amount: parseFloat(item.amount),
+            type: item.type,
+            isAnomaly: item.is_anomaly,
+          }));
+          setTransactions(mapped);
+        }
+        setLoading(false);
+      }
+    }
+
+    loadTransactions();
+  }, [supabase]);
+
+  const handleDelete = async (id: string) => {
+    if (isDbConnected) {
+      await supabase.from('transactions').delete().eq('id', id);
+    }
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const filtered = transactions.filter((tx) => {
     if (filterType !== 'ALL' && tx.type !== filterType) return false;
-    if (search && !tx.title.toLowerCase().includes(search.toLowerCase()) && !tx.category.toLowerCase().includes(search.toLowerCase())) return false;
+    if (
+      search &&
+      !tx.title.toLowerCase().includes(search.toLowerCase()) &&
+      !tx.category.toLowerCase().includes(search.toLowerCase())
+    )
+      return false;
     return true;
   });
 
@@ -38,6 +93,16 @@ export default function TransactionsPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          {isDbConnected ? (
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
+              <Database size={13} /> SUPABASE POSTGRESQL LIVE
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[#F59E0B] text-xs font-mono">
+              <Database size={13} /> DEMO DATA MODE
+            </span>
+          )}
+
           <button
             onClick={() => alert('Exporting verified transactions as CSV...')}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#141418] hover:bg-[#1F1F2A] border border-[#262636] text-xs font-semibold text-white transition-all"
@@ -50,7 +115,6 @@ export default function TransactionsPage() {
 
       {/* Filter and Search Bar */}
       <div className="p-4 rounded-2xl bg-[#141418] border border-[#22222D] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        {/* Search */}
         <div className="relative flex-1">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
@@ -62,7 +126,6 @@ export default function TransactionsPage() {
           />
         </div>
 
-        {/* Filter Buttons */}
         <div className="flex items-center gap-2">
           {(['ALL', 'EXPENSE', 'INCOME'] as const).map((type) => (
             <button
@@ -92,6 +155,7 @@ export default function TransactionsPage() {
                 <th className="px-5 py-3.5">Date & Time</th>
                 <th className="px-5 py-3.5 text-right">Amount</th>
                 <th className="px-5 py-3.5 text-center">Status / Anomaly</th>
+                <th className="px-5 py-3.5 text-center">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1F1F2A]">
@@ -132,6 +196,15 @@ export default function TransactionsPage() {
                       </span>
                     )}
                   </td>
+                  <td className="px-5 py-4 text-center">
+                    <button
+                      onClick={() => handleDelete(tx.id)}
+                      className="p-1.5 rounded-lg text-neutral-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      title="Delete record"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -141,4 +214,3 @@ export default function TransactionsPage() {
     </div>
   );
 }
-

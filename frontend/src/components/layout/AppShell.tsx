@@ -1,18 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
 import { X, Check, AlertCircle } from 'lucide-react';
+import { createClient } from '@/utils/supabase/client';
 
 interface AppShellProps {
   children: React.ReactNode;
 }
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
+  const supabase = createClient();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showQuickModal, setShowQuickModal] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   // Quick Transaction Form State
   const [txType, setTxType] = useState<'EXPENSE' | 'INCOME'>('EXPENSE');
@@ -20,12 +23,49 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [txAmount, setTxAmount] = useState('');
   const [txCategory, setTxCategory] = useState('Food & Dining');
   const [successToast, setSuccessToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('Record Logged Successfully');
 
-  const handleSaveTransaction = (e: React.FormEvent) => {
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const handleSaveTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!txTitle || !txAmount) return;
 
-    // Trigger feedback toast
+    const numericAmount = parseFloat(txAmount);
+
+    if (user) {
+      // Direct PostgreSQL insert through Supabase RLS
+      const { error } = await supabase.from('transactions').insert({
+        user_id: user.id,
+        amount: numericAmount,
+        type: txType,
+        category: txCategory,
+        notes: txTitle,
+        payment_method: 'UPI',
+        is_recurring: false,
+      });
+
+      if (error) {
+        alert(`Database Error: ${error.message}`);
+        return;
+      }
+      setToastMessage('Saved directly to Supabase PostgreSQL Database!');
+    } else {
+      setToastMessage('Record logged to live demo view (Sign in for permanent sync).');
+    }
+
     setShowQuickModal(false);
     setSuccessToast(true);
     setTxTitle('');
@@ -35,7 +75,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0C] text-[#F8FAFC] flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Collapsible & Responsive Sidebar */}
+      {/* 1. Sidebar */}
       <Sidebar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
@@ -43,13 +83,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         setMobileOpen={setMobileOpen}
       />
 
-      {/* 2. Main Workspace Layout */}
+      {/* 2. Main Layout */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
           collapsed ? 'lg:pl-20' : 'lg:pl-64'
         }`}
       >
-        {/* Sticky Top Bar */}
         <TopNavbar
           onMenuClick={() => setMobileOpen(true)}
           onOpenQuickAdd={() => setShowQuickModal(true)}
@@ -58,8 +97,8 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         {/* Global Academic & Regulatory Disclaimer Banner */}
         <div className="bg-[#121216] border-b border-[#1E1E26] px-4 py-2 text-center text-[11px] text-neutral-400">
           <span className="font-semibold text-[#F59E0B]">EDUCATIONAL DECISION-SUPPORT PROTOTYPE:</span>{' '}
-          FINBUD is not a SEBI-registered investment adviser. Forecasts are algorithmic estimations.
-          Verify consequential decisions with certified financial planners.
+          FINBUD is not a SEBI-registered investment adviser. Calculations are mathematical models.
+          Verify consequential decisions with certified professionals.
         </div>
 
         {/* Dynamic Page Content */}
@@ -75,7 +114,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
             <div className="flex items-center justify-between pb-4 border-b border-[#22222B] mb-5">
               <div>
                 <h3 className="font-bold text-base text-white">Log Financial Activity</h3>
-                <p className="text-xs text-neutral-400">Record cash flow, investments, or EMIs</p>
+                <p className="text-xs text-neutral-400">
+                  {user ? 'Syncing to your isolated Supabase table' : 'Sign in to persist records across devices'}
+                </p>
               </div>
               <button
                 onClick={() => setShowQuickModal(false)}
@@ -86,7 +127,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
             </div>
 
             <form onSubmit={handleSaveTransaction} className="space-y-4">
-              {/* Type Switcher */}
               <div className="grid grid-cols-2 gap-2 p-1 bg-[#0A0A0C] rounded-xl border border-[#22222B]">
                 <button
                   type="button"
@@ -112,7 +152,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </button>
               </div>
 
-              {/* Title Input */}
               <div>
                 <label className="block text-xs font-medium text-neutral-300 mb-1.5">
                   Description / Payee
@@ -120,14 +159,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Swiggy Instamart or Infosys Salary"
+                  placeholder="e.g. Swiggy Instamart or Tech Salary"
                   value={txTitle}
                   onChange={(e) => setTxTitle(e.target.value)}
                   className="w-full bg-[#0A0A0C] border border-[#262632] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B]"
                 />
               </div>
 
-              {/* Amount Input */}
               <div>
                 <label className="block text-xs font-medium text-neutral-300 mb-1.5">
                   Amount (₹ INR)
@@ -143,7 +181,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 />
               </div>
 
-              {/* Category */}
               <div>
                 <label className="block text-xs font-medium text-neutral-300 mb-1.5">
                   Category
@@ -163,7 +200,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
                 </select>
               </div>
 
-              {/* Submit Buttons */}
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -189,12 +225,11 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-[#141418] border border-emerald-500/40 text-emerald-400 shadow-2xl animate-in slide-in-from-bottom-5">
           <Check size={18} className="text-emerald-400" />
           <div className="text-xs">
-            <p className="font-semibold text-white">Record Logged Successfully</p>
-            <p className="text-[11px] text-neutral-400">Analytics and balance updated in real-time.</p>
+            <p className="font-semibold text-white">Transaction Recorded</p>
+            <p className="text-[11px] text-neutral-400">{toastMessage}</p>
           </div>
         </div>
       )}
     </div>
   );
 };
-

@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Menu,
   Search,
   Bell,
   Settings,
   PlusCircle,
-  ArrowUpRight,
   ShieldAlert,
   CheckCircle2,
   X,
+  LogIn,
+  LogOut,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
+import { createClient } from '@/utils/supabase/client';
 
 interface TopNavbarProps {
   onMenuClick: () => void;
@@ -20,12 +24,35 @@ interface TopNavbarProps {
 }
 
 export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAdd }) => {
+  const router = useRouter();
+  const supabase = createClient();
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/auth/login');
+    router.refresh();
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-[#0A0A0C]/90 backdrop-blur-md border-b border-[#1F1F26]">
-      {/* 1. Global Live/Timestamped Market Ticker Bar */}
+      {/* 1. Global Market Ticker Bar */}
       <div className="bg-[#121217] border-b border-[#1F1F26] px-4 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1.5 font-semibold text-neutral-400">
@@ -58,9 +85,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
         </div>
       </div>
 
-      {/* 2. Main Navigation & Action Bar */}
+      {/* 2. Main Navigation Bar */}
       <div className="px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Left Side: Mobile Menu Button & Search */}
+        {/* Left Side */}
         <div className="flex items-center gap-3 flex-1 max-w-md">
           <button
             onClick={onMenuClick}
@@ -80,14 +107,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
               placeholder="Search assets, transactions, policies or AI..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#141418] border border-[#22222B] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B] focus:ring-1 focus:ring-[#F59E0B] transition-all"
+              className="w-full bg-[#141418] border border-[#22222B] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#F59E0B]"
             />
           </div>
         </div>
 
-        {/* Right Side: Action Buttons, Notifications, User Badge */}
+        {/* Right Side */}
         <div className="flex items-center gap-3">
-          {/* Quick Transaction Action */}
+          {/* Quick Action */}
           <button
             onClick={onOpenQuickAdd}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-linear-to-r from-[#F59E0B] to-[#D97706] text-black font-semibold text-xs shadow-md shadow-amber-500/10 hover:brightness-110 active:scale-95 transition-all"
@@ -96,75 +123,46 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
             <span className="hidden md:inline">Log Transaction</span>
           </button>
 
-          {/* Notifications Toggle */}
-          <div className="relative">
-            <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-[#141418] border border-transparent hover:border-[#22222B] transition-colors relative"
-              aria-label="View notifications"
-            >
-              <Bell size={18} />
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#F59E0B]" />
-            </button>
-
-            {/* Notification Drawer Popover */}
-            {showNotifications && (
-              <div className="absolute right-0 mt-3 w-80 bg-[#141418] border border-[#262632] rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2">
-                <div className="flex items-center justify-between pb-3 border-b border-[#22222B] mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-xs text-white">System Alerts</span>
-                    <span className="text-[10px] bg-amber-500/20 text-[#F59E0B] px-1.5 py-0.5 rounded font-mono">
-                      2 NEW
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setShowNotifications(false)}
-                    className="text-neutral-400 hover:text-white"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-
-                <div className="space-y-2.5 text-xs">
-                  <div className="p-2.5 rounded-xl bg-[#1C1C24] border border-amber-500/20 flex gap-2.5">
-                    <ShieldAlert size={16} className="text-[#F59E0B] shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-white">Insurance Renewal Due</p>
-                      <p className="text-[11px] text-neutral-400">
-                        Care Supreme health policy renews on 24 Nov 2026.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-[#1C1C24] border border-[#2A2A36] flex gap-2.5">
-                    <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-white">Salary Inflow Verified</p>
-                      <p className="text-[11px] text-neutral-400">
-                        ₹2,45,000 credited from Infosys Ltd.
-                      </p>
-                    </div>
+          {/* User Capsule or Sign-In Button */}
+          {user ? (
+            <div className="flex items-center gap-3 pl-2 border-l border-[#1F1F26]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-amber-600 via-neutral-700 to-emerald-600 p-px">
+                  <div className="w-full h-full bg-[#141418] rounded-[11px] flex items-center justify-center text-xs font-bold text-white">
+                    {user.user_metadata?.full_name
+                      ? user.user_metadata.full_name.charAt(0).toUpperCase()
+                      : user.email?.charAt(0).toUpperCase()}
                   </div>
                 </div>
+                <div className="hidden sm:block text-left">
+                  <div className="text-xs font-semibold text-white leading-tight">
+                    {user.user_metadata?.full_name || 'Finbud Member'}
+                  </div>
+                  <div className="text-[10px] text-emerald-400 font-mono">Connected</div>
+                </div>
               </div>
-            )}
-          </div>
 
-          {/* User Profile Capsule */}
-          <div className="flex items-center gap-2.5 pl-2 border-l border-[#1F1F26]">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-amber-600 via-neutral-700 to-emerald-600 p-px">
-              <div className="w-full h-full bg-[#141418] rounded-[11px] flex items-center justify-center text-xs font-bold text-white">
-                DV
-              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 rounded-xl text-neutral-400 hover:text-rose-400 hover:bg-[#141418] transition-colors"
+                title="Sign Out"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
-            <div className="hidden sm:block text-left">
-              <div className="text-xs font-semibold text-white leading-tight">Diwakar D</div>
-              <div className="text-[10px] text-neutral-400">Team Lead & Client</div>
+          ) : (
+            <div className="flex items-center gap-2 pl-2 border-l border-[#1F1F26]">
+              <Link
+                href="/auth/login"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#141418] hover:bg-[#1E1E28] border border-[#262636] text-xs font-semibold text-white transition-all"
+              >
+                <LogIn size={14} className="text-[#F59E0B]" />
+                <span>Sign In</span>
+              </Link>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </header>
   );
 };
-
