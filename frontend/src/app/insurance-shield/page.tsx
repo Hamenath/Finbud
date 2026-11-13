@@ -177,7 +177,7 @@ export default function InsuranceShieldPage() {
     if (diffDays <= 45) {
       return { status: 'UPCOMING', label: `Renew in ${diffDays}d`, badgeClass: 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]', days: diffDays };
     }
-    return { status: 'ACTIVE', label: 'Healthy Cover', badgeClass: 'bg-[#E9FFF5] text-[#182B46] border-[#182B46]', days: diffDays };
+    return { status: 'ACTIVE', label: 'Healthy Cover', badgeClass: 'bg-[#ECFDF5] text-[#111827] border-[#E5E7EB]', days: diffDays };
   };
 
   // Handle Save / Edit Policy
@@ -328,7 +328,7 @@ export default function InsuranceShieldPage() {
       {/* Toast Notification */}
       {toastMsg && (
         <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-[#111827] text-white text-xs font-semibold shadow-lg flex items-center gap-2 animate-bounce">
-          <CheckCircle2 size={16} className="text-[#182B46]" />
+          <CheckCircle2 size={16} className="text-[#111827]" />
           {toastMsg}
         </div>
       )}
@@ -337,7 +337,7 @@ export default function InsuranceShieldPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#182B46] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
               Smart Insurance Shield
             </h1>
             {isDemoMode && (
@@ -346,7 +346,7 @@ export default function InsuranceShieldPage() {
               </span>
             )}
           </div>
-          <p className="text-xs sm:text-sm text-[#4B5E76] mt-0.5">
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
             Audit term-life coverage gaps, health floater adequacy, renewal calendar, and premium commitments.
           </p>
         </div>
@@ -357,7 +357,7 @@ export default function InsuranceShieldPage() {
               resetForm();
               setModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#FFD05B] text-[#182B46] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#FFD05B] text-[#182B46] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#10B981] text-[#111827] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#10B981] text-[#111827] transition-all cursor-pointer"
           >
             <Plus size={16} /> Record Policy
           </button>
@@ -367,54 +367,54 @@ export default function InsuranceShieldPage() {
       {/* KPI Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Term Life Cover */}
-        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Active Term Life Cover</span>
-            <ShieldCheck size={16} className="text-[#182B46]" />
+            <ShieldCheck size={16} className="text-[#111827]" />
           </div>
-          <div className="text-2xl font-black text-[#182B46] font-mono">
+          <div className="text-2xl font-black text-[#111827] font-mono">
             {formatLakhCr(currentTermCoverage)}
           </div>
-          <p className="text-[11px] text-[#182B46] font-semibold">
+          <p className="text-[11px] text-[#111827] font-semibold">
             {termAdequacyRatio.toFixed(1)}% of Indicative 10× Target
           </p>
         </div>
 
         {/* Health Insurance Cover */}
-        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Comprehensive Health Cover</span>
             <ShieldCheck size={16} className="text-[#0284C7]" />
           </div>
           <div className="text-2xl font-black text-[#0284C7] font-mono">
             {formatLakhCr(currentHealthCoverage)}
           </div>
-          <p className="text-[11px] text-[#4B5E76]">
+          <p className="text-[11px] text-[#6B7280]">
             Individual & Family Floater Protection
           </p>
         </div>
 
         {/* Total Annual Premium Outflow */}
-        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Total Annual Premiums</span>
             <CreditCard size={16} className="text-[#4F46E5]" />
           </div>
           <div className="text-2xl font-black text-[#4F46E5] font-mono">
             {formatINR(totalAnnualPremium)}
           </div>
-          <p className="text-[11px] text-[#4B5E76] font-mono">
+          <p className="text-[11px] text-[#6B7280] font-mono">
             ~{formatINR(Math.round(totalAnnualPremium / 12))}/mo allocation
           </p>
         </div>
 
         {/* Active Policies Count & Upcoming Renewal Alert */}
-        <div className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-1">
-          <div className="flex items-center justify-between text-xs text-[#4B5E76]">
+        <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-1">
+          <div className="flex items-center justify-between text-xs text-[#6B7280]">
             <span>Policies in Vault</span>
             <Building size={16} className="text-[#D97706]" />
           </div>
-          <div className="text-2xl font-black text-[#182B46] font-mono">
+          <div className="text-2xl font-black text-[#111827] font-mono">
             {policies.length} Policies
           </div>
           <div className="text-[11px] text-[#D97706] font-semibold flex items-center gap-1">
@@ -425,28 +425,28 @@ export default function InsuranceShieldPage() {
       </div>
 
       {/* Indicative Term Life Coverage Heuristic Card */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-4">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-[#E9FFF5] text-[#182B46] border border-[#182B46]">
+              <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-[#ECFDF5] text-[#111827] border border-[#E5E7EB]">
                 INDICATIVE STARTING HEURISTIC
               </span>
-              <span className="text-[10px] text-[#4B5E76] font-mono">
+              <span className="text-[10px] text-[#6B7280] font-mono">
                 {heuristicMultiplier}× Income Multiplier
               </span>
             </div>
-            <h2 className="text-lg font-bold text-[#182B46] mt-1">
+            <h2 className="text-lg font-bold text-[#111827] mt-1">
               Term Life Adequacy & Protection Gap
             </h2>
-            <p className="text-xs text-[#4B5E76]">
+            <p className="text-xs text-[#6B7280]">
               Calculated against your recorded annual inflow of <strong>{formatLakhCr(annualIncome)}</strong> (₹{(monthlyInflow / 1000).toFixed(0)}k/mo)
             </p>
           </div>
 
           <div className="text-right">
-            <span className="text-xs text-[#4B5E76]">Indicative Need ({heuristicMultiplier}× Income)</span>
-            <div className="text-2xl font-black text-[#182B46] font-mono">
+            <span className="text-xs text-[#6B7280]">Indicative Need ({heuristicMultiplier}× Income)</span>
+            <div className="text-2xl font-black text-[#111827] font-mono">
               {formatLakhCr(indicativeTermNeed)}
             </div>
           </div>
@@ -456,7 +456,7 @@ export default function InsuranceShieldPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-[#374151]">
             <span className="font-semibold">
-              Adequacy Ratio: <strong className="text-[#182B46]">{termAdequacyRatio.toFixed(1)}%</strong> Covered
+              Adequacy Ratio: <strong className="text-[#111827]">{termAdequacyRatio.toFixed(1)}%</strong> Covered
             </span>
             {termCoverageGap > 0 ? (
               <span className="text-[#D97706] font-mono font-semibold flex items-center gap-1">
@@ -464,16 +464,16 @@ export default function InsuranceShieldPage() {
                 Indicative Protection Gap: ~{formatLakhCr(termCoverageGap)}
               </span>
             ) : (
-              <span className="text-[#182B46] font-mono font-semibold flex items-center gap-1">
+              <span className="text-[#111827] font-mono font-semibold flex items-center gap-1">
                 <CheckCircle2 size={13} /> Full Coverage Reached
               </span>
             )}
           </div>
 
-          <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#182B46]">
+          <div className="w-full bg-[#F3F4F6] h-3 rounded-full overflow-hidden border border-[#E5E7EB]">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                termAdequacyRatio >= 100 ? 'bg-[#FFD05B] text-[#182B46]' : termAdequacyRatio >= 60 ? 'bg-[#D97706]' : 'bg-[#DC2626]'
+                termAdequacyRatio >= 100 ? 'bg-[#10B981] text-[#111827]' : termAdequacyRatio >= 60 ? 'bg-[#D97706]' : 'bg-[#DC2626]'
               }`}
               style={{ width: `${termAdequacyRatio}%` }}
             />
@@ -481,8 +481,8 @@ export default function InsuranceShieldPage() {
         </div>
 
         {/* Multiplier Adjustment Slider */}
-        <div className="p-3 rounded-xl bg-[#FFFDF5] border border-[#F3F4F6] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <span className="text-[#4B5E76]">
+        <div className="p-3 rounded-xl bg-[#F7FAF8] border border-[#F3F4F6] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <span className="text-[#6B7280]">
             Adjust Income Multiple Heuristic based on dependents & liabilities:
           </span>
           <div className="flex items-center gap-3">
@@ -492,8 +492,8 @@ export default function InsuranceShieldPage() {
                 onClick={() => setHeuristicMultiplier(m)}
                 className={`px-2.5 py-1 rounded-lg font-mono font-bold text-xs transition-all ${
                   heuristicMultiplier === m
-                    ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs'
-                    : 'bg-white border border-[#182B46] text-[#4B5E76] hover:bg-[#F3F4F6]'
+                    ? 'bg-[#10B981] text-[#111827] text-white shadow-xs'
+                    : 'bg-white border border-[#E5E7EB] text-[#6B7280] hover:bg-[#F3F4F6]'
                 }`}
               >
                 {m}×
@@ -503,8 +503,8 @@ export default function InsuranceShieldPage() {
         </div>
 
         {/* Plain Language Regulatory Disclaimer */}
-        <div className="text-[11px] text-[#4B5E76] flex items-center gap-1.5 pt-1">
-          <HelpCircle size={14} className="text-[#182B46] shrink-0" />
+        <div className="text-[11px] text-[#6B7280] flex items-center gap-1.5 pt-1">
+          <HelpCircle size={14} className="text-[#111827] shrink-0" />
           <span>
             <strong>Disclaimer:</strong> The income multiplier heuristic is an educational starting point, not universal or individualized insurance advisory. Actual adequacy depends on outstanding debts (e.g. home loans), children's education timelines, and existing liquid assets.
           </span>
@@ -515,18 +515,18 @@ export default function InsuranceShieldPage() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#182B46] flex items-center gap-2">
-              <ShieldCheck size={18} className="text-[#182B46]" />
+            <h2 className="text-base font-bold text-[#111827] flex items-center gap-2">
+              <ShieldCheck size={18} className="text-[#111827]" />
               Policy Cards & Renewal Schedule
             </h2>
-            <span className="text-xs text-[#4B5E76]">({filteredPolicies.length} policies)</span>
+            <span className="text-xs text-[#6B7280]">({filteredPolicies.length} policies)</span>
           </div>
 
           <div className="flex bg-[#F3F4F6] p-1 rounded-xl text-xs font-semibold">
             <button
               onClick={() => setFilterType('ALL')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'ALL' ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs' : 'text-[#4B5E76]'
+                filterType === 'ALL' ? 'bg-[#10B981] text-[#111827] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               All Policies
@@ -534,7 +534,7 @@ export default function InsuranceShieldPage() {
             <button
               onClick={() => setFilterType('TERM')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'TERM' ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs' : 'text-[#4B5E76]'
+                filterType === 'TERM' ? 'bg-[#10B981] text-[#111827] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               Term Life
@@ -542,7 +542,7 @@ export default function InsuranceShieldPage() {
             <button
               onClick={() => setFilterType('HEALTH')}
               className={`px-3 py-1 rounded-lg transition-all ${
-                filterType === 'HEALTH' ? 'bg-[#FFD05B] text-[#182B46] text-white shadow-xs' : 'text-[#4B5E76]'
+                filterType === 'HEALTH' ? 'bg-[#10B981] text-[#111827] text-white shadow-xs' : 'text-[#6B7280]'
               }`}
             >
               Health & Critical Care
@@ -553,7 +553,7 @@ export default function InsuranceShieldPage() {
         {/* Policy Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredPolicies.length === 0 ? (
-            <div className="col-span-2 p-8 text-center bg-white rounded-2xl border border-[#182B46] text-xs text-[#4B5E76]">
+            <div className="col-span-2 p-8 text-center bg-white rounded-2xl border border-[#E5E7EB] text-xs text-[#6B7280]">
               No insurance policies recorded under this category. Click "Record Policy" to add your active cover.
             </div>
           ) : (
@@ -564,14 +564,14 @@ export default function InsuranceShieldPage() {
               return (
                 <div
                   key={p.id}
-                  className="p-5 rounded-2xl bg-white border border-[#182B46] shadow-xs space-y-4 hover:border-[#D1D5DB] transition-all relative flex flex-col justify-between"
+                  className="p-5 rounded-2xl bg-white border border-[#E5E7EB] shadow-xs space-y-4 hover:border-[#D1D5DB] transition-all relative flex flex-col justify-between"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${
                         isTerm
-                          ? 'bg-[#E9FFF5] text-[#182B46] border-[#182B46]'
-                          : 'bg-[#E9FFF5] text-[#182B46] border-[#182B46]'
+                          ? 'bg-[#ECFDF5] text-[#111827] border-[#E5E7EB]'
+                          : 'bg-[#ECFDF5] text-[#111827] border-[#E5E7EB]'
                       }`}>
                         {p.policy_type.replace(/_/g, ' ')}
                       </span>
@@ -582,14 +582,14 @@ export default function InsuranceShieldPage() {
                         </span>
                         <button
                           onClick={() => openEditModal(p)}
-                          className="p-1 text-[#4B5E76] hover:text-[#182B46] transition-colors"
+                          className="p-1 text-[#6B7280] hover:text-[#111827] transition-colors"
                           title="Edit Policy"
                         >
                           <Edit2 size={13} />
                         </button>
                         <button
                           onClick={() => handleDelete(p.id)}
-                          className="p-1 text-[#4B5E76] hover:text-[#DC2626] transition-colors"
+                          className="p-1 text-[#6B7280] hover:text-[#DC2626] transition-colors"
                           title="Delete Policy"
                         >
                           <Trash2 size={13} />
@@ -598,31 +598,31 @@ export default function InsuranceShieldPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-[#182B46] text-base">{p.provider_name}</h3>
-                      <p className="text-xs text-[#4B5E76] font-mono mt-0.5">
+                      <h3 className="font-bold text-[#111827] text-base">{p.provider_name}</h3>
+                      <p className="text-xs text-[#6B7280] font-mono mt-0.5">
                         Policy #{p.policy_number_masked}
                       </p>
                     </div>
                   </div>
 
                   {/* Metadata Grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-[#182B46] text-xs">
+                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-[#E5E7EB] text-xs">
                     <div>
-                      <span className="text-[#4B5E76] text-[11px]">Sum Insured</span>
-                      <p className="font-mono font-bold text-[#182B46] text-sm">
+                      <span className="text-[#6B7280] text-[11px]">Sum Insured</span>
+                      <p className="font-mono font-bold text-[#111827] text-sm">
                         {formatLakhCr(p.sum_insured)}
                       </p>
                     </div>
 
                     <div>
-                      <span className="text-[#4B5E76] text-[11px]">Annual Premium</span>
+                      <span className="text-[#6B7280] text-[11px]">Annual Premium</span>
                       <p className="font-mono font-bold text-[#374151] text-sm">
                         {formatINR(p.premium_annual)}
                       </p>
                     </div>
 
                     <div>
-                      <span className="text-[#4B5E76] text-[11px] flex items-center gap-1">
+                      <span className="text-[#6B7280] text-[11px] flex items-center gap-1">
                         <Users size={11} /> Covered Members
                       </span>
                       <p className="text-[#374151] text-xs font-medium truncate">
@@ -631,7 +631,7 @@ export default function InsuranceShieldPage() {
                     </div>
 
                     <div>
-                      <span className="text-[#4B5E76] text-[11px] flex items-center gap-1">
+                      <span className="text-[#6B7280] text-[11px] flex items-center gap-1">
                         <Calendar size={11} /> Renewal Due Date
                       </span>
                       <p className="text-[#D97706] font-mono font-semibold text-xs">
@@ -641,7 +641,7 @@ export default function InsuranceShieldPage() {
                   </div>
 
                   {p.notes && (
-                    <div className="text-[10px] text-[#4B5E76] italic pt-1 border-t border-[#F3F4F6]">
+                    <div className="text-[10px] text-[#6B7280] italic pt-1 border-t border-[#F3F4F6]">
                       Note: {p.notes}
                     </div>
                   )}
@@ -655,15 +655,15 @@ export default function InsuranceShieldPage() {
       {/* Record / Edit Policy Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl border border-[#182B46] shadow-xl w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-[#182B46] pb-3">
-              <h3 className="text-base font-bold text-[#182B46] flex items-center gap-2">
-                <ShieldCheck size={18} className="text-[#182B46]" />
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xl w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+              <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                <ShieldCheck size={18} className="text-[#111827]" />
                 {editingId ? 'Edit Insurance Policy' : 'Record Insurance Policy'}
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="text-[#4B5E76] hover:text-[#182B46] transition-colors cursor-pointer"
+                className="text-[#6B7280] hover:text-[#111827] transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -673,11 +673,11 @@ export default function InsuranceShieldPage() {
               <div className="grid grid-cols-2 gap-3">
                 {/* Policy Type */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Policy Category</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Policy Category</label>
                   <select
                     value={formPolicyType}
                     onChange={(e) => setFormPolicyType(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="TERM_LIFE">Pure Term Life</option>
                     <option value="HEALTH_FAMILY_FLOATER">Health (Family Floater)</option>
@@ -688,14 +688,14 @@ export default function InsuranceShieldPage() {
 
                 {/* Insurer / Provider */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Insurer / Provider</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Insurer / Provider</label>
                   <input
                     type="text"
                     required
                     value={formProvider}
                     onChange={(e) => setFormProvider(e.target.value)}
                     placeholder="e.g. HDFC Life, Care Health"
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                   >
                   </input>
                 </div>
@@ -704,19 +704,19 @@ export default function InsuranceShieldPage() {
               <div className="grid grid-cols-2 gap-3">
                 {/* Policy Number */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Policy Number (Masked)</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Policy Number (Masked)</label>
                   <input
                     type="text"
                     value={formPolicyNo}
                     onChange={(e) => setFormPolicyNo(e.target.value)}
                     placeholder="e.g. POL-89214XXX"
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
                 {/* Sum Insured */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Sum Insured (₹)</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Sum Insured (₹)</label>
                   <input
                     type="number"
                     step={10000}
@@ -724,7 +724,7 @@ export default function InsuranceShieldPage() {
                     value={formSumInsured}
                     onChange={(e) => setFormSumInsured(e.target.value)}
                     placeholder="e.g. 20000000 (2 Cr)"
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
@@ -732,7 +732,7 @@ export default function InsuranceShieldPage() {
               <div className="grid grid-cols-2 gap-3">
                 {/* Premium Amount */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Premium Amount (₹)</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Premium Amount (₹)</label>
                   <input
                     type="number"
                     step={100}
@@ -740,17 +740,17 @@ export default function InsuranceShieldPage() {
                     value={formPremium}
                     onChange={(e) => setFormPremium(e.target.value)}
                     placeholder="e.g. 18500"
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
                 {/* Payment Frequency */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Payment Frequency</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Payment Frequency</label>
                   <select
                     value={formPaymentFrequency}
                     onChange={(e) => setFormPaymentFrequency(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-semibold focus:outline-hidden focus:border-[#1E40AF]"
                   >
                     <option value="ANNUAL">Annual (Lump Sum)</option>
                     <option value="MONTHLY">Monthly</option>
@@ -762,54 +762,54 @@ export default function InsuranceShieldPage() {
               <div className="grid grid-cols-2 gap-3">
                 {/* Renewal Date */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Renewal Due Date</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Renewal Due Date</label>
                   <input
                     type="date"
                     required
                     value={formRenewalDate}
                     onChange={(e) => setFormRenewalDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] font-mono focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] font-mono focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
 
                 {/* Covered Members */}
                 <div>
-                  <label className="text-[#4B5E76] font-semibold block mb-1">Covered Members</label>
+                  <label className="text-[#6B7280] font-semibold block mb-1">Covered Members</label>
                   <input
                     type="text"
                     value={formCoveredMembers}
                     onChange={(e) => setFormCoveredMembers(e.target.value)}
                     placeholder="e.g. Self, Spouse, 1 Child"
-                    className="w-full px-3 py-2 rounded-xl border border-[#182B46] focus:outline-hidden focus:border-[#1E40AF]"
+                    className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                   />
                 </div>
               </div>
 
               {/* Policy Notes */}
               <div>
-                <label className="text-[#4B5E76] font-semibold block mb-1">Notes / Cashless Hospitals (Optional)</label>
+                <label className="text-[#6B7280] font-semibold block mb-1">Notes / Cashless Hospitals (Optional)</label>
                 <input
                   type="text"
                   value={formNotes}
                   onChange={(e) => setFormNotes(e.target.value)}
                   placeholder="e.g. Restoration benefit included, Apollo network"
-                  className="w-full px-3 py-2 rounded-xl border border-[#182B46] focus:outline-hidden focus:border-[#1E40AF]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E5E7EB] focus:outline-hidden focus:border-[#1E40AF]"
                 />
               </div>
 
               {/* Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#182B46]">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E5E7EB]">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-[#182B46] text-[#4B5E76] font-semibold hover:bg-[#FFFDF5] transition-all cursor-pointer"
+                  className="px-4 py-2 rounded-xl border border-[#E5E7EB] text-[#6B7280] font-semibold hover:bg-[#F7FAF8] transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-[#FFD05B] text-[#182B46] text-white font-bold hover:bg-[#FFD05B] text-[#182B46] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#10B981] text-[#111827] text-white font-bold hover:bg-[#10B981] text-[#111827] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
