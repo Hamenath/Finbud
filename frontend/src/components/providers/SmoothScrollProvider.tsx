@@ -70,3 +70,4 @@ export const SmoothScrollProvider: React.FC<SmoothScrollProviderProps> = ({ chil
 
   return <>{children}</>;
 };
+
