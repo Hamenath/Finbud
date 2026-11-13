@@ -6,6 +6,10 @@ from typing import List, Optional, Dict, Any
 from app.core.config import settings
 from app.ml.forecast import forecast_engine
 from app.ml.anomaly import anomaly_engine
+from app.ml.predictive_engine import predictive_engine
+from app.ml.anomaly_surveillance import category_anomaly_service
+from app.ml.synthetic import generate_synthetic_transactions
+from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
 
 app = FastAPI(
@@ -15,7 +19,6 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Set up CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -24,23 +27,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class DailyExpenseItem(BaseModel):
-    day: int
-    amount: float
+# ----------------- Models -----------------
+class CompoundCalcRequest(BaseModel):
+    initial_investment: float = 500000.0
+    monthly_sip: float = 25000.0
+    annual_rate_pct: float = 12.0
+    years: int = 15
+    inflation_rate_pct: Optional[float] = 6.0
 
-class ForecastRequest(BaseModel):
-    daily_expenses: List[DailyExpenseItem]
+class CagrCalcRequest(BaseModel):
+    present_value: float
+    future_value: float
+    years: float
+
+class MonteCarloRequest(BaseModel):
+    initial_investment: float = 500000.0
+    monthly_sip: float = 25000.0
+    mean_annual_return_pct: float = 12.0
+    annual_volatility_pct: Optional[float] = 15.0
+    years: int = 15
+    num_simulations: Optional[int] = 1000
+    seed: Optional[int] = 42
+
+class UserCashflowForecastRequest(BaseModel):
+    transactions: List[Dict[str, Any]]
+    monthly_income_target: Optional[float] = 75000.0
     days_in_month: Optional[int] = 30
 
-class TransactionAnomalyItem(BaseModel):
-    id: Optional[str] = "tx-1"
-    category: str
-    amount: float
-    type: Optional[str] = "EXPENSE"
+class UserAnomalyRequest(BaseModel):
+    current_transactions: List[Dict[str, Any]]
+    historical_transactions: Optional[List[Dict[str, Any]]] = None
 
-class AnomalyDetectionRequest(BaseModel):
-    transactions: List[TransactionAnomalyItem]
-
+# ----------------- Endpoints -----------------
 @app.get("/health", tags=["Health"])
 def health_check():
     return {
@@ -52,20 +70,69 @@ def health_check():
 
 @app.get(f"{settings.API_V1_STR}/market/tickers", tags=["Market Data"])
 def get_market_tickers():
-    """Fetch live & cached reference market tickers for equities, gold, silver, and forex."""
     return market_service.get_market_overview()
 
-@app.post(f"{settings.API_V1_STR}/ml/forecast", tags=["Machine Learning"])
-def run_forecast(req: ForecastRequest):
-    """Predict month-end total expense and burn rate using Scikit-Learn Ridge Regression."""
-    data = [item.dict() for item in req.daily_expenses]
-    return forecast_engine.forecast_month_end(data, days_in_month=req.days_in_month or 30)
+@app.post(f"{settings.API_V1_STR}/wealth/compound", tags=["Wealth Multiplier Lab"])
+def calculate_compound(req: CompoundCalcRequest):
+    """Calculates Lump Sum + SIP growth, Rule of 72, and real inflation-adjusted values."""
+    return wealth_engine.calculate_compound_wealth(
+        initial_investment=req.initial_investment,
+        monthly_sip=req.monthly_sip,
+        annual_rate_pct=req.annual_rate_pct,
+        years=req.years,
+        inflation_rate_pct=req.inflation_rate_pct or 6.0
+    )
 
-@app.post(f"{settings.API_V1_STR}/ml/anomaly-detection", tags=["Machine Learning"])
-def run_anomaly_detection(req: AnomalyDetectionRequest):
-    """Detect behavioral and category-level spending outliers using Isolation Forest."""
-    data = [item.dict() for item in req.transactions]
-    return anomaly_engine.detect_anomalies(data)
+@app.post(f"{settings.API_V1_STR}/wealth/cagr", tags=["Wealth Multiplier Lab"])
+def calculate_cagr_route(req: CagrCalcRequest):
+    """Calculates historical or target Compound Annual Growth Rate."""
+    return wealth_engine.calculate_cagr(
+        present_value=req.present_value,
+        future_value=req.future_value,
+        years=req.years
+    )
+
+@app.post(f"{settings.API_V1_STR}/wealth/monte-carlo", tags=["Wealth Multiplier Lab"])
+def run_monte_carlo_route(req: MonteCarloRequest):
+    """Runs a 1,000-run Monte Carlo probability distribution simulation."""
+    return wealth_engine.run_monte_carlo(
+        initial_investment=req.initial_investment,
+        monthly_sip=req.monthly_sip,
+        mean_annual_return_pct=req.mean_annual_return_pct,
+        annual_volatility_pct=req.annual_volatility_pct or 15.0,
+        years=req.years,
+        num_simulations=req.num_simulations or 1000,
+        seed=req.seed or 42
+    )
+
+@app.post(f"{settings.API_V1_STR}/ml/predict-cashflow", tags=["Predictive Expense Engine"])
+def predict_user_cashflow(req: UserCashflowForecastRequest):
+    return predictive_engine.forecast_user_cashflow(
+        transactions=req.transactions,
+        monthly_income_target=req.monthly_income_target or 75000.0,
+        days_in_month=req.days_in_month or 30
+    )
+
+@app.post(f"{settings.API_V1_STR}/ml/category-anomalies", tags=["Predictive Expense Engine"])
+def detect_category_anomalies(req: UserAnomalyRequest):
+    return category_anomaly_service.analyze_category_anomalies(
+        current_transactions=req.current_transactions,
+        historical_transactions=req.historical_transactions
+    )
+
+@app.get(f"{settings.API_V1_STR}/ml/evaluate-model", tags=["Predictive Expense Engine"])
+def evaluate_ml_model(months: int = 6):
+    synthetic_df = generate_synthetic_transactions(seed=42, months=months)
+    df_exp = synthetic_df[synthetic_df["type"] == "EXPENSE"].copy()
+    eval_results = predictive_engine.evaluate_model_on_history(df_exp)
+    eval_results["dataset_summary"] = {
+        "total_synthetic_records": len(synthetic_df),
+        "expense_records_count": len(df_exp),
+        "injected_anomalies_count": int(synthetic_df["is_ground_truth_anomaly"].sum()),
+        "time_range_months": months,
+        "data_isolation": "Strictly tagged as synthetic academic demonstration data"
+    }
+    return eval_results
 
 if __name__ == "__main__":
     import uvicorn
