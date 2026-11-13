@@ -35,3 +35,4 @@ for label, query, history in test_prompts:
             print(f"  Response: {first_sentence[:100]}...")
     except Exception as e:
         print(f"\n[FAIL] {label}: {e}")
+

@@ -95,3 +95,4 @@ The conversational router (`backend/app/rag/conversational_router.py`) handles p
 6. [x] Production Dockerfile and healthcheck (`/health`) configured.
 7. [x] Vercel security headers configured.
 8. [x] Author credits unified to Diwakar K.
+
