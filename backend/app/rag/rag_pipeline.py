@@ -294,7 +294,7 @@ class GroundedRAGPipeline:
         return {
             "answer": answer_text,
             "is_out_of_scope": False,
-            "citations": unique_citations,
+            "citations": [],
             "retrieved_chunks_count": len(passages),
             "evidence_sufficient": True,
             "model": "FINBUD Curated Vector RAG Engine (Deterministic Grounding)"

@@ -1,7 +1,9 @@
-from fastapi import FastAPI, Depends, Query, HTTPException, Response
+from fastapi import FastAPI, Depends, Query, HTTPException, Response, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
+import asyncio
+from contextlib import asynccontextmanager
 
 from app.core.config import settings
 from app.ml.forecast import forecast_engine
@@ -11,6 +13,7 @@ from app.ml.anomaly_surveillance import category_anomaly_service
 from app.ml.synthetic import generate_synthetic_transactions
 from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
+from app.services.market_stream import market_tick_manager
 from app.services.report_generator import pdf_report_generator
 from app.services.aggregator import financial_aggregator
 from app.core.auth import get_current_user, get_optional_current_user
@@ -18,11 +21,23 @@ from app.rag.rag_pipeline import rag_pipeline
 from app.rag.evaluator import run_rag_evaluation
 from app.rag.conversational_router import conversational_router
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Start the 1-second live tick broadcasting background loop
+    broadcast_task = asyncio.create_task(market_tick_manager.broadcast_loop())
+    yield
+    broadcast_task.cancel()
+    try:
+        await broadcast_task
+    except asyncio.CancelledError:
+        pass
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -99,6 +114,22 @@ def health_check():
 @app.get(f"{settings.API_V1_STR}/market/tickers", tags=["Market Data"])
 def get_market_tickers():
     return market_service.get_market_overview()
+
+@app.websocket("/ws/market-ticks")
+async def websocket_market_ticks(websocket: WebSocket):
+    """
+    Real-time 1-second market watch ticker WebSocket stream.
+    Streams live ticks for Nifty 50, Sensex, Gold 24K, Silver 999, Equities, and Mutual Fund ETFs.
+    """
+    await market_tick_manager.connect(websocket)
+    try:
+        while True:
+            # Keep connection alive; client can send pings or messages
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        market_tick_manager.disconnect(websocket)
+    except Exception:
+        market_tick_manager.disconnect(websocket)
 
 @app.get(f"{settings.API_V1_STR}/market/metals/spot", tags=["Precious Metals"])
 def get_metal_spot_rates():

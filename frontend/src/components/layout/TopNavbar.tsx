@@ -8,8 +8,12 @@ import {
   PlusCircle,
   LogIn,
   LogOut,
+  Radio,
+  TrendingUp,
+  TrendingDown,
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
+import { useMarketTicks } from '@/hooks/useMarketTicks';
 import { createClient } from '@/utils/supabase/client';
 
 interface TopNavbarProps {
@@ -33,6 +37,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   const router = useRouter();
   const supabase = createClient();
   const [user, setUser] = useState<any>(null);
+  const { ticks, isConnected } = useMarketTicks();
+
+  // Prefer live WebSocket streaming ticks if connected and available, else fallback to baseline
+  const activeTickers = ticks && ticks.length > 0 ? ticks : DEMO_MARKET_TICKERS;
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -59,33 +67,54 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB]">
       {/* 1. Subtle Market Ticker Bar */}
-      <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
-        <div className="flex items-center gap-6">
+      <div className="bg-[#F8FAF9] border-b border-[#E5E7EB]/70 px-4 sm:px-6 py-1.5 flex items-center justify-between text-xs overflow-x-auto no-scrollbar whitespace-nowrap">
+        <div className="flex items-center gap-5 sm:gap-6">
           <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
-            <span className="text-[10px] uppercase tracking-wider text-[#4B5563] font-mono">
-              Market Watch
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isConnected ? 'bg-[#10B981] animate-pulse' : 'bg-[#F59E0B]'
+              }`}
+            />
+            <span className="text-[10px] uppercase tracking-wider text-[#374151] font-mono font-bold flex items-center gap-1">
+              {isConnected ? 'LIVE 1s TICK' : 'MARKET WATCH'}
             </span>
           </div>
 
-          {DEMO_MARKET_TICKERS.map((ticker) => (
-            <div key={ticker.symbol} className="flex items-center gap-1.5 font-mono text-[11px]">
-              <span className="text-[#6B7280]">{ticker.symbol}</span>
-              <span className="text-[#1F2937] font-semibold">{ticker.price}</span>
-              <span
-                className={`text-[10px] font-semibold ${
-                  ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
+          {activeTickers.map((ticker: any) => {
+            const isUp = ticker.tick_direction === 'UP';
+            const isDown = ticker.tick_direction === 'DOWN';
+            return (
+              <div
+                key={ticker.symbol}
+                className={`flex items-center gap-1.5 font-mono text-[11px] px-2 py-0.5 rounded transition-colors duration-300 ${
+                  isUp ? 'bg-[#ECFDF5]' : isDown ? 'bg-[#FEF2F2]' : ''
                 }`}
               >
-                {ticker.change}
-              </span>
-            </div>
-          ))}
+                <span className="text-[#6B7280] font-medium">{ticker.symbol}</span>
+                <span
+                  className={`font-semibold transition-colors duration-200 ${
+                    isUp ? 'text-[#059669]' : isDown ? 'text-[#DC2626]' : 'text-[#1F2937]'
+                  }`}
+                >
+                  {ticker.price}
+                </span>
+                <span
+                  className={`text-[10px] font-semibold flex items-center gap-0.5 ${
+                    ticker.isPositive ? 'text-[#10B981]' : 'text-[#DC2626]'
+                  }`}
+                >
+                  {isUp && <TrendingUp className="w-2.5 h-2.5 inline" />}
+                  {isDown && <TrendingDown className="w-2.5 h-2.5 inline" />}
+                  {ticker.change}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-[11px] text-[#6B7280] ml-4 font-mono">
+        <div className="hidden md:flex items-center gap-2 text-[10px] text-[#6B7280] ml-4 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-          <span>NSE / RBI Interbank Delayed Reference</span>
+          <span>NSE / BSE / IBJA Spot / AMFI Reference</span>
         </div>
       </div>
 
