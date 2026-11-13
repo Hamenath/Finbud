@@ -10,10 +10,10 @@ import {
 } from 'lucide-react';
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
-import { FinbudLogo } from '../common/FinbudLogo';
-import { StaggeredMenu } from '../ui/StaggeredMenu';
+import { StaggeredMenu, StaggeredMenuItem } from '../ui/StaggeredMenu';
 
 interface TopNavbarProps {
+  onMenuClick: () => void;
   onOpenQuickAdd: () => void;
 }
 
@@ -24,29 +24,29 @@ const ROUTE_TITLES: Record<string, string> = {
   '/wealth-lab': 'Wealth Multiplier Lab',
   '/gold-silver': 'Gold & Silver Vault',
   '/insurance-shield': 'Smart Insurance Shield',
-  '/finbud-ai': 'FINBUD AI Assistant',
   '/reports': 'Financial Reports',
   '/settings': 'Platform Settings',
 };
 
-const STAGGERED_NAV_ITEMS = [
-  { label: 'Overview', ariaLabel: 'Go to Overview dashboard', link: '/' },
-  { label: 'Transactions', ariaLabel: 'View Transactions Ledger', link: '/transactions' },
-  { label: 'Analytics', ariaLabel: 'Predictive Analytics & Anomaly Detection', link: '/analytics' },
-  { label: 'Wealth Lab', ariaLabel: 'Wealth Multiplier Lab', link: '/wealth-lab' },
-  { label: 'Gold & Silver', ariaLabel: 'Precious Metals Vault', link: '/gold-silver' },
-  { label: 'Insurance', ariaLabel: 'Smart Insurance Shield', link: '/insurance-shield' },
-  { label: 'Reports', ariaLabel: 'Financial Scorecard Reports', link: '/reports' },
-  { label: 'Settings', ariaLabel: 'Platform Configuration', link: '/settings' },
+const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
+  { label: 'Overview', ariaLabel: 'Navigate to Overview', link: '/' },
+  { label: 'Transactions', ariaLabel: 'Navigate to Transactions Ledger', link: '/transactions' },
+  { label: 'Analytics', ariaLabel: 'Navigate to Predictive Analytics', link: '/analytics' },
+  { label: 'Wealth Lab', ariaLabel: 'Navigate to Wealth Multiplier Lab', link: '/wealth-lab' },
+  { label: 'Gold & Silver', ariaLabel: 'Navigate to Gold and Silver Vault', link: '/gold-silver' },
+  { label: 'Insurance Shield', ariaLabel: 'Navigate to Insurance Shield', link: '/insurance-shield' },
+  { label: 'Reports', ariaLabel: 'Navigate to Financial Reports', link: '/reports' },
+  { label: 'Settings', ariaLabel: 'Navigate to Platform Settings', link: '/settings' },
 ];
 
 const STAGGERED_SOCIAL_ITEMS = [
   { label: 'NSE India', link: 'https://www.nseindia.com' },
-  { label: 'RBI Spot', link: 'https://rbi.org.in' },
-  { label: 'SEBI Portal', link: 'https://sebi.gov.in' },
+  { label: 'RBI Monetary', link: 'https://rbi.org.in' },
+  { label: 'Income Tax Portal', link: 'https://eportal.incometax.gov.in' },
+  { label: 'IRDAI Guidelines', link: 'https://irdai.gov.in' },
 ];
 
-export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenQuickAdd }) => {
+export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAdd }) => {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
@@ -107,26 +107,36 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenQuickAdd }) => {
         </div>
       </div>
 
-      {/* 2. Main Horizontal Navigation Bar */}
-      <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto w-full">
-        {/* Left Side: Logo & Breadcrumb */}
-        <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <FinbudLogo showWordmark={true} size="sm" />
-          </Link>
+      {/* 2. Main Horizontal Navigation Bar with Left-Side StaggeredMenu */}
+      <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between max-w-7xl mx-auto w-full">
+        {/* Left Side: StaggeredMenu with Animated Greater-Than Arrow Toggle */}
+        <div className="flex items-center gap-3">
+          <StaggeredMenu
+            position="left"
+            items={STAGGERED_MENU_ITEMS}
+            socialItems={STAGGERED_SOCIAL_ITEMS}
+            displaySocials={true}
+            displayItemNumbering={true}
+            colors={['#9DE8CB', '#FFD05B', '#182B46']}
+            menuButtonColor="#182B46"
+            openMenuButtonColor="#182B46"
+            accentColor="#FFD05B"
+            changeMenuColorOnOpen={true}
+            closeOnClickAway={true}
+          />
 
-          <div className="hidden sm:flex items-center gap-2.5 pl-3 border-l-[1.5px] border-[#182B46]/30">
-            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider">
+          <div className="flex items-center gap-2.5 pl-1">
+            <span className="text-xs font-mono font-bold text-[#4B5E76] uppercase tracking-wider hidden sm:inline">
               FINBUD
             </span>
-            <span className="text-[#182B46] font-bold">/</span>
-            <h1 className="text-sm sm:text-base font-extrabold text-[#182B46] tracking-tight">
+            <span className="text-[#182B46] font-bold hidden sm:inline">/</span>
+            <h1 className="text-base sm:text-lg font-extrabold text-[#182B46] tracking-tight">
               {currentTitle}
             </h1>
           </div>
         </div>
 
-        {/* Right Side: Quick Action, StaggeredMenu (Single Unified Menu), & Profile */}
+        {/* Right Side: Quick Action & Profile */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
@@ -136,28 +146,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenQuickAdd }) => {
             <span className="hidden sm:inline">New Entry</span>
           </button>
 
-          {/* Single Unified StaggeredMenu Navigation */}
-          <div className="relative">
-            <StaggeredMenu
-              position="right"
-              items={STAGGERED_NAV_ITEMS}
-              socialItems={STAGGERED_SOCIAL_ITEMS}
-              displaySocials={true}
-              displayItemNumbering={true}
-              colors={['#FFD05B', '#9DE8CB']}
-              logoUrl="/brand/finbud-logo.svg"
-              menuButtonColor="#182B46"
-              openMenuButtonColor="#182B46"
-              accentColor="#FFD05B"
-              changeMenuColorOnOpen={true}
-              isFixed={true}
-              closeOnClickAway={true}
-            />
-          </div>
-
           {user ? (
             <div className="flex items-center gap-2 pl-2 border-l-[1.5px] border-[#182B46]">
-              <div className="hidden md:flex flex-col text-right">
+              <div className="hidden sm:flex flex-col text-right">
                 <span className="text-xs font-bold text-[#182B46] leading-tight">
                   {user.email?.split('@')[0]}
                 </span>
