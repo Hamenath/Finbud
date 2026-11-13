@@ -196,3 +196,4 @@ const activeTickers = ticks && ticks.length > 0 ? ticks : DEMO_MARKET_TICKERS;
    - In `backend/vercel.json` or Vercel Dashboard, set `maxDuration: 300` (Hobby) or `maxDuration: 800` (Pro).
 4. **Preserve REST Fallback:**
    - Ensure `TopNavbar.tsx` and `useMarketTicks.ts` continue their dual-mode failover logic.
+
