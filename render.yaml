@@ -35,3 +35,4 @@ services:
         sync: false
       - key: MARKET_CACHE_TTL_SECONDS
         value: "3600"
+
