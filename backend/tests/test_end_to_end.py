@@ -106,6 +106,9 @@ def test_metal_spot_rates():
     assert rates["gold_22k_per_gram"] == pytest.approx(rates["gold_24k_per_gram"] * (22.0 / 24.0), rel=1e-2)
     assert rates["silver_per_gram"] > 50.0
     assert "provider" in rates
+    # Verify statutory 15% customs + 3% IGST (1.1845 landed multiplier)
+    assert rates["effective_landed_multiplier"] == pytest.approx(1.1845, rel=1e-3)
+    assert "15.0%" in rates["customs_duty_rate"]
 
 def test_metal_historical_chart():
     chart = market_service.get_metal_historical_chart(metal="GOLD", period="3mo")
