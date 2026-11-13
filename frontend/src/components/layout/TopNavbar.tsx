@@ -14,6 +14,7 @@ import {
 import { DEMO_MARKET_TICKERS } from '@/data/demoData';
 import { createClient } from '@/utils/supabase/client';
 import { FinbudLogo } from '../common/FinbudLogo';
+import { StaggeredMenu } from '../ui/StaggeredMenu';
 
 interface TopNavbarProps {
   onMenuClick: () => void;
@@ -31,6 +32,23 @@ const ROUTE_TITLES: Record<string, string> = {
   '/reports': 'Financial Reports',
   '/settings': 'Platform Settings',
 };
+
+const STAGGERED_NAV_ITEMS = [
+  { label: 'Overview', ariaLabel: 'Go to Overview dashboard', link: '/' },
+  { label: 'Transactions', ariaLabel: 'View Transactions Ledger', link: '/transactions' },
+  { label: 'Analytics', ariaLabel: 'Predictive Analytics & Anomaly Detection', link: '/analytics' },
+  { label: 'Wealth Lab', ariaLabel: 'Wealth Multiplier Lab', link: '/wealth-lab' },
+  { label: 'Gold & Silver', ariaLabel: 'Precious Metals Vault', link: '/gold-silver' },
+  { label: 'Insurance', ariaLabel: 'Smart Insurance Shield', link: '/insurance-shield' },
+  { label: 'Reports', ariaLabel: 'Financial Scorecard Reports', link: '/reports' },
+  { label: 'Settings', ariaLabel: 'Platform Configuration', link: '/settings' },
+];
+
+const STAGGERED_SOCIAL_ITEMS = [
+  { label: 'NSE India', link: 'https://www.nseindia.com' },
+  { label: 'RBI Spot', link: 'https://rbi.org.in' },
+  { label: 'SEBI Portal', link: 'https://sebi.gov.in' },
+];
 
 export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAdd }) => {
   const pathname = usePathname();
@@ -116,7 +134,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
           </div>
         </div>
 
-        {/* Right Side: Quick Action & Profile */}
+        {/* Right Side: Quick Action, StaggeredMenu, & Profile */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenQuickAdd}
@@ -125,6 +143,25 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
             <PlusCircle className="w-4 h-4 stroke-[2.5]" />
             <span className="hidden sm:inline">New Entry</span>
           </button>
+
+          {/* React Bits StaggeredMenu Trigger */}
+          <div className="relative">
+            <StaggeredMenu
+              position="right"
+              items={STAGGERED_NAV_ITEMS}
+              socialItems={STAGGERED_SOCIAL_ITEMS}
+              displaySocials={true}
+              displayItemNumbering={true}
+              colors={['#FFD05B', '#9DE8CB']}
+              logoUrl="/brand/finbud-logo.svg"
+              menuButtonColor="#182B46"
+              openMenuButtonColor="#182B46"
+              accentColor="#FFD05B"
+              changeMenuColorOnOpen={true}
+              isFixed={true}
+              closeOnClickAway={true}
+            />
+          </div>
 
           {user ? (
             <div className="flex items-center gap-2 pl-2 border-l-[1.5px] border-[#182B46]">
