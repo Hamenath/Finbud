@@ -10,12 +10,10 @@ import {
   TrendingUp,
   Coins,
   ShieldCheck,
-  Bot,
   FileSpreadsheet,
   Settings,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
 } from 'lucide-react';
 import { FinbudLogo } from '@/components/common/FinbudLogo';
 
@@ -33,7 +31,6 @@ export const navigationItems = [
   { name: 'Wealth Multiplier Lab', href: '/wealth-lab', icon: TrendingUp },
   { name: 'Gold & Silver', href: '/gold-silver', icon: Coins },
   { name: 'Insurance Shield', href: '/insurance-shield', icon: ShieldCheck },
-  { name: 'FINBUD AI', href: '/finbud-ai', icon: Bot, isAi: true },
   { name: 'Reports', href: '/reports', icon: FileSpreadsheet },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
@@ -130,12 +127,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                 {!collapsed && (
                   <span className="flex-1 truncate tracking-tight">{item.name}</span>
-                )}
-
-                {!collapsed && item.isAi && (
-                  <span className="px-1.5 py-0.5 rounded-full border border-[#182B46] text-[9px] font-extrabold bg-[#E9FFF5] text-[#182B46]">
-                    RAG
-                  </span>
                 )}
               </Link>
             );
