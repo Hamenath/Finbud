@@ -86,3 +86,4 @@ export function useMarketTicks() {
 
   return { ticks, isConnected, lastTickTime };
 }
+

@@ -234,3 +234,4 @@ class MarketTickManager:
                 self.active_connections.discard(dead)
 
 market_tick_manager = MarketTickManager()
+
