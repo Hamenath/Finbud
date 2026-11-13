@@ -28,6 +28,41 @@ interface ChatMessage {
   timestamp: string;
 }
 
+// Custom Markdown parser that formats **bold** and *italic* cleanly into React elements
+function FormattedMessageText({ text }: { text: string }) {
+  const paragraphs = text.split('\n\n');
+
+  return (
+    <div className="space-y-2.5">
+      {paragraphs.map((para, pIdx) => {
+        // Regex to parse **bold** and *italic*
+        const parts = para.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+        return (
+          <p key={pIdx} className="leading-relaxed">
+            {parts.map((part, idx) => {
+              if (part.startsWith('**') && part.endsWith('**')) {
+                return (
+                  <strong key={idx} className="font-semibold text-[#111827]">
+                    {part.slice(2, -2)}
+                  </strong>
+                );
+              }
+              if (part.startsWith('*') && part.endsWith('*')) {
+                return (
+                  <em key={idx} className="italic text-[#4B5563]">
+                    {part.slice(1, -1)}
+                  </em>
+                );
+              }
+              return part;
+            })}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: 'm-1',
@@ -193,7 +228,11 @@ export const FinbudAiFloatingWidget: React.FC = () => {
                       : 'bg-[#F9FAFB] text-[#1F2937] border-[#E5E7EB]'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{m.text}</p>
+                  {m.sender === 'user' ? (
+                    <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
+                  ) : (
+                    <FormattedMessageText text={m.text} />
+                  )}
                 </div>
                 <span className="text-[10px] font-mono text-[#9CA3AF] mt-1 px-1">
                   {m.timestamp}
