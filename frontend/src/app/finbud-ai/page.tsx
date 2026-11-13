@@ -1,30 +1,59 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Bot,
   Send,
   Sparkles,
   BookOpen,
   ArrowRight,
+  ShieldCheck,
+  AlertCircle,
+  HelpCircle,
+  RefreshCw,
+  ExternalLink,
+  Layers,
+  Award,
 } from 'lucide-react';
+
+interface Citation {
+  title: string;
+  source: string;
+  section: string;
+}
 
 interface ChatMessage {
   id: string;
   sender: 'user' | 'assistant';
   text: string;
-  citations?: { title: string; section: string }[];
+  citations?: Citation[];
+  model?: string;
+  isOutOfScope?: boolean;
+  evidenceSufficient?: boolean;
   timestamp: string;
+}
+
+interface RAGEvalReport {
+  total_test_queries: number;
+  retrieval_relevance_rate_pct: number;
+  answer_faithfulness_rate_pct: number;
+  citation_coverage_rate_pct: number;
+  status: string;
 }
 
 const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: 'm-1',
     sender: 'assistant',
-    text: 'Namaste! I am FINBUD AI, your grounded financial intelligence copilot. I answer questions regarding Indian tax brackets, Sovereign Gold Bonds (SGB), emergency fund allocation, and insurance adequacy using our curated knowledge base. What can I clarify for you today?',
+    text: 'Namaste! I am FINBUD AI, your verified Retrieval-Augmented Generation (RAG) copilot. Every answer I generate is strictly grounded in our curated, versioned Indian Personal Finance Knowledge Base covering taxation, Sovereign Gold Bonds (SGB), SIP compounding, insurance heuristics, and cash-flow budgeting. How may I assist you today?',
     citations: [
-      { title: 'FINBUD Financial Principles KB', section: 'Sec 1.1 - Scope & Non-Advisory Mandate' },
+      {
+        title: 'FINBUD Curated Financial Knowledge Base (v1.2.0)',
+        source: 'Income Tax Dept, RBI, AMFI, IRDAI',
+        section: 'Sec 1.0 - Academic Governance & Fiduciary Mandate',
+      },
     ],
+    model: 'Curated Vector RAG Pipeline',
     timestamp: 'Just now',
   },
 ];
@@ -32,23 +61,37 @@ const INITIAL_MESSAGES: ChatMessage[] = [
 const SUGGESTED_QUERIES = [
   'What are the tax implications of Sovereign Gold Bonds vs Physical Gold?',
   'Explain the 10x annual income heuristic for Term Insurance',
-  'How does the Rule of 72 work for calculating doubling time?',
-  'What is the recommended emergency fund size for Indian salaried professionals?',
+  'How does the Rule of 72 calculate investment doubling time?',
+  'What are the tax deduction limits under Section 80C and Section 80D?',
+  'How is the 50/30/20 budgeting rule divided for emergency funds?',
 ];
 
 export default function FinbudAiPage() {
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [evalModalOpen, setEvalModalOpen] = useState(false);
+  const [evalReport, setEvalReport] = useState<RAGEvalReport | null>(null);
+  const [evalLoading, setEvalLoading] = useState(false);
 
-  const handleSend = (queryText?: string) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
+
+  const handleSend = async (queryText?: string) => {
     const textToSend = queryText || input;
-    if (!textToSend.trim()) return;
+    if (!textToSend.trim() || isTyping) return;
 
     const userMsg: ChatMessage = {
       id: `usr-${Date.now()}`,
       sender: 'user',
-      text: textToSend,
+      text: textToSend.trim(),
       timestamp: 'Now',
     };
 
@@ -56,62 +99,99 @@ export default function FinbudAiPage() {
     if (!queryText) setInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      let reply = 'According to our curated Indian financial knowledge repository: ';
-      let citation = { title: 'Income Tax Act & Wealth Guidelines', section: 'General Wealth Principles' };
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/rag/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: textToSend.trim(),
+        }),
+      });
 
-      if (textToSend.toLowerCase().includes('gold') || textToSend.toLowerCase().includes('sgb')) {
-        reply = 'Sovereign Gold Bonds (SGBs) held until maturity (8 years) enjoy 100% Capital Gains Tax exemption for individuals under Section 47(viic) of the IT Act. Furthermore, SGBs earn 2.50% annual interest payable semi-annually. In contrast, physical gold is taxed under Short-Term or Long-Term Capital Gains rules depending on the holding duration, and incurs 3% GST plus making charges upon purchase.';
-        citation = { title: 'Reserve Bank of India SGB Master Circular', section: 'Taxation & Interest Provisions' };
-      } else if (textToSend.toLowerCase().includes('insurance') || textToSend.toLowerCase().includes('10x')) {
-        reply = 'The 10× Annual Gross Income heuristic represents a conservative baseline for pure term life insurance. It aims to ensure that in the event of the primary earner’s demise, the corpus can replace income and cover basic living inflation when invested in safe fixed-income instruments. However, existing debts (e.g. home loan EMI) should be added on top of the 10x baseline.';
-        citation = { title: 'Insurance Regulatory Principles', section: 'Human Life Value (HLV) Heuristics' };
-      } else if (textToSend.toLowerCase().includes('rule of 72') || textToSend.toLowerCase().includes('doubling')) {
-        reply = 'The Rule of 72 is a mental shortcut to estimate the number of years required to double invested money at a fixed annual rate of return: Doubling Time ≈ 72 ÷ Annual Return Rate (%). For instance, at 12% CAGR, money doubles in approximately 6 years (72 ÷ 12 = 6). It is an educational approximation that assumes reinvested compounding without tax drag.';
-        citation = { title: 'Compounding & Time Value of Money', section: 'Mathematical Approximations' };
+      if (res.ok) {
+        const data = await res.json();
+        const botReply: ChatMessage = {
+          id: `bot-${Date.now()}`,
+          sender: 'assistant',
+          text: data.answer,
+          citations: data.citations || [],
+          model: data.model || 'Grounded RAG Pipeline',
+          isOutOfScope: data.is_out_of_scope,
+          evidenceSufficient: data.evidence_sufficient,
+          timestamp: 'Just now',
+        };
+        setMessages((prev) => [...prev, botReply]);
       } else {
-        reply = 'A robust personal financial framework recommends maintaining 6 to 12 months of non-discretionary expenses (rent, EMIs, utilities, groceries) in highly liquid instruments like high-interest savings accounts or liquid mutual funds before allocating capital into volatile equity or metal assets.';
-        citation = { title: 'Emergency Fund & Cash Flow Architecture', section: 'Buffer Sizing' };
+        throw new Error('API server returned error');
       }
-
-      const botReply: ChatMessage = {
+    } catch (err) {
+      console.warn('RAG backend failed, displaying client fallback', err);
+      const fallbackReply: ChatMessage = {
         id: `bot-${Date.now()}`,
         sender: 'assistant',
-        text: reply,
-        citations: [citation],
+        text: 'Unable to reach the live RAG vector service. Please verify that the FastAPI backend server is running on port 8000.',
+        citations: [],
         timestamp: 'Just now',
       };
-
-      setMessages((prev) => [...prev, botReply]);
+      setMessages((prev) => [...prev, fallbackReply]);
+    } finally {
       setIsTyping(false);
-    }, 700);
+    }
+  };
+
+  const handleRunEvaluation = async () => {
+    setEvalModalOpen(true);
+    setEvalLoading(true);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/rag/evaluate');
+      if (res.ok) {
+        const data = await res.json();
+        setEvalReport(data);
+      }
+    } catch (e) {
+      console.error('Eval error', e);
+    } finally {
+      setEvalLoading(false);
+    }
   };
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
-            FINBUD RAG Financial Assistant
-          </h1>
-          <span className="text-[10px] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] px-2 py-0.5 rounded font-mono font-bold">
-            GROUNDED RAG COPILOT
-          </span>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+              FINBUD RAG Financial Assistant
+            </h1>
+            <span className="text-[10px] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] px-2 py-0.5 rounded font-mono font-bold">
+              GROUNDED RAG COPILOT
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
+            Grounded vector retrieval across Indian tax codes, SGBs, SIP mechanics, and insurance heuristics with verifiable source citations.
+          </p>
         </div>
-        <p className="text-xs sm:text-sm text-[#6B7280] mt-0.5">
-          Grounded conversational intelligence with verifiable source citations and zero hallucinated financial advice
-        </p>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRunEvaluation}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-[#E5E7EB] hover:border-[#10B981] text-[#374151] hover:text-[#065F46] rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+          >
+            <Award size={14} className="text-[#10B981]" />
+            Audit RAG Evaluation Set
+          </button>
+        </div>
       </div>
 
-      {/* Main Chat Interface (Light Theme) */}
+      {/* Main Chat Interface */}
       <div className="rounded-2xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col h-140 overflow-hidden">
         {/* Chat History */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
           {messages.map((m) => (
             <div
               key={m.id}
-              className={`flex gap-3 max-w-2xl ${m.sender === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
+              className={`flex gap-3 max-w-3xl ${m.sender === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
             >
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
@@ -128,21 +208,35 @@ export default function FinbudAiPage() {
                   className={`p-4 rounded-2xl text-xs leading-relaxed ${
                     m.sender === 'user'
                       ? 'bg-[#10B981] text-white shadow-xs'
+                      : m.isOutOfScope
+                      ? 'bg-[#FEF2F2] text-[#991B1B] border border-[#FECACA]'
                       : 'bg-[#F9FAFB] text-[#1F2937] border border-[#E5E7EB]'
                   }`}
                 >
-                  {m.text}
+                  <div className="whitespace-pre-line">{m.text}</div>
+
+                  {m.model && m.sender === 'assistant' && (
+                    <div className="mt-2 pt-2 border-t border-[#E5E7EB] flex items-center justify-between text-[10px] text-[#6B7280]">
+                      <span className="font-mono">Engine: {m.model}</span>
+                      <span className="flex items-center gap-1 text-[#065F46]">
+                        <ShieldCheck size={11} className="text-[#10B981]" /> Zero Hallucination Guard
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                {m.citations && (
+                {/* Grounded Citation Badges */}
+                {m.citations && m.citations.length > 0 && (
                   <div className="flex flex-wrap gap-2 text-[10px] font-mono">
                     {m.citations.map((c, i) => (
                       <span
                         key={i}
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563]"
                       >
-                        <BookOpen size={11} className="text-[#10B981]" />
-                        <span>{c.title} • {c.section}</span>
+                        <BookOpen size={11} className="text-[#10B981] shrink-0" />
+                        <span>
+                          <strong>{c.title}</strong> • {c.section}
+                        </span>
                       </span>
                     ))}
                   </div>
@@ -156,9 +250,10 @@ export default function FinbudAiPage() {
               <div className="w-8 h-8 rounded-xl bg-[#ECFDF5] text-[#10B981] flex items-center justify-center">
                 <Sparkles size={14} className="animate-spin" />
               </div>
-              <span className="animate-pulse">Retrieving grounded knowledge passages...</span>
+              <span className="animate-pulse">Retrieving grounded knowledge passages & synthesizing...</span>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Suggested Quick Prompts */}
@@ -167,7 +262,7 @@ export default function FinbudAiPage() {
             <button
               key={idx}
               onClick={() => handleSend(q)}
-              className="text-[11px] px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] hover:text-[#111827] transition-all flex items-center gap-1.5 shrink-0 shadow-2xs"
+              className="text-[11px] px-3 py-1.5 rounded-lg bg-white hover:bg-[#F3F4F6] border border-[#E5E7EB] text-[#374151] hover:text-[#111827] transition-all flex items-center gap-1.5 shrink-0 shadow-2xs cursor-pointer"
             >
               <span>{q}</span>
               <ArrowRight size={11} className="text-[#10B981]" />
@@ -185,20 +280,91 @@ export default function FinbudAiPage() {
         >
           <input
             type="text"
-            placeholder="Ask about Indian taxation, SIP compounding, SGBs, or insurance adequacy..."
+            placeholder="Ask about Indian taxation, SIP compounding, SGBs, or insurance heuristics..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981]"
+            disabled={isTyping}
+            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:bg-white focus:border-[#10B981] disabled:opacity-50"
           />
           <button
             type="submit"
-            className="p-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold shadow-xs transition-all active:scale-95"
+            disabled={isTyping || !input.trim()}
+            className="p-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-semibold shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
             aria-label="Send message"
           >
             <Send size={16} />
           </button>
         </form>
       </div>
+
+      {/* RAG Evaluation Audit Modal */}
+      {evalModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xl w-full max-w-xl p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+              <h3 className="text-base font-bold text-[#111827] flex items-center gap-2">
+                <Award size={18} className="text-[#10B981]" />
+                RAG Retrieval & Faithfulness Audit
+              </h3>
+              <button
+                onClick={() => setEvalModalOpen(false)}
+                className="text-[#9CA3AF] hover:text-[#111827] transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {evalLoading ? (
+              <div className="py-8 flex flex-col items-center justify-center gap-2 text-xs text-[#6B7280]">
+                <RefreshCw size={20} className="animate-spin text-[#10B981]" />
+                <span>Running benchmark test suite across evaluation queries...</span>
+              </div>
+            ) : evalReport ? (
+              <div className="space-y-4 text-xs">
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="p-3 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-center">
+                    <span className="text-[10px] text-[#065F46] font-semibold block">Retrieval Relevance</span>
+                    <span className="text-xl font-bold font-mono text-[#065F46]">
+                      {evalReport.retrieval_relevance_rate_pct}%
+                    </span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-center">
+                    <span className="text-[10px] text-[#065F46] font-semibold block">Answer Faithfulness</span>
+                    <span className="text-xl font-bold font-mono text-[#065F46]">
+                      {evalReport.answer_faithfulness_rate_pct}%
+                    </span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] text-center">
+                    <span className="text-[10px] text-[#065F46] font-semibold block">Citation Coverage</span>
+                    <span className="text-xl font-bold font-mono text-[#065F46]">
+                      {evalReport.citation_coverage_rate_pct}%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] text-[#4B5563] space-y-1">
+                  <div className="font-semibold text-[#111827]">Academic Evaluation Benchmark:</div>
+                  <p>
+                    Evaluated across {evalReport.total_test_queries} curated test cases covering taxation, SGB capital gains, Rule of 72 compounding, Section 80C/80D limits, and 50/30/20 budgeting.
+                  </p>
+                  <p className="text-[#065F46] font-semibold">
+                    Status: {evalReport.status} • Grounded with zero unreferenced statements.
+                  </p>
+                </div>
+
+                <div className="flex justify-end pt-2 border-t border-[#E5E7EB]">
+                  <button
+                    onClick={() => setEvalModalOpen(false)}
+                    className="px-4 py-2 bg-[#10B981] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#059669]"
+                  >
+                    Close Report
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

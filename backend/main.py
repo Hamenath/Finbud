@@ -11,6 +11,8 @@ from app.ml.anomaly_surveillance import category_anomaly_service
 from app.ml.synthetic import generate_synthetic_transactions
 from app.ml.wealth_engine import wealth_engine
 from app.services.market import market_service
+from app.rag.rag_pipeline import rag_pipeline
+from app.rag.evaluator import run_rag_evaluation
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -58,6 +60,10 @@ class UserAnomalyRequest(BaseModel):
     current_transactions: List[Dict[str, Any]]
     historical_transactions: Optional[List[Dict[str, Any]]] = None
 
+class RAGQueryRequest(BaseModel):
+    query: str
+    conversation_history: Optional[List[Dict[str, str]]] = None
+
 # ----------------- Endpoints -----------------
 @app.get("/health", tags=["Health"])
 def health_check():
@@ -78,9 +84,22 @@ def get_metal_spot_rates():
     return market_service.get_metal_spot_rates()
 
 @app.get(f"{settings.API_V1_STR}/market/metals/history", tags=["Precious Metals"])
-def get_metal_history(metal: str = Query("GOLD", regex="^(GOLD|SILVER)$"), period: str = "3mo"):
+def get_metal_history(metal: str = Query("GOLD", pattern="^(GOLD|SILVER)$"), period: str = "3mo"):
     """Returns historical daily close prices with educational 20-day SMA and EMA indicators."""
     return market_service.get_metal_historical_chart(metal=metal, period=period)
+
+@app.post(f"{settings.API_V1_STR}/rag/ask", tags=["RAG Financial Assistant"])
+def ask_rag_assistant(req: RAGQueryRequest):
+    """Answers financial questions grounded in verified curated knowledge base with source citations."""
+    return rag_pipeline.answer_query(
+        query=req.query,
+        conversation_history=req.conversation_history
+    )
+
+@app.get(f"{settings.API_V1_STR}/rag/evaluate", tags=["RAG Financial Assistant"])
+def evaluate_rag_assistant():
+    """Runs automated benchmark evaluation on retrieval relevance, answer faithfulness and citation coverage."""
+    return run_rag_evaluation()
 
 @app.post(f"{settings.API_V1_STR}/wealth/compound", tags=["Wealth Multiplier Lab"])
 def calculate_compound(req: CompoundCalcRequest):
