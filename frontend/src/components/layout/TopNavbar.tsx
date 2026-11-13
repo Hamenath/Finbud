@@ -71,21 +71,30 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onMenuClick, onOpenQuickAd
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Connection status indicator */}
           <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
+            {connectionState === 'CONNECTED' ? (
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+              </span>
+            ) : (
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  connectionState === 'RECONNECTING' || connectionState === 'CONNECTING'
+                    ? 'bg-[#F59E0B] animate-ping'
+                    : 'bg-[#9CA3AF]'
+                }`}
+              />
+            )}
             <span
-              className={`w-2 h-2 rounded-full ${
-                connectionState === 'CONNECTED'
-                  ? 'bg-[#10B981] animate-pulse'
-                  : connectionState === 'RECONNECTING' || connectionState === 'CONNECTING'
-                  ? 'bg-[#F59E0B] animate-ping'
-                  : 'bg-[#DC2626]'
+              className={`text-[10px] uppercase tracking-wider font-mono font-bold flex items-center gap-1 ${
+                connectionState === 'CONNECTED' ? 'text-red-600' : 'text-[#4B5563]'
               }`}
-            />
-            <span className="text-[10px] uppercase tracking-wider text-[#374151] font-mono font-bold flex items-center gap-1">
+            >
               {connectionState === 'CONNECTED'
-                ? 'MARKET STREAM (1s)'
+                ? 'LIVE'
                 : connectionState === 'RECONNECTING'
                 ? 'RECONNECTING...'
-                : 'OFFLINE CACHE'}
+                : 'OFFLINE'}
             </span>
           </div>
 
